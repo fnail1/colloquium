@@ -12,7 +12,7 @@ import butterknife.OnClick;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.utils.Utils;
 
-public class LoginPage1IntroViewHolder {
+public class LoginPage1IntroViewHolder implements LoginActivity.LoginPageViewHolder {
 
     private final View root;
     @BindView(R.id.title) TextView title;

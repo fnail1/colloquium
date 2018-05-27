@@ -128,32 +128,36 @@ public class LoginActivity extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void inflatePage(FrameLayout parent, int page) {
+    private LoginPageViewHolder inflatePage(FrameLayout parent, int page) {
         parent.removeAllViews();
         parent.setBackgroundColor(getBackgroundColor(page));
         int viewType = PAGES[page];
         View view = LayoutInflater.from(this).inflate(viewType, parent);
+        LoginPageViewHolder pageViewHolder;
         switch (viewType) {
             case R.layout.fr_login_1_intro:
-                new LoginPage1IntroViewHolder(view);
+                pageViewHolder = new LoginPage1IntroViewHolder(view);
                 break;
             case R.layout.fr_login_2_phone:
-                new LoginPage2PhoneViewHolder(view);
+                pageViewHolder = new LoginPage2PhoneViewHolder(view);
                 break;
             case R.layout.fr_login_3_code:
-                new LoginPage3CodeViewHolder(view);
+                pageViewHolder = new LoginPage3CodeViewHolder(view);
                 break;
             case R.layout.fr_login_4_gender:
-                new LoginPage4GenderViewHolder(view);
+                pageViewHolder = new LoginPage4GenderViewHolder(view);
                 break;
             case R.layout.fr_login_5_age:
-                new LoginPage5AgeViewHolder(view);
+                pageViewHolder = new LoginPage5AgeViewHolder(view);
                 break;
             case R.layout.fr_login_6_permission:
-                new LoginPage6PermissionViewHolder(view);
+                pageViewHolder = new LoginPage6PermissionViewHolder(view);
                 break;
+            default:
+                throw new IllegalArgumentException(String.valueOf(viewType));
         }
         currentPage = page;
+        return pageViewHolder;
     }
 
     public void onContinue() {
@@ -164,7 +168,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-        inflatePage(background, currentPage + 1);
+        LoginPageViewHolder pageViewHolder = inflatePage(background, currentPage + 1);
 
         foreground.animate()
                 .translationX(-foreground.getWidth())
@@ -181,6 +185,7 @@ public class LoginActivity extends BaseActivity {
                     background = t;
                     background.setVisibility(View.GONE);
                     background.removeAllViews();
+                    pageViewHolder.onShow();
                 });
     }
 
@@ -240,5 +245,10 @@ public class LoginActivity extends BaseActivity {
 
     public void onPermissionGranted() {
         onContinue();
+    }
+
+    public interface LoginPageViewHolder {
+        default void onShow() {
+        }
     }
 }

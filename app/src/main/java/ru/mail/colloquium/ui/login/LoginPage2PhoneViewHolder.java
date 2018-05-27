@@ -1,8 +1,10 @@
 package ru.mail.colloquium.ui.login;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.internal.Util;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.utils.Utils;
@@ -19,7 +22,7 @@ import static android.content.Context.TELEPHONY_SUBSCRIPTION_SERVICE;
 import static ru.mail.colloquium.App.app;
 import static ru.mail.colloquium.toolkit.collections.Query.query;
 
-public class LoginPage2PhoneViewHolder {
+public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHolder, TextView.OnEditorActionListener {
 
     private final View root;
     @BindView(R.id.phone_title) TextView phoneTitle;
@@ -38,6 +41,7 @@ public class LoginPage2PhoneViewHolder {
     public LoginPage2PhoneViewHolder(View root) {
         this.root = root;
         ButterKnife.bind(this, root);
+        phoneEdit.setOnEditorActionListener(this);
     }
 
     @OnClick(R.id.button)
@@ -52,4 +56,18 @@ public class LoginPage2PhoneViewHolder {
         }, 1000);
     }
 
+    @Override
+    public void onShow() {
+        phoneEdit.requestFocus();
+        Utils.showKeyboard(phoneEdit);
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            onViewClicked();
+            return true;
+        }
+        return false;
+    }
 }

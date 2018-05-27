@@ -12,7 +12,7 @@ import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.utils.Utils;
 
-public class LoginPage4GenderViewHolder {
+public class LoginPage4GenderViewHolder implements LoginActivity.LoginPageViewHolder {
 
     private final View root;
     @BindView(R.id.male) TextView male;

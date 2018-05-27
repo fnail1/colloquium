@@ -13,8 +13,10 @@ import android.view.View;
 
 import ru.mail.colloquium.model.entities.Contact;
 
+import static ru.mail.colloquium.diagnostics.Logger.trace;
+
 public class ContactNameView extends View {
-    private static final int FONT_SIZE_MIN = 30;
+    private static final int FONT_SIZE_MIN = 48;
     private static final int FONT_SIZE_TWO_LINE = 60;
     private static final int FONT_SIZE_MAX = 80;
 
@@ -27,7 +29,7 @@ public class ContactNameView extends View {
     private float line1X;
     private float line2X;
     private float line1Shift;
-    private float line2Shoft;
+    private float line2Shift;
 
     public ContactNameView(Context context) {
         super(context);
@@ -75,7 +77,7 @@ public class ContactNameView extends View {
                 int height = getHeight();
                 float y = (height - h2) / 2;
                 canvas.drawText(line1, line1X, y + h1 - line1Shift, paint1);
-                canvas.drawText(line2, line2X, y + h2 - line2Shoft, paint2);
+                canvas.drawText(line2, line2X, y + h2 - line2Shift, paint2);
 
 //                canvas.drawLine(line1X, y + h1, line1X, y, paint1);
 //                canvas.drawLine(line2X + 20, y + h2, line2X, y + h1, paint2);
@@ -118,35 +120,51 @@ public class ContactNameView extends View {
                 return;
             }
 
-
             selectMaxTextHeight(paint1, 2, getHeight(), FONT_SIZE_MIN, FONT_SIZE_MAX, m);
             maxFontSize = m.fontSize;
 
-            selectMaxTextWidth(paint1, contact.firstName, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
-            line1X = (maxWidth - m.textSize) / 2;
             line1 = contact.firstName;
+            while (true) {
+                selectMaxTextWidth(paint1, line1, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
+                if (m.textSize <= maxWidth)
+                    break;
+                line1 = line1.substring(0, line1.length() - 2) + "…";
+            }
+            line1X = (maxWidth - m.textSize) / 2;
 
-            selectMaxTextWidth(paint2, contact.lastName, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
-            line2X = (maxWidth - m.textSize) / 2;
             line2 = contact.lastName;
-        } else if (TextUtils.isEmpty(contact.firstName)) {
-            if (TextUtils.isEmpty(contact.lastName)) {
-                line1 = contact.displayName;
+            while (true) {
+                selectMaxTextWidth(paint2, line2, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
+                if (m.textSize <= maxWidth)
+                    break;
+                if (line2.length() < 2) {
+                    trace();
+                }
+                line2 = line2.substring(0, line2.length() - 2) + "…";
+            }
+            line2X = (maxWidth - m.textSize) / 2;
+        } else {
+            if (TextUtils.isEmpty(contact.firstName)) {
+                if (TextUtils.isEmpty(contact.lastName)) {
+                    line1 = contact.displayName;
+                } else {
+                    line1 = contact.lastName;
+                }
             } else {
-                line1 = contact.lastName;
+                line1 = contact.firstName;
             }
             line2 = null;
-            selectMaxTextWidth(paint1, line1, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
-            line1X = (maxWidth - m.textSize) / 2;
-        } else {
-            line1 = contact.firstName;
-            line2 = null;
-            selectMaxTextWidth(paint1, line1, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
+            while (true) {
+                selectMaxTextWidth(paint1, line1, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
+                if (m.textSize <= maxWidth)
+                    break;
+                line1 = line1.substring(0, line1.length() - 2) + "…";
+            }
             line1X = (maxWidth - m.textSize) / 2;
         }
 
         line1Shift = paint1.getFontMetrics().bottom;
-        line2Shoft = paint2.getFontMetrics().bottom;
+        line2Shift = paint2.getFontMetrics().bottom;
     }
 
     private void selectMaxTextHeight(TextPaint paint, int lines, int maxHeight, int minFontSize, int maxFontSize, MeasureResult out) {
@@ -164,15 +182,23 @@ public class ContactNameView extends View {
     }
 
     private void selectMaxTextWidth(TextPaint paint, String text, int maxWidth, int minFontSize, int maxFontSize, MeasureResult out) {
-        out.fontSize = (maxFontSize + minFontSize) / 2;
-        if (maxFontSize - minFontSize < 2)
+//        trace("" + minFontSize + "-" + maxFontSize);
+        if (maxFontSize - minFontSize < 4) {
+            if (out.textSize > maxWidth) {
+                out.fontSize -= 4;
+                paint.setTextSize(out.fontSize);
+                out.textSize = paint.measureText(text);
+            }
             return;
+        }
+
+        out.fontSize = (maxFontSize + minFontSize) / 2;
 
         paint.setTextSize(out.fontSize);
         out.textSize = paint.measureText(text);
         if (out.textSize > maxWidth)
             selectMaxTextWidth(paint, text, maxWidth, minFontSize, out.fontSize, out);
-        if (out.textSize < maxWidth)
+        else if (out.textSize < maxWidth)
             selectMaxTextWidth(paint, text, maxWidth, out.fontSize, maxFontSize, out);
 
     }

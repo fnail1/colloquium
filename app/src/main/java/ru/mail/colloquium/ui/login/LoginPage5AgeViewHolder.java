@@ -10,7 +10,7 @@ import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.utils.Utils;
 
-public class LoginPage5AgeViewHolder {
+public class LoginPage5AgeViewHolder implements LoginActivity.LoginPageViewHolder {
 
     private final View root;
 

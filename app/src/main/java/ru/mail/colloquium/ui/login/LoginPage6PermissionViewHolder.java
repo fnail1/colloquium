@@ -12,7 +12,7 @@ import ru.mail.colloquium.R;
 import ru.mail.colloquium.ui.ReqCodes;
 import ru.mail.colloquium.utils.Utils;
 
-public class LoginPage6PermissionViewHolder {
+public class LoginPage6PermissionViewHolder implements LoginActivity.LoginPageViewHolder {
 
     private final View root;
 
