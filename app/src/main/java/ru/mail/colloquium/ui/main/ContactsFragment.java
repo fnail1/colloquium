@@ -36,7 +36,7 @@ public class ContactsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fr_answers, container, false);
+        View view = inflater.inflate(R.layout.fr_contacts, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
