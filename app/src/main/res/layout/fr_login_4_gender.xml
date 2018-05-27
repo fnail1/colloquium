@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:background="#cc00cc">
+
+    <View
+        android:id="@+id/anchor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/anchor"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/indent"
+        android:text="Кто ты по жизни?"
+        android:textAppearance="@style/TitleTextAppearance"
+        />
+
+    <TextView
+        android:id="@+id/male"
+        style="@style/WhiteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/anchor"
+        android:layout_toStartOf="@id/anchor"
+        android:layout_marginTop="@dimen/indent"
+        android:layout_marginEnd="@dimen/indent"
+        android:text="Мальчик"/>
+
+    <TextView
+        android:id="@+id/female"
+        style="@style/WhiteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/anchor"
+        android:layout_toEndOf="@id/anchor"
+        android:layout_marginTop="@dimen/indent"
+        android:layout_marginStart="@dimen/indent"
+        android:text="Девочка"/>
+</RelativeLayout>

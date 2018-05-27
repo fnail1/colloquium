@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indent">8dp</dimen>
+    <dimen name="padding">16dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="avatar_size">48dp</dimen>
+    <dimen name="item_height_small">48dp</dimen>
+    <dimen name="action_bar_height">56dp</dimen>
+    <dimen name="bottom_panel_height">56dp</dimen>
+    <dimen name="item_height_large">56dp</dimen>
+    <dimen name="notification_image_size">64dp</dimen>
+    <dimen name="grid_item_width">168dp</dimen>
+</resources>

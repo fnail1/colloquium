@@ -1,0 +1,118 @@
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+    </style>
+
+    <style name="AppTheme.Fullscreen">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="AppTheme.TransparentStatus" />
+
+    <style name="ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:minHeight">@dimen/action_bar_height</item>
+        <item name="titleTextAppearance">@style/TitleTextAppearance</item>
+        <item name="colorControlNormal">#ffffff</item>
+        <item name="colorAccent">#ffffffff</item>
+        <item name="titleTextColor">#ffffff</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="contentInsetLeft">0dp</item>
+        <item name="contentInsetRight">0dp</item>
+        <item name="titleMarginStart">0dp</item>
+    </style>
+
+    <style name="ActionBar.Tabbed">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/colorTitle</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">16dp</item>
+        <item name="tabPaddingEnd">16dp</item>
+        <item name="tabSelectedTextColor">@color/colorTitle</item>
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
+    </style>
+
+    <style name="MainActivityTabTextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorSubtitle</item>
+        <item name="android:textAllCaps">true</item>
+
+    </style>
+
+    <style name="TabTextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorSubtitle</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing" tools:ignore="NewApi">0.04</item>
+    </style>
+
+    <style name="TitleTextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTitle</item>
+    </style>
+
+    <style name="SubtitleTextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorSubtitle</item>
+    </style>
+
+    <style name="DefaultButton">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.04</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:elevation" tools:ignore="NewApi">2dp</item>
+        <item name="elevation">2dp</item>
+        <item name="android:background">@drawable/bg_default_button</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:minHeight">37dp</item>
+        <item name="android:minWidth">109dp</item>
+    </style>
+
+    <style name="WhiteButton" parent="DefaultButton">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:elevation" tools:ignore="NewApi">0dp</item>
+        <item name="android:background">@drawable/bg_white_button</item>
+    </style>
+
+    <style name="AccentButton" parent="DefaultButton">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@drawable/bg_accent_button</item>
+    </style>
+
+    <style name="FlatButton">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorButton</item>
+        <item name="android:background">@drawable/ripple_none_view_dark</item>
+    </style>
+
+</resources>

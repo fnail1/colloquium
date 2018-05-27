@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBackground">#536497</color>
+    <color name="colorTitle">#ffffff</color>
+    <color name="colorSubtitle">#deffffff</color>
+    <color name="colorText">#deffffff</color>
+    <color name="colorButton">#deffffff</color>
+    <color name="textColorPrimary">#ffffff</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+
+
+    <color name="colorRippleEffectDark">#26FFFFFF</color>
+    <color name="colorRippleEffectLight">#26000000</color>
+    <color name="colorRippleEffectColored">#8AFFFFFF</color>
+    <color name="colorRippleEffectAccent">#60FFFFFF</color>
+
+
+    <color name="mw_fade_black_5">#0D000000</color>
+    <color name="mw_fade_black_6">#0F000000</color>
+    <color name="mw_fade_black_10">#19000000</color>
+    <color name="mw_fade_black_12">#1E000000</color>
+    <color name="mw_fade_black_15">#26000000</color>
+    <color name="mw_fade_black_20">#33000000</color>
+    <color name="mw_fade_black_24">#3D000000</color>
+    <color name="mw_fade_black_26">#42000000</color>
+    <color name="mw_fade_black_30">#4C000000</color>
+    <color name="mw_fade_black_38">#60000000</color>
+    <color name="mw_fade_black_40">#66000000</color>
+    <color name="mw_fade_black_50">#7f000000</color>
+    <color name="mw_fade_black_54">#8A000000</color>
+    <color name="mw_fade_black_60">#99000000</color>
+    <color name="mw_fade_black_70">#B2000000</color>
+    <color name="mw_fade_black_80">#CC000000</color>
+    <color name="mw_fade_black_87">#DD000000</color>
+    <color name="mw_fade_black_100">#FF000000</color>
+
+    <color name="mw_fade_white_15">#26FFFFFF</color>
+    <color name="mw_fade_white_20">#33FFFFFF</color>
+    <color name="mw_fade_white_38">#60FFFFFF</color>
+    <color name="mw_fade_white_70">#B3FFFFFF</color>
+    <color name="mw_fade_white_80">#CCFFFFFF</color>
+    <color name="mw_fade_white_87">#DDFFFFFF</color>
+    <color name="mw_fade_white_95">#f2FFFFFF</color>
+</resources>

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Лавки</string>
+    <string name="share">Поделиться</string>
+    <string name="icon">icon</string>
+
+
+    <string name="enter_phone_title">Введите номер телефона</string>
+    <string name="default_country_code">+7</string>
+    <string name="enter_sms_code_explanation">Мы отправили СМС с кодом. Для вашей безопасности просим подтвердить номер</string>
+    <string name="sms_code_repeat_countdown">Повторная отправка кода через %d сек.</string>
+    <string name="enter_sms_code">Введите код из СМС</string>
+    <string name="error_wrong_sms_code">Введите корректный код</string>
+    <string name="just_now">Только что</string>
+
+    <string name="contacts_permission_explanation">Приложение не может работать без доступа к контактам</string>
+    <string name="storage_permission_explanation">Ну очень надо</string>
+    <plurals name="days">
+        <item quantity="one">%d\u00A0день</item>
+        <item quantity="few">%d\u00A0дня</item>
+        <item quantity="many">%d\u00A0дней</item>
+        <item quantity="other">%d\u00A0дней</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%d\u00A0час</item>
+        <item quantity="few">%d\u00A0часа</item>
+        <item quantity="many">%d\u00A0часов</item>
+        <item quantity="other">%d\u00A0часов</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d\u00A0минута</item>
+        <item quantity="few">%1$d\u00A0минуты</item>
+        <item quantity="many">%1$d\u00A0минут</item>
+        <item quantity="other">%1$d\u00A0минут</item>
+    </plurals>
+</resources>
