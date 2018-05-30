@@ -65,6 +65,7 @@
     </plurals>
 
     <string name="smart_time_units_1_d_genitive">день</string>
+    <string name="login_phone_error">Введите корректный мобильный номер</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>

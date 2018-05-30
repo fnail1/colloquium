@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,9 +16,12 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
+import ru.mail.colloquium.api.model.GsonProfileResponse;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Gender;
+import ru.mail.colloquium.model.types.Profile;
+import ru.mail.colloquium.service.MergeHelper;
 import ru.mail.colloquium.ui.ReqCodes;
 import ru.mail.colloquium.ui.base.BaseActivity;
 import ru.mail.colloquium.ui.main.MainActivity;
@@ -39,12 +43,8 @@ public class LoginActivity extends BaseActivity {
 
     private static final String STATE_PAGE = "page";
     private String phone;
-    private String code;
     private String accessToken;
-    private String refreshToken;
-    private long expireIn;
-    private Gender gender;
-    private Age age;
+    private Profile profile = new Profile();
 
     private int getBackgroundColor(int page) {
         int random = (int) ((startTime + page) & 0x000fffff);
@@ -142,7 +142,7 @@ public class LoginActivity extends BaseActivity {
                 pageViewHolder = new LoginPage2PhoneViewHolder(view);
                 break;
             case R.layout.fr_login_3_code:
-                pageViewHolder = new LoginPage3CodeViewHolder(view);
+                pageViewHolder = new LoginPage3CodeViewHolder(view, phone);
                 break;
             case R.layout.fr_login_4_gender:
                 pageViewHolder = new LoginPage4GenderViewHolder(view);
@@ -162,9 +162,7 @@ public class LoginActivity extends BaseActivity {
 
     public void onContinue() {
         if (currentPage == PAGES.length - 1) {
-            app().onLogin(phone, accessToken, refreshToken, expireIn, gender, age);
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            onComplete(accessToken);
             return;
         }
 
@@ -194,26 +192,30 @@ public class LoginActivity extends BaseActivity {
         onContinue();
     }
 
-    public void onSmsCode(String code, String accessToken, String refreshToken, long expireIn) {
-        this.code = code;
+    public void onSmsCode(String accessToken, GsonProfileResponse.GsonUser profile) {
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-        this.expireIn = expireIn;
-        String first = query(databaseList()).first(db -> db.equals(AppData.normalizeDbName(phone)));
-        if (first != null) {
-            app().onLogin(phone, accessToken, refreshToken, expireIn);
+        MergeHelper.merge(this.profile,profile);
+
+        if(!TextUtils.isEmpty(profile.name) && profile.info != null && profile.sex != null) {
+            onComplete(accessToken);
         } else {
             onContinue();
         }
     }
 
+    private void onComplete(String accessToken) {
+        app().onLogin(accessToken, this.profile);
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
     public void onGenderResolved(Gender gender) {
-        this.gender = gender;
+        profile.gender = gender;
         onContinue();
     }
 
     public void onAgeResolved(Age age) {
-        this.age = age;
+        profile.age = age;
         onContinue();
     }
 

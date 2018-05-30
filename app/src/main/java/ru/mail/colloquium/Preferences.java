@@ -58,7 +58,7 @@ public class Preferences {
         onOpen(context);
     }
 
-    Preferences(App context, String userId) {
+    Preferences(App context, String userId, Profile profile) {
         common = PreferenceManager.getDefaultSharedPreferences(context);
         common.edit().putString(USER_ID, userId).apply();
 
@@ -66,6 +66,7 @@ public class Preferences {
         uniqueIdCurrentValue = new AtomicInteger(uniqueIdStoredValue + 100);
 
         personal = context.getSharedPreferences(AppData.normalizeDbName(userId), Context.MODE_PRIVATE);
+        this.profile = profile;
         onOpen(context);
     }
 

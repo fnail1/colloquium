@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.gson.Gson;
 
 import ru.mail.colloquium.api.ApiService;
+import ru.mail.colloquium.api.model.GsonProfileResponse;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Gender;
@@ -90,21 +91,14 @@ public class App extends Application {
 
     }
 
-    public void onLogin(String phone, String accessToken, String refreshToken, long expireIn) {
-        preferences = new Preferences(this, phone);
+    public void onLogin(String accessToken, Profile profile) {
+        preferences = new Preferences(this, profile.phone, profile);
         preferences.onLogin(accessToken);
-        data = new AppData(this, phone);
+        preferences.save(profile);
+
+        data = new AppData(this, profile.phone);
         appService.shutdown();
         appService = new AppService(appStateObserver);
-    }
-
-    public void onLogin(String phone, String accessToken, String refreshToken, long expireIn, Gender gender, Age age) {
-        onLogin(phone, accessToken, refreshToken, expireIn);
-
-        Profile profile = preferences.profile();
-        profile.gender = gender;
-        profile.age = age;
-        preferences.save(profile);
     }
 
     public void logout() {

@@ -318,8 +318,13 @@ public class DateTimeService {
     }
 
 
-    public long parseServerTime(String dateString) throws ParseException {
-        return serverDateTimeFormat.parse(dateString).getTime();
+    public long parseServerTime(String dateString) {
+        try {
+            return serverDateTimeFormat.parse(dateString).getTime();
+        } catch (ParseException e) {
+            safeThrow(e);
+            return 0;
+        }
     }
 
     protected void onServerTimeOffsetChanged() {
@@ -340,11 +345,10 @@ public class DateTimeService {
 
     public long adjustServerTimeOffset(Response<?> response) {
         String dateString = response.headers().get("Date");
-        try {
-            long time = parseServerTime(dateString);
+        long time = parseServerTime(dateString);
+        if (time > 0) {
             return adjustServerTimeOffset(time);
-        } catch (ParseException e) {
-            safeThrow(e);
+        } else {
             return getServerTime();
         }
     }

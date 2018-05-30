@@ -23,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.mail.colloquium.BuildConfig;
@@ -60,7 +61,7 @@ public interface ApiService {
      * @param code  длина строго 4 символа, digits
      * @return
      */
-    @GET("en/{phone}/{code}")
+    @GET("token/{phone}/{code}")
     Call<GsonAuth> auth(
             @Path("phone") String phone,
             @Path("code") String code
@@ -121,7 +122,8 @@ public interface ApiService {
     /**
      * Просмотр ответа
      * Выставляет поле статуса просмотра is_viewed = 1
-     * @param answerId  обязательно
+     *
+     * @param answerId обязательно
      * @return
      */
     @GET("view/{answer_id}")
@@ -129,6 +131,12 @@ public interface ApiService {
 
     @GET("/")
     Call<Void> ping();
+
+    @GET("user")
+    Call<GsonProfileResponse.GsonUser> getProfile(@Header("Authorization") String token);
+
+    @GET("user")
+    Call<GsonProfileResponse.GsonUser> getProfile();
 
     class Creator {
 
@@ -220,6 +228,7 @@ public interface ApiService {
                 Request original = chain.request();
                 Request.Builder requestBuilder = original.newBuilder();
                 requestBuilder.method(original.method(), original.body());
+                requestBuilder.header("Accept", "application/json");
                 requestBuilder.header("X-From", deviceId);
                 requestBuilder.header("X-App-Id", "android");
                 requestBuilder.header("X-Client-Version", version);
