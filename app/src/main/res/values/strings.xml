@@ -14,6 +14,58 @@
 
     <string name="contacts_permission_explanation">Приложение не может работать без доступа к контактам</string>
     <string name="storage_permission_explanation">Ну очень надо</string>
+
+    <string name="now">сейчас</string>
+    <string name="now_past">только что</string>
+    <!--two days ago-->
+    <string name="before_yesterday" translatable="true">позавчера</string>
+    <string name="yesterday">вчера</string>
+    <string name="today">сегодня</string>
+    <string name="today_capitalized">Сегодня</string>
+    <string name="tomorrow">завтра</string>
+    <string name="after_tomorrow">послезавтра</string>
+    <string name="this_week">на этой неделе</string>
+    <string name="next_week">на следующей неделе</string>
+    <string name="this_month">в этом месяце</string>
+    <string name="calendar_day_format_1">%1$d %2$s</string>
+    <string name="calendar_day_format_2">%1$s, %2$d %3$s</string>
+    <string name="calendar_week_format_1">с %1$d по %2$d %3$s</string>
+    <string name="calendar_week_format_2">с %1$d %2$s по %3$d %4$s</string>
+    <string name="relative_date_format_without_time">%1$s %2$s</string>
+    <string name="relative_date_format">%1$s в %2$s</string>
+    <string name="relative_date_format_today">в %s</string>
+    <string name="smart_time_format_ago">%1$s назад</string>
+    <string name="smart_time_format_h_m_ago">%1$s %2$s назад</string>
+
+    <plurals name="smart_time_units_ms">
+        <item quantity="one">%d миллисекунду</item>
+        <item quantity="few">%d миллисекунды</item>
+        <item quantity="many">%d миллисекунд</item>
+        <item quantity="other">%d миллисекунд</item>
+    </plurals>
+    <plurals name="smart_time_units_s">
+        <item quantity="one">%d секунду</item>
+        <item quantity="few">%d секунды</item>
+        <item quantity="many">%d секунд</item>
+        <item quantity="other">%d секунд</item>
+    </plurals>
+    <string name="smart_time_units_1_m_genitive">минуту</string>
+    <plurals name="smart_time_units_m">
+        <item quantity="one">%d минуту</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минут</item>
+    </plurals>
+    <string name="smart_time_units_1_h_genitive">час</string>
+    <plurals name="smart_time_units_h">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+        <item quantity="other">%d часов</item>
+    </plurals>
+
+    <string name="smart_time_units_1_d_genitive">день</string>
+
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>
         <item quantity="few">%d\u00A0дня</item>
@@ -34,4 +86,74 @@
         <item quantity="many">%1$d\u00A0минут</item>
         <item quantity="other">%1$d\u00A0минут</item>
     </plurals>
+
+    <string-array name="months_nominative">
+        <item>январь</item>
+        <item>февраль</item>
+        <item>март</item>
+        <item>апрель</item>
+        <item>май</item>
+        <item>июнь</item>
+        <item>июль</item>
+        <item>август</item>
+        <item>сентябрь</item>
+        <item>октябрь</item>
+        <item>ноябрь</item>
+        <item>декабрь</item>
+    </string-array>
+
+    <string-array name="months_genitive">
+        <item>января</item>
+        <item>февраля</item>
+        <item>марта</item>
+        <item>апреля</item>
+        <item>мая</item>
+        <item>июня</item>
+        <item>июля</item>
+        <item>августа</item>
+        <item>сентября</item>
+        <item>октября</item>
+        <item>ноября</item>
+        <item>декабря</item>
+    </string-array>
+
+    <string-array name="calendar_groups">
+        <item>Сегодня, %1$d %2$s</item>
+        <item>Завтра, %1$d %2$s</item>
+        <item>На этой неделе</item>
+        <item>На следующей неделе</item>
+        <item>В этом месяце</item>
+        <item>В январе</item>
+        <item>В феврале</item>
+        <item>В марте</item>
+        <item>В апреле</item>
+        <item>В мае</item>
+        <item>В июне</item>
+        <item>В июле</item>
+        <item>В августе</item>
+        <item>В сентябре</item>
+        <item>В октябре</item>
+        <item>В ноябре</item>
+        <item>В декабре</item>
+    </string-array>
+
+    <string-array name="week_days">
+        <item>воскресенье</item>
+        <item>понедельник</item>
+        <item>вторник</item>
+        <item>среда</item>
+        <item>четверг</item>
+        <item>пятница</item>
+        <item>суббота</item>
+    </string-array>
+
+    <string-array name="week_days_prepositional">
+        <item>в воскресенье</item>
+        <item>в понедельник</item>
+        <item>во вторник</item>
+        <item>в среду</item>
+        <item>в четверг</item>
+        <item>в пятницу</item>
+        <item>в субботу</item>
+    </string-array>
 </resources>

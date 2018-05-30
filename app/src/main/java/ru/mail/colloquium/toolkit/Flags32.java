@@ -3,12 +3,13 @@ package ru.mail.colloquium.toolkit;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Flags32 implements Parcelable{
+public class Flags32 implements Parcelable {
     public int data;
 
     public Flags32() {
 
     }
+
     public Flags32(int value) {
         data = value;
     }
@@ -54,7 +55,7 @@ public class Flags32 implements Parcelable{
             data &= ~mask;
     }
 
-    public boolean getAndSet(int mask, boolean value){
+    public boolean getAndSet(int mask, boolean value) {
         int copy = data;
         set(mask, value);
         return (copy == data) == value;

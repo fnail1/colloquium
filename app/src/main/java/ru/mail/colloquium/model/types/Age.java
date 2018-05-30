@@ -12,5 +12,6 @@ public enum Age {
     year3,
     year4,
     year5,
-    year6, superstar,
+    year6,
+    superstar,
 }

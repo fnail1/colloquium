@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 
+import ru.mail.colloquium.api.ApiService;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Gender;
@@ -12,6 +13,7 @@ import ru.mail.colloquium.service.AppService;
 import ru.mail.colloquium.service.AppStateObserver;
 import ru.mail.colloquium.toolkit.network.NetworkObserver;
 import ru.mail.colloquium.ui.ScreenMetrics;
+import ru.mail.colloquium.utils.DateTimeService;
 
 public class App extends Application {
     private static App instance;
@@ -22,6 +24,8 @@ public class App extends Application {
     private AppService appService;
     private NetworkObserver networkObserver;
     private ScreenMetrics screenMetrics;
+    private ApiService apiService;
+    private DateTimeService dateTimeService;
 
 
     public static AppData data() {
@@ -52,6 +56,18 @@ public class App extends Application {
         return instance.screenMetrics;
     }
 
+    public static DateTimeService dateTimeService() {
+        return instance.dateTimeService;
+    }
+
+    public static ApiService api() {
+        return instance.apiService;
+    }
+
+    public static AppService appService() {
+        return instance.appService;
+    }
+
     public static App app() {
         return instance;
     }
@@ -67,6 +83,8 @@ public class App extends Application {
         appService = new AppService(appStateObserver);
         networkObserver = new NetworkObserver(this);
         screenMetrics = new ScreenMetrics(this);
+        apiService = ApiService.Creator.newService(preferences.getApiSet(), this);
+        dateTimeService = new DateTimeService(this, preferences);
 
         instance = this;
 
@@ -74,7 +92,7 @@ public class App extends Application {
 
     public void onLogin(String phone, String accessToken, String refreshToken, long expireIn) {
         preferences = new Preferences(this, phone);
-        preferences.onLogin(accessToken, refreshToken, expireIn);
+        preferences.onLogin(accessToken);
         data = new AppData(this, phone);
         appService.shutdown();
         appService = new AppService(appStateObserver);
@@ -87,5 +105,10 @@ public class App extends Application {
         profile.gender = gender;
         profile.age = age;
         preferences.save(profile);
+    }
+
+    public void logout() {
+        preferences.onLogout();
+        System.exit(0);
     }
 }

@@ -1,7 +1,5 @@
 package ru.mail.colloquium.model.entities;
 
-
-import ru.mail.colloquium.api.model.GsonContact;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.toolkit.Flags32;
@@ -18,19 +16,10 @@ public class PhoneNumber extends BaseRow {
     @DbColumn(unique = true, onUniqueConflict = ConflictAction.IGNORE)
     public String serverId;
 
-    public String avatarUrl;
     public Gender gender = Gender.CAMEL;
-    public long syncTs;
     public Flags32 flags = new Flags32(0);
     public PhoneRelevance relevance = PhoneRelevance.UNKNOWN;
 
-    public void copyData(GsonContact data) {
-        this.serverId = data.id;
-
-        if (this.avatarUrl == null || !this.avatarUrl.startsWith("content://"))
-            this.avatarUrl = data.avatar.url;
-        this.gender = data.sex == null ? Gender.CAMEL : data.sex;
-    }
 
     @Override
     public String toString() {

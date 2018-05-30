@@ -76,8 +76,8 @@ public class ContactNameView extends View {
                 float h2 = h1 + paint2.getTextSize() + paint2.baselineShift;
                 int height = getHeight();
                 float y = (height - h2) / 2;
-                canvas.drawText(line1, line1X, y + h1 - line1Shift, paint1);
-                canvas.drawText(line2, line2X, y + h2 - line2Shift, paint2);
+                canvas.drawText(line1, 0, y + h1 - line1Shift, paint1);
+                canvas.drawText(line2, 0, y + h2 - line2Shift, paint2);
 
 //                canvas.drawLine(line1X, y + h1, line1X, y, paint1);
 //                canvas.drawLine(line2X + 20, y + h2, line2X, y + h1, paint2);
@@ -85,7 +85,7 @@ public class ContactNameView extends View {
                 float h1 = paint1.getTextSize() + paint1.getFontMetrics().bottom;
                 int height = getHeight();
                 float y = (height - h1) / 2;
-                canvas.drawText(line1, line1X, y + h1 - line1Shift, paint1);
+                canvas.drawText(line1, 0, y + h1 - line1Shift, paint1);
 //                canvas.drawLine(line1X, y + h1, line1X, y, paint1);
             }
         }
@@ -137,9 +137,6 @@ public class ContactNameView extends View {
                 selectMaxTextWidth(paint2, line2, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
                 if (m.textSize <= maxWidth)
                     break;
-                if (line2.length() < 2) {
-                    trace();
-                }
                 line2 = line2.substring(0, line2.length() - 2) + "…";
             }
             line2X = (maxWidth - m.textSize) / 2;

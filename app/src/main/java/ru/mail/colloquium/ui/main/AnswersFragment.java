@@ -23,6 +23,7 @@ import ru.mail.colloquium.ui.base.BaseFragment;
 import ru.mail.colloquium.ui.views.MyFrameLayout;
 
 import static ru.mail.colloquium.App.appState;
+import static ru.mail.colloquium.App.dateTimeService;
 
 public class AnswersFragment extends BaseFragment {
     @BindView(R.id.list) RecyclerView list;
@@ -61,11 +62,11 @@ public class AnswersFragment extends BaseFragment {
         private MyAdapter() {
             data = new Answer[50];
             Random random = new Random();
-            long serverTime = appState().getServerTime();
+            long serverTime = dateTimeService().getServerTime();
             for (int i = 0; i < data.length; i++) {
                 Answer datum = data[i] = new Answer();
                 datum.gender = random.nextBoolean() ? Gender.MALE : Gender.FEMALE;
-                datum.created = serverTime - random.nextInt(5 * 24 * 60 * 60) * 1000;
+                datum.createdAt = serverTime - random.nextInt(5 * 24 * 60 * 60) * 1000;
             }
 
         }

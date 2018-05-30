@@ -15,6 +15,7 @@ import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.entities.Answer;
 
 import static ru.mail.colloquium.App.appState;
+import static ru.mail.colloquium.App.dateTimeService;
 
 public class AnswerViewHolder extends RecyclerView.ViewHolder {
 
@@ -48,11 +49,11 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder {
         }
 
 
-        title.setText(formatTerm(title.getResources(), answer.created));
+        title.setText(formatTerm(title.getResources(), answer.createdAt));
     }
 
     private String formatTerm(Resources resources, long timestamp) {
-        long t = appState().getServerTime() - timestamp;
+        long t = dateTimeService().getServerTime() - timestamp;
         if (t < 60 * 1000)
             return resources.getString(R.string.just_now);
         if (t < 24 * 60 * 60 * 1000) {

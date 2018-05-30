@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import ru.mail.colloquium.App;
 import ru.mail.colloquium.diagnostics.Logger;
+import ru.mail.colloquium.model.queries.AnswersQueries;
 import ru.mail.colloquium.model.queries.ContactsPhonesLinksQueries;
 import ru.mail.colloquium.model.queries.ContactsQueries;
 import ru.mail.colloquium.model.queries.PhoneNumbersQueries;
@@ -51,8 +52,9 @@ public class AppData {
 
     public final SQLiteDatabase db;
 
-    public final ContactsQueries contacts;
     public final QuestionsQueries questions;
+    public final AnswersQueries answers;
+    public final ContactsQueries contacts;
     public final PhoneNumbersQueries phoneNumbers;
     public final ContactsPhonesLinksQueries contactsPhonesLinks;
 
@@ -62,8 +64,9 @@ public class AppData {
 
         SQLiteCommands.Logger logger = Logger.createDbLogger();
 
-        contacts = new ContactsQueries(db, logger);
         questions = new QuestionsQueries(db, logger);
+        answers = new AnswersQueries(db, logger);
+        contacts = new ContactsQueries(db, logger);
         phoneNumbers = new PhoneNumbersQueries(db, logger);
         contactsPhonesLinks = new ContactsPhonesLinksQueries(db, logger);
     }

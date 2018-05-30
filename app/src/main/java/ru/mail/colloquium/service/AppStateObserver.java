@@ -27,12 +27,6 @@ import static ru.mail.colloquium.diagnostics.Logger.trace;
 
 
 public class AppStateObserver {
-    public final ObservableEvent<DateChangedEventHandler, AppStateObserver, Void> dateChangedEvent = new ObservableEvent<DateChangedEventHandler, AppStateObserver, Void>(this) {
-        @Override
-        protected void notifyHandler(DateChangedEventHandler handler, AppStateObserver sender, Void args) {
-            handler.onDateTimeChanged();
-        }
-    };
 
     public final ObservableEvent<AppStateEventHandler, AppStateObserver, Void> stateEvent = new ObservableEvent<AppStateEventHandler, AppStateObserver, Void>(this) {
         @Override
@@ -50,26 +44,10 @@ public class AppStateObserver {
 
     private Activity topActivity;
     private Activity closedActivity;
-    private long serverTimeOffset;
     public boolean initialized;
-    private boolean serverTimeOffsetDirty;
     private Runnable onBackgroundTask = this::onBackground;
 
     public AppStateObserver(App context, Preferences preferences) {
-        serverTimeOffset = preferences.getServerTimeOffset();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_TIME_CHANGED);
-        filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
-        filter.addAction(Intent.ACTION_DATE_CHANGED);
-        context.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                serverTimeOffsetDirty = true;
-                onServerTimeOffsetChanged();
-                onStateChanged();
-            }
-        }, filter);
         initialized = true;
     }
 
@@ -124,57 +102,7 @@ public class AppStateObserver {
         lowMemoryEvent.fire(null);
     }
 
-    protected void onServerTimeOffsetChanged() {
-        dateChangedEvent.fire(null);
-    }
 
-    public long getServerTime() {
-        return getServerTime(System.currentTimeMillis());
-    }
-
-    public long getServerTime(long currentTimeMillis) {
-        return currentTimeMillis + serverTimeOffset;
-    }
-
-    public long getLocalTime(long serverTimeMillis) {
-        return serverTimeMillis - serverTimeOffset;
-    }
-
-    public long adjustServerTimeOffset(Response<?> response) {
-        String dateString = response.headers().get("Date");
-        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        try {
-            Date date = format.parse(dateString);
-            return adjustServerTimeOffset(date.getTime());
-        } catch (ParseException e) {
-            safeThrow(e);
-            return getServerTime();
-        }
-    }
-
-    public long adjustServerTimeOffset(long time) {
-        long localTime = System.currentTimeMillis();
-        long offset = time - localTime;
-        if (serverTimeOffsetDirty || Math.abs(offset - serverTimeOffset) > 3000) {
-            serverTimeOffsetDirty = false;
-            serverTimeOffset = offset;
-            prefs().setServerTimeOffset(serverTimeOffset);
-            onServerTimeOffsetChanged();
-        }
-        return localTime + serverTimeOffset;
-    }
-
-    public boolean serverTimeOffsetDirty() {
-        return serverTimeOffsetDirty;
-    }
-
-    public long getServerTimeOffset() {
-        return serverTimeOffset;
-    }
-
-    public long getServerTimeOffsetWithTZ() {
-        return -serverTimeOffset + TimeZone.getDefault().getRawOffset();
-    }
 
     public interface AppStateEventHandler {
         void onAppStateChanged();
@@ -184,7 +112,4 @@ public class AppStateObserver {
         void onLowMemory();
     }
 
-    public interface DateChangedEventHandler {
-        void onDateTimeChanged();
-    }
 }

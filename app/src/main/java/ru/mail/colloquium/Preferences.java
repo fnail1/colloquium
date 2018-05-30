@@ -26,11 +26,6 @@ public class Preferences {
     private static final String API_BASE_URL = "api_base_url";
     private static final String SERVER_TIME_OFFSET = "server_time_offset";
     private static final String ACCESS_TOKEN = "access_token";
-    private static final String COUNTRY_CODE = "country_code";
-    private static final String PHONE_NUMBER = "phone_number";
-    private static final String REFRESH_TOKEN = "refresh_token";
-    private static final String TOKEN_EXPIRES_IN = "token_expires_in";
-    private static final String TOKEN_RECEIVED_TIME = "token_time";
     private static final String PREFIX_PERMISSION_REQUESTED = "permission:";
 
     private static final String LAST_CONTENT_SYNCHRONIZATION_TS = "last_content_synchronization_ts";
@@ -84,15 +79,6 @@ public class Preferences {
         if (oldVersion != BuildConfig.VERSION_CODE) {
             SharedPreferences.Editor personalEditor = personal.edit();
             SharedPreferences.Editor commonEditor = common.edit();
-
-            if (personal.getString(COUNTRY_CODE, null) == null) {
-                TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-                String countryIsoCode = tm.getSimCountryIso();
-                if (isEmpty(countryIsoCode)) // fallback
-                    countryIsoCode = Locale.getDefault().getCountry();
-
-                personalEditor.putString(COUNTRY_CODE, countryIsoCode);
-            }
 
             personalEditor.putLong(LAST_CONTENT_SYNCHRONIZATION_TS, 0);
             personalEditor.apply();
@@ -148,21 +134,10 @@ public class Preferences {
         return personal.getString(ACCESS_TOKEN, null);
     }
 
-    public String getRefreshToken() {
-        return personal != null ? personal.getString(REFRESH_TOKEN, null) : null;
-    }
-
-    public String getCountryCode() {
-        return personal != null ? personal.getString(COUNTRY_CODE, null) : null;
-    }
-
-    public void onLogin(String accessToken, String refreshToken, long expiresIn) {
+    public void onLogin(String accessToken) {
         profile = null;
         personal.edit()
                 .putString(ACCESS_TOKEN, accessToken)
-                .putString(REFRESH_TOKEN, refreshToken)
-                .putInt(TOKEN_RECEIVED_TIME, (int) (appState().getServerTime() / 1000.0))
-                .putLong(TOKEN_EXPIRES_IN, expiresIn)
                 .apply();
     }
 
