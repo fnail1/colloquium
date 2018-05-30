@@ -99,6 +99,9 @@ public class App extends Application {
         data = new AppData(this, profile.phone);
         appService.shutdown();
         appService = new AppService(appStateObserver);
+        if (data.questions.getCurrent() == null) {
+            appService.requestNextQuestion();
+        }
     }
 
     public void logout() {

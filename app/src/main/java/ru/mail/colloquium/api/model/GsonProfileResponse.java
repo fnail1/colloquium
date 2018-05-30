@@ -7,7 +7,6 @@ public class GsonProfileResponse {
     public GsonUser user;
 
     public class GsonUser {
-        public String name;
         public String created_at;
         public String updated_at;
         public String phone;

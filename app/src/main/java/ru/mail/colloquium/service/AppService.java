@@ -56,6 +56,10 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     public void onAppStateChanged() {
         if (!prefs().hasAccount())
             return;
+
+        if (!appStateObserver.isForeground())
+            return;
+
         if (dateTimeService().getServerTime() - prefs().serviceState().lastSync <= MAX_SYNCHRONIZATION_LAG)
             return;
 
@@ -72,7 +76,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
         return false;
     }
-
 
     public void requestNextQuestion() {
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(

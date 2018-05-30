@@ -105,6 +105,9 @@ public class ContactNameView extends View {
         if (maxWidth == 0)
             return;
 
+        if(contact == null)
+            return;
+
         MeasureResult m = new MeasureResult();
         selectMaxTextHeight(paint1, 1, getHeight(), FONT_SIZE_MIN, FONT_SIZE_MAX, m);
         maxFontSize = m.fontSize;

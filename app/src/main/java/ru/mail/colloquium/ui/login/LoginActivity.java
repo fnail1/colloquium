@@ -196,7 +196,7 @@ public class LoginActivity extends BaseActivity {
         this.accessToken = accessToken;
         MergeHelper.merge(this.profile,profile);
 
-        if(!TextUtils.isEmpty(profile.name) && profile.info != null && profile.sex != null) {
+        if(profile.info != null && profile.sex != null) {
             onComplete(accessToken);
         } else {
             onContinue();

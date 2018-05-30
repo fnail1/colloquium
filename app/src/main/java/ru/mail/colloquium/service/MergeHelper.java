@@ -67,7 +67,6 @@ public class MergeHelper {
     }
 
     public static void merge(Profile dst, GsonProfileResponse.GsonUser src) {
-        dst.name = src.name;
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.updatedAt = dateTimeService().parseServerTime(src.updated_at);
         dst.phone = src.phone;

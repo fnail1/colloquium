@@ -1,6 +1,7 @@
 package ru.mail.colloquium.model.queries;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.Nullable;
 
 import java.security.PublicKey;
 
@@ -29,5 +30,14 @@ public class QuestionsQueries extends SQLiteCommands<Question> {
         String sql = selectAll + "\n" +
                 "where flags & " + (FLAG_ANSWERED | FLAG_SENT) + " = " + FLAG_ANSWERED + "\n";
         return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Question.class, null);
+    }
+
+    @Nullable
+    public Question getCurrent() {
+        String sql = selectAll + "\n" +
+                "where flags & " + Question.FLAG_ANSWERED + " = 0 \n" +
+                "order by serverId desc\n" +
+                "limit 1 offset 0";
+        return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Question.class, null).first();
     }
 }
