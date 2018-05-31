@@ -63,7 +63,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(STATE_QUESTION_ID, question._id);
+        outState.putLong(STATE_QUESTION_ID, question != null ? question._id : 0);
     }
 
     @Override
@@ -112,6 +112,8 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
                     foreground.bind(question);
                 } else {
                     noQuestions.setVisibility(View.VISIBLE);
+                    foreground.root.setVisibility(View.GONE);
+                    background.root.setVisibility(View.GONE);
                 }
             }
         });

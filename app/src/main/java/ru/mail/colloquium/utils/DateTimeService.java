@@ -60,7 +60,8 @@ public class DateTimeService {
 
     private final SimpleDateFormat dateLongFormat = new SimpleDateFormat("d MMMM", Locale.getDefault());
     private final SimpleDateFormat dateLongFormatWithYear = new SimpleDateFormat("d MMMM yyyy", Locale.getDefault());
-    private final SimpleDateFormat serverDateTimeFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+    private final SimpleDateFormat serverDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+    private final SimpleDateFormat httpDateTimeFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
     private final String f0;
     private final String f1;
     private final String f2;
@@ -345,12 +346,14 @@ public class DateTimeService {
 
     public long adjustServerTimeOffset(Response<?> response) {
         String dateString = response.headers().get("Date");
-        long time = parseServerTime(dateString);
-        if (time > 0) {
+        try {
+            long time = httpDateTimeFormat.parse(dateString).getTime();
             return adjustServerTimeOffset(time);
-        } else {
+        } catch (ParseException e) {
+            safeThrow(e);
             return getServerTime();
         }
+
     }
 
     public long adjustServerTimeOffset(long time) {

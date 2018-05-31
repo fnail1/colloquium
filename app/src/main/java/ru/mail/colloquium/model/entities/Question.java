@@ -4,6 +4,7 @@ import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.toolkit.Flags32;
 import ru.mail.colloquium.toolkit.data.BaseRow;
+import ru.mail.colloquium.toolkit.data.DbColumn;
 import ru.mail.colloquium.toolkit.data.DbForeignKey;
 import ru.mail.colloquium.toolkit.data.DbTable;
 
@@ -12,6 +13,7 @@ public class Question extends BaseRow {
     public static final int FLAG_ANSWERED = 1;
     public static final int FLAG_SENT = 2;
 
+    @DbColumn(unique = true)
     public String serverId;
     public String emoji;
     public String question;

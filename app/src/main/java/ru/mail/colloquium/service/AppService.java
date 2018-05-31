@@ -20,7 +20,6 @@ import ru.mail.colloquium.service.ab.AddressBookSyncHelper;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.events.ObservableEvent;
 import ru.mail.colloquium.toolkit.http.ServerException;
-import ru.mail.colloquium.ui.base.BaseActivity;
 
 import static ru.mail.colloquium.App.api;
 import static ru.mail.colloquium.App.app;
@@ -40,9 +39,9 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
-    public final ObservableEvent<FeedbackUpdatedEventHandler, AppService, Void> feedbackUpdatedEvent = new ObservableEvent<FeedbackUpdatedEventHandler, AppService, Void>(this) {
+    public final ObservableEvent<AnswerUpdatedEventHandler, AppService, Void> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, Void>(this) {
         @Override
-        protected void notifyHandler(FeedbackUpdatedEventHandler handler, AppService sender, Void args) {
+        protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, Void args) {
             handler.onFeedbackUpdated();
         }
     };
@@ -120,7 +119,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void onFinish() {
-                feedbackUpdatedEvent.fire(null);
+                answerUpdatedEvent.fire(null);
             }
 
         });
@@ -136,7 +135,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void onFinish() {
-                feedbackUpdatedEvent.fire(null);
+                answerUpdatedEvent.fire(null);
             }
 
         });
@@ -200,7 +199,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void onFinish() {
-                feedbackUpdatedEvent.fire(null);
+                answerUpdatedEvent.fire(null);
             }
 
         });
@@ -231,7 +230,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void onFinish() {
-                feedbackUpdatedEvent.fire(null);
+                answerUpdatedEvent.fire(null);
             }
 
         });
@@ -245,7 +244,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         void onNewQuestion(Question args);
     }
 
-    public interface FeedbackUpdatedEventHandler {
+    public interface AnswerUpdatedEventHandler {
         void onFeedbackUpdated();
     }
 }
