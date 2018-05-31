@@ -21,7 +21,8 @@ public class MergeHelper {
 
     public static void merge(Question dst, GsonQuestionResponse.GsonQuestion src) {
         dst.serverId = src.id;
-        dst.emoji = src.emoji;
+//        dst.emoji = src.emoji;
+        dst.emoji = "https://emojipedia-us.s3.amazonaws.com/thumbs/144/apple/129/grinning-face_1f600.png";
         dst.question = src.question;
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.updatedAt = dateTimeService().parseServerTime(src.updated_at);

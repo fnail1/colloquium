@@ -1,4 +1,4 @@
-package ru.mail.colloquium.ui.main;
+package ru.mail.colloquium.ui.main.answers;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;

@@ -1,54 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#9090e0"
-                android:fitsSystemWindows="true">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#9090e0"
+              android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="117dp"
-        android:layout_height="152dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="132dp"
-        tools:background="#7fff33ff"/>
-        <!--android:contentDescription="👧"-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/answers">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="132dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_horizontal"
-        android:text=";)"
-        android:textColor="#000000"
-        android:textSize="116sp"
-        android:textStyle="bold"
-        />
-    <!--android:text="👧"-->
+        <LinearLayout
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            tools:ignore="UselessParent">
+
+            <FrameLayout
+                android:layout_width="117dp"
+                android:layout_height="152dp"
+                android:layout_gravity="center_horizontal"
+                >
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="117dp"
+                    android:layout_height="152dp"
+                    android:layout_gravity="center"
+                    tools:background="#7fff33ff"/>
+                <!--android:contentDescription="👧"-->
+
+            </FrameLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/icon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_horizontal"
-        android:lineSpacingExtra="8sp"
-        android:text="Кто из них самый красивый и
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:lineSpacingExtra="8sp"
+                android:text="Кто из них самый красивый и
 больше всего нравится тебе
 в твоем классе?"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:textStyle="normal"
-        />
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                android:textStyle="normal"
+                />
+        </LinearLayout>
+
+    </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/answers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/skip"
@@ -65,7 +72,7 @@
             >
 
             <FrameLayout
-                android:id="@+id/choice1"
+                android:id="@+id/variant1"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_margin="4dp"
@@ -78,7 +85,7 @@
                 tools:targetApi="lollipop">
 
                 <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/choice1text"
+                    android:id="@+id/variant1text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/indent"/>
@@ -86,7 +93,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/choice2"
+                android:id="@+id/variant2"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_margin="4dp"
@@ -99,7 +106,7 @@
                 tools:targetApi="lollipop">
 
                 <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/choice2text"
+                    android:id="@+id/variant2text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/indent"/>
@@ -115,7 +122,7 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/choice3"
+                android:id="@+id/variant3"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_margin="4dp"
@@ -128,7 +135,7 @@
                 tools:targetApi="lollipop">
 
                 <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/choice3text"
+                    android:id="@+id/variant3text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/indent"/>
@@ -136,7 +143,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/choice4"
+                android:id="@+id/variant4"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_margin="4dp"
@@ -149,7 +156,7 @@
                 tools:targetApi="lollipop">
 
                 <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/choice4text"
+                    android:id="@+id/variant4text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/indent"/>

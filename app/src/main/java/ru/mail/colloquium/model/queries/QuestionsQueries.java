@@ -33,11 +33,12 @@ public class QuestionsQueries extends SQLiteCommands<Question> {
     }
 
     @Nullable
-    public Question getCurrent() {
+    public Question selectCurrent() {
         String sql = selectAll + "\n" +
                 "where flags & " + Question.FLAG_ANSWERED + " = 0 \n" +
-                "order by serverId desc\n" +
+                "order by _id desc\n" +
                 "limit 1 offset 0";
         return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Question.class, null).first();
     }
+
 }

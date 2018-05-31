@@ -1,6 +1,5 @@
-package ru.mail.colloquium.ui.main;
+package ru.mail.colloquium.ui.main.answers;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +21,6 @@ import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.ui.base.BaseFragment;
 import ru.mail.colloquium.ui.views.MyFrameLayout;
 
-import static ru.mail.colloquium.App.appState;
 import static ru.mail.colloquium.App.dateTimeService;
 
 public class AnswersFragment extends BaseFragment {

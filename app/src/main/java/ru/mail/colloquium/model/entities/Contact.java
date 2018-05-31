@@ -7,13 +7,9 @@ import java.util.Locale;
 
 import ru.mail.colloquium.diagnostics.Logger;
 import ru.mail.colloquium.model.AppData;
-import ru.mail.colloquium.model.types.ContactPhoneNumber;
-import ru.mail.colloquium.toolkit.Flags32;
 import ru.mail.colloquium.toolkit.data.BaseRow;
 import ru.mail.colloquium.toolkit.data.DbColumn;
-import ru.mail.colloquium.toolkit.data.DbForeignKey;
 import ru.mail.colloquium.toolkit.data.DbTable;
-import ru.mail.colloquium.toolkit.data.ForeignKeyAction;
 import ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils;
 
 @DbTable(name = AppData.TABLE_CONTACTS)
@@ -21,8 +17,6 @@ public class Contact extends BaseRow {
 
     @DbColumn(unique = true)
     public long abContactId;
-    public long lastBirthdayUpdateTs;
-    public long syncTs;
 
     public String displayName;
     public String namePrefix;
@@ -30,16 +24,11 @@ public class Contact extends BaseRow {
     public String lastName;
     public String middleName;
 
+    public long abPhoneId;
+    public String phone;
 
-    public String avatarUrl;
-
-    public Flags32 flags = new Flags32();
-
-    @DbForeignKey(table = AppData.TABLE_PHONE_NUMBERS, onDelete = ForeignKeyAction.SET_NULL)
-    public long displayPhone;
-
-    public transient ContactPhoneNumber joinedPhone;
-    private String displayNameOrder;
+    public String displayNameOrder;
+    public long contactLastUpdatedTimestamp;
 
     public void onUpdateName() {
         if (namePrefix != null) {
@@ -90,10 +79,10 @@ public class Contact extends BaseRow {
         }
 
         if (TextUtils.isEmpty(displayName)) {
-                    displayName = firstDisplayNameBuilder.toString();
+            displayName = firstDisplayNameBuilder.toString();
 
             if (TextUtils.isEmpty(displayName))
-                displayName = PhoneNumberUtils.formatPhone(joinedPhone.normalized, Locale.getDefault().getCountry());
+                displayName = PhoneNumberUtils.formatPhone(phone, Locale.getDefault().getCountry());
         }
 
         displayNameOrder = nameOrderKey(displayName);
@@ -155,4 +144,22 @@ public class Contact extends BaseRow {
         return array;
     }
 
+    public boolean addressBookDataChanged(Contact abData) {
+        if (abContactId != abData.abContactId) return true;
+        if (contactLastUpdatedTimestamp != abData.contactLastUpdatedTimestamp) return true;
+        if (namePrefix != null ? !namePrefix.equals(abData.namePrefix) : abData.namePrefix != null)
+            return true;
+        if (displayName != null ? !displayName.equals(abData.displayName) : abData.displayName != null)
+            return true;
+        if (firstName != null ? !firstName.equals(abData.firstName) : abData.firstName != null)
+            return true;
+        if (lastName != null ? !lastName.equals(abData.lastName) : abData.lastName != null)
+            return true;
+        if (middleName != null ? !middleName.equals(abData.middleName) : abData.middleName != null)
+            return true;
+        if (abPhoneId != abData.abPhoneId || !TextUtils.equals(phone, abData.phone))
+            return true;
+
+        return false;
+    }
 }

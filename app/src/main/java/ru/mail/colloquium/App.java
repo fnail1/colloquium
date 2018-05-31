@@ -12,9 +12,11 @@ import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.model.types.Profile;
 import ru.mail.colloquium.service.AppService;
 import ru.mail.colloquium.service.AppStateObserver;
+import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.network.NetworkObserver;
 import ru.mail.colloquium.ui.ScreenMetrics;
 import ru.mail.colloquium.utils.DateTimeService;
+import ru.mail.colloquium.utils.photomanager.PhotoManager;
 
 public class App extends Application {
     private static App instance;
@@ -27,6 +29,7 @@ public class App extends Application {
     private ScreenMetrics screenMetrics;
     private ApiService apiService;
     private DateTimeService dateTimeService;
+    private PhotoManager photoManager;
 
 
     public static AppData data() {
@@ -69,6 +72,10 @@ public class App extends Application {
         return instance.appService;
     }
 
+    public static PhotoManager photos() {
+        return instance.photoManager;
+    }
+
     public static App app() {
         return instance;
     }
@@ -86,6 +93,7 @@ public class App extends Application {
         screenMetrics = new ScreenMetrics(this);
         apiService = ApiService.Creator.newService(preferences.getApiSet(), this);
         dateTimeService = new DateTimeService(this, preferences);
+        photoManager = new PhotoManager(this, appStateObserver);
 
         instance = this;
 
@@ -96,10 +104,14 @@ public class App extends Application {
         preferences.onLogin(accessToken);
         preferences.save(profile);
 
-        data = new AppData(this, profile.phone);
+        AppData old = this.data;
+        this.data = new AppData(this, profile.phone);
+        ThreadPool.UI.postDelayed(() -> {
+            old.close();
+        }, 10 * 1000);
         appService.shutdown();
         appService = new AppService(appStateObserver);
-        if (data.questions.getCurrent() == null) {
+        if (this.data.questions.selectCurrent() == null) {
             appService.requestNextQuestion();
         }
     }

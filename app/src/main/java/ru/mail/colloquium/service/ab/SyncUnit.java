@@ -1,20 +1,11 @@
 package ru.mail.colloquium.service.ab;
 
 import android.provider.ContactsContract;
-import android.text.TextUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import ru.mail.colloquium.model.entities.Contact;
-import ru.mail.colloquium.model.entities.ContactPhoneLink;
-import ru.mail.colloquium.model.entities.PhoneNumber;
-import ru.mail.colloquium.model.types.ContactPhoneNumber;
 import ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils;
 
 public class SyncUnit {
@@ -34,7 +25,7 @@ public class SyncUnit {
             new SimpleDateFormat("MMM dd, yyyy", new Locale("en"))
     };
 
-    private static int lastDateFormatIndex = 0;
+    private boolean isPhoneNumberDirty;
 
     private static String normalizeNameString(String name) {
         if (name == null)
@@ -48,23 +39,10 @@ public class SyncUnit {
     private boolean hasName;
     private boolean hasGoogleName;
     public Contact contact = new Contact();
-    public List<ContactPhoneNumber> phones = new ArrayList<>();
-    public int birthdayYear;
-    public byte birthdayMonth = -1; // local starts with 0
-    public byte birthdayDay;
 
     public SyncUnit(SyncDataUnit unit) {
         merge(unit);
         contact.abContactId = unit.contactId;
-    }
-
-    SyncUnit(Contact contact) {
-        merge(contact);
-    }
-
-    void merge(Contact contact) {
-        this.contact = contact;
-        phones.add(contact.joinedPhone);
     }
 
     public void merge(SyncDataUnit ab) {
@@ -82,75 +60,33 @@ public class SyncUnit {
                 contact.displayName = normalizeNameString(ab.displayName);
                 contact.lastName = normalizeNameString(ab.familyName);
                 hasName = !(contact.firstName == null && contact.lastName == null && contact.displayName == null);
-                contact.syncTs = ab.contactLastUpdatedTimestamp;
+                contact.contactLastUpdatedTimestamp = ab.contactLastUpdatedTimestamp;
                 hasGoogleName = hasName && isGoogle;
                 break;
-            case ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE:
-                if (contact.avatarUrl == null || isGoogle)
-                    contact.avatarUrl = ab.photoUri;
-                break;
             case ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE:
-                ContactPhoneNumber abPhone = new ContactPhoneNumber();
-                abPhone.link = new ContactPhoneLink();
-                abPhone.link.abPhoneId = ab.phoneId;
-                abPhone.link.origin = ab.number;
-                abPhone.normalized = ab.normalizedNumber;
-
-                abPhone.relevance = ab.isMobile ? PhoneNumber.PhoneRelevance.MOBILE : PhoneNumber.PhoneRelevance.UNKNOWN;
-
-                if (TextUtils.isEmpty(abPhone.normalized))
-                    abPhone.normalized = PhoneNumberUtils.normalizePhoneNumber(abPhone.link.origin);
-                if (abPhone.normalized != null) {
-                    if (!hasName && !TextUtils.isEmpty(ab.displayName)) {
-                        contact.displayName = ab.displayName;
-                        hasName = true;
-                    }
-                    phones.add(abPhone);
+                if (contact.abPhoneId <= 0 || isPhoneNumberDirty) {
+                    isPhoneNumberDirty = false;
+                    tryPhoneNumber(ab.phoneId, ab.normalizedNumber);
                 }
-                break;
-            case ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE:
-                Date birthDate = null;
-                String birthdayString = ab.birthday;
-                if (birthdayString != null) {
-                    birthDate = parseDate(birthdayString);
-                }
-                if (birthDate != null) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(birthDate);
-                    birthdayDay = (byte) calendar.get(Calendar.DAY_OF_MONTH);
-                    birthdayMonth = (byte) calendar.get(Calendar.MONTH);
-                    birthdayYear = calendar.get(Calendar.YEAR);
-                    boolean isYearUnknown = "--MM-dd".equals(dateFormats[lastDateFormatIndex].toPattern()) ||
-                            "dd.MM.".equals(dateFormats[lastDateFormatIndex].toPattern());
-                    if (isYearUnknown || birthdayYear == Calendar.getInstance().get(Calendar.YEAR) || birthdayYear < 1900)
-                        birthdayYear = 0;
+                if (contact.abPhoneId <= 0) {
+                    isPhoneNumberDirty = true;
+                    tryPhoneNumber(ab.phoneId, ab.number);
                 }
                 break;
         }
     }
 
-    static Date parseDate(String dateString) {
-        SimpleDateFormat lastFormat = dateFormats[lastDateFormatIndex];
-        Date date = parseDate(dateString, lastFormat);
-        if (date == null) {
-            for (int i = 0; i < dateFormats.length; i++) {
-                if (i != lastDateFormatIndex) {
-                    date = parseDate(dateString, dateFormats[i]);
-                    if (date != null) {
-                        lastDateFormatIndex = i;
-                        break;
-                    }
-                }
+    private void tryPhoneNumber(long phoneId, String n) {
+        String number = PhoneNumberUtils.normalizePhoneNumber(n);
+        if (number != null) {
+            if (number.startsWith("89") && number.length() == 11) {
+                contact.phone = "7" + number.substring(1);
+                contact.abPhoneId = phoneId;
+            } else if (number.startsWith("+79") && number.length() == 12) {
+                contact.phone = number.substring(1);
+                contact.abPhoneId = phoneId;
             }
         }
-        return date;
     }
 
-    private static Date parseDate(String dateString, SimpleDateFormat format) {
-        try {
-            return format.parse(dateString);
-        } catch (ParseException e) {
-            return null;
-        }
-    }
 }

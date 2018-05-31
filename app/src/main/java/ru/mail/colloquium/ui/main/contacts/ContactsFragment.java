@@ -1,4 +1,4 @@
-package ru.mail.colloquium.ui.main;
+package ru.mail.colloquium.ui.main.contacts;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,12 +19,12 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.entities.Contact;
-import ru.mail.colloquium.model.entities.PhoneNumber;
-import ru.mail.colloquium.model.types.ContactPhoneNumber;
 import ru.mail.colloquium.ui.base.BaseFragment;
+import ru.mail.colloquium.ui.main.questions.ContactViewHolder;
 import ru.mail.colloquium.ui.views.MyFrameLayout;
 
 import static ru.mail.colloquium.App.data;
+import static ru.mail.colloquium.App.dateTimeService;
 import static ru.mail.colloquium.toolkit.collections.Query.query;
 
 public class ContactsFragment extends BaseFragment {
@@ -56,19 +55,14 @@ public class ContactsFragment extends BaseFragment {
 
     private static class MyAdapter extends RecyclerView.Adapter {
 
-        private final List<Object> data;
         private RecyclerView list;
         private Context context;
         private LayoutInflater inflater;
         private final List<Contact> contacts;
-        private final LongSparseArray<ArrayList<ContactPhoneNumber>> phones;
 
 
         private MyAdapter() {
             contacts = data().contacts.selectAb().toList();
-            phones = data().phoneNumbers.selectToSync().groupByLong(p -> p.link.contact);
-            Contact first = query(contacts).first(c -> phones.get(c._id) == null);
-            data = query(contacts).extract(c -> query(c).cast().concat(phones.get(c._id))).toList();
         }
 
 
@@ -91,11 +85,7 @@ public class ContactsFragment extends BaseFragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (data.get(position) instanceof Contact)
-                return R.layout.item_contact;
-            else if (data.get(position) instanceof PhoneNumber)
-                return R.layout.item_phone;
-            throw new IllegalArgumentException(String.valueOf(data.get(position)));
+            return position % 2 == 0 ? R.layout.item_contact : R.layout.item_phone;
         }
 
         @NonNull
@@ -112,12 +102,12 @@ public class ContactsFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            switch (holder.getItemViewType()){
+            switch (holder.getItemViewType()) {
                 case R.layout.item_contact:
-                    ((ContactViewHolder) holder).bind((Contact) data.get(position));
+                    ((ContactViewHolder) holder).bind(contacts.get(position / 2));
                     break;
                 case R.layout.item_phone:
-                    ((PhoneViewHolder) holder).bind((ContactPhoneNumber) data.get(position));
+                    ((PhoneViewHolder) holder).bind(contacts.get(position / 2));
                     break;
 
             }
@@ -125,7 +115,7 @@ public class ContactsFragment extends BaseFragment {
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return contacts.size() * 2;
         }
     }
 }

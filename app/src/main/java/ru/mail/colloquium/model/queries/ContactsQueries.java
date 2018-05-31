@@ -2,17 +2,18 @@ package ru.mail.colloquium.model.queries;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
 
-import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Random;
 
 import ru.mail.colloquium.model.entities.Contact;
-import ru.mail.colloquium.model.entities.ContactPhoneLink;
-import ru.mail.colloquium.model.entities.PhoneNumber;
-import ru.mail.colloquium.model.types.ContactPhoneNumber;
 import ru.mail.colloquium.toolkit.data.CursorWrapper;
-import ru.mail.colloquium.toolkit.data.DbUtils;
 import ru.mail.colloquium.toolkit.data.SQLiteCommands;
+import ru.mail.colloquium.toolkit.data.SimpleCursorWrapper;
+
+import static ru.mail.colloquium.model.entities.Question.FLAG_ANSWERED;
+import static ru.mail.colloquium.model.entities.Question.FLAG_SENT;
+import static ru.mail.colloquium.toolkit.collections.Query.query;
 
 public class ContactsQueries extends SQLiteCommands<Contact> {
     public ContactsQueries(SQLiteDatabase db, Logger logger) {
@@ -20,59 +21,51 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
     }
 
     public CursorWrapper<Contact> selectAb() {
-        return new ContactsCursor(db.rawQuery(ContactsCursor.SELECT + "\norder by c.displayNameOrder", null));
+        return new ContactsCursor(db.rawQuery(selectAll + "\norder by displayNameOrder", null));
+    }
+
+    public CursorWrapper<Contact> selectRandom(int count) {
+        Random random = new Random();
+        int m = 0xffff;
+        int a = random.nextInt() & m;
+        int k = random.nextInt() & m;
+        String sql = selectAll + "\n" +
+                "order by (" + a + " + _id * " + k + ") & " + m + "\n" +
+                "limit " + count + " offset 0";
+
+        return new ContactsCursor(db.rawQuery(sql, null));
+    }
+
+    public CursorWrapper<Contact> selectById(long... ids) {
+        int c = ids.length;
+        StringBuilder sb = new StringBuilder(c * 4);
+        c--;
+        for (int i = 0; ; i++) {
+            sb.append(ids[i]);
+            if (i >= c) {
+                String sql = selectAll + "\n" +
+                        "where _id in (" + sb + ")  \n";
+
+                return new ContactsCursor(db.rawQuery(sql, null));
+            }
+            sb.append(", ");
+        }
+    }
+
+    public CursorWrapper<Contact> selectQuestionsVariants() {
+        String sql = "select c.* \n" +
+                "from Contacts c \n" +
+                "join Questions q on c._id in (q.variant1,q.variant2,q.variant3,q.variant4)\n" +
+                "where q.flags & " + (FLAG_ANSWERED | FLAG_SENT) + " = " + FLAG_ANSWERED + "\n";
+
+        return new ContactsCursor(db.rawQuery(sql, null));
     }
 
 
-    private static class ContactsCursor extends CursorWrapper<Contact> {
-
-        public static final String COLUMNS;
-        public static final String TABLES;
-        public static final String SELECT;
-        public static final String COUNT;
-
-        static {
-            StringBuilder sb = new StringBuilder(200);
-            sb.append("select ");
-            DbUtils.buildComplexColumnNames(Contact.class, "c", sb);
-            sb.append(",\n");
-            DbUtils.buildComplexColumnNames(PhoneNumber.class, "p", sb);
-            sb.append(",\n");
-            DbUtils.buildComplexColumnNames(ContactPhoneLink.class, "link", sb);
-
-            COLUMNS = sb.toString();
-
-            TABLES = "from Contacts c\n" +
-                    "left join ContactsPhonesLinks link on link.contact = c._id and link.phone=c.displayPhone\n" +
-                    "left join PhoneNumbers p on p._id = link.phone\n";
-
-            SELECT = COLUMNS + "\n" + TABLES;
-            COUNT = "select count(*) \n" + TABLES;
-
-        }
-
-        private final Field[] contactMap;
-        private final Field[] phoneMap;
-        private final Field[] linkMap;
+    private static class ContactsCursor extends SimpleCursorWrapper<Contact> {
 
         public ContactsCursor(Cursor cursor) {
-            super(cursor);
-            contactMap = DbUtils.mapCursorForRawType(cursor, Contact.class, "c");
-            phoneMap = DbUtils.mapCursorForRawType(cursor, PhoneNumber.class, "p");
-            linkMap = DbUtils.mapCursorForRawType(cursor, ContactPhoneLink.class, "link");
-        }
-
-        @NonNull
-        @Override
-        protected Contact get(Cursor cursor) {
-            Contact contact = new Contact();
-            DbUtils.readObjectFromCursor(cursor, contact, contactMap);
-            contact.joinedPhone = new ContactPhoneNumber();
-            DbUtils.readObjectFromCursor(cursor, contact.joinedPhone, phoneMap);
-            contact.joinedPhone.link = new ContactPhoneLink();
-            DbUtils.readObjectFromCursor(cursor, contact.joinedPhone.link, linkMap);
-
-            return contact;
+            super(cursor, Contact.class, null);
         }
     }
 }

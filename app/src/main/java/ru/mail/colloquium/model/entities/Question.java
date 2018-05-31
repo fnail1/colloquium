@@ -4,6 +4,7 @@ import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.toolkit.Flags32;
 import ru.mail.colloquium.toolkit.data.BaseRow;
+import ru.mail.colloquium.toolkit.data.DbForeignKey;
 import ru.mail.colloquium.toolkit.data.DbTable;
 
 @DbTable(name = AppData.TABLE_QUESTIONS)
@@ -16,8 +17,20 @@ public class Question extends BaseRow {
     public String question;
     public long createdAt;
     public long updatedAt;
-    public String allPhones;
-    public String selectedPhone;
     public final Flags32 flags = new Flags32();
+
+    @DbForeignKey(table = AppData.TABLE_CONTACTS)
+    public long variant1;
+
+    @DbForeignKey(table = AppData.TABLE_CONTACTS)
+    public long variant2;
+
+    @DbForeignKey(table = AppData.TABLE_CONTACTS)
+    public long variant3;
+
+    @DbForeignKey(table = AppData.TABLE_CONTACTS)
+    public long variant4;
+
+    public Choice answer;
 
 }

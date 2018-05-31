@@ -364,12 +364,8 @@ public class DbUtils {
         try {
             String value;
             if (field.getType().isEnum()) {
-                try {
-                    value = String.valueOf(((Enum<?>) field.get(raw)).ordinal());
-                } catch (NullPointerException e) {
-                    safeThrow(new NullPointerException("FIX ME!! " + raw + "." + field.getName()));
-                    value = "0";
-                }
+                Enum<?> obj = (Enum<?>) field.get(raw);
+                value = obj == null ? null : String.valueOf(obj.ordinal());
             } else if (field.getType() == Flags32.class) {
                 value = String.valueOf(((Flags32) field.get(raw)).get());
             } else if (field.getType() == boolean.class || field.getType() == Boolean.class) {

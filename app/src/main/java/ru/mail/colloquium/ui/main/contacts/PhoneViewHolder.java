@@ -1,4 +1,4 @@
-package ru.mail.colloquium.ui.main;
+package ru.mail.colloquium.ui.main.contacts;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
-import ru.mail.colloquium.model.types.ContactPhoneNumber;
+import ru.mail.colloquium.model.entities.Contact;
 
 public class PhoneViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.title) TextView title;
@@ -24,8 +24,8 @@ public class PhoneViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(ContactPhoneNumber number) {
-        abId.setText(String.valueOf(number.link.abPhoneId));
-        title.setText(number.normalized);
+    public void bind(Contact number) {
+        abId.setText(String.valueOf(number.abPhoneId));
+        title.setText(number.phone);
     }
 }

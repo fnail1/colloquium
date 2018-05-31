@@ -1,4 +1,4 @@
-package ru.mail.colloquium.ui.main;
+package ru.mail.colloquium.ui.main.answers;
 
 import android.content.Context;
 import android.content.res.Resources;

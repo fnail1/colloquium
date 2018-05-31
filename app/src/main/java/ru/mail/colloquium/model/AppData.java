@@ -14,11 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import ru.mail.colloquium.App;
 import ru.mail.colloquium.diagnostics.Logger;
 import ru.mail.colloquium.model.queries.AnswersQueries;
-import ru.mail.colloquium.model.queries.ContactsPhonesLinksQueries;
 import ru.mail.colloquium.model.queries.ContactsQueries;
-import ru.mail.colloquium.model.queries.PhoneNumbersQueries;
 import ru.mail.colloquium.model.queries.QuestionsQueries;
-import ru.mail.colloquium.toolkit.data.DbUtils;
 import ru.mail.colloquium.toolkit.data.SQLiteCommands;
 import ru.mail.colloquium.toolkit.io.FileUtils;
 
@@ -55,8 +52,6 @@ public class AppData {
     public final QuestionsQueries questions;
     public final AnswersQueries answers;
     public final ContactsQueries contacts;
-    public final PhoneNumbersQueries phoneNumbers;
-    public final ContactsPhonesLinksQueries contactsPhonesLinks;
 
     public AppData(Context context, String userId) {
         SQLiteOpenHelper helper = new AppDataSQLiteOpenHelper(context, normalizeDbName(userId));
@@ -67,8 +62,6 @@ public class AppData {
         questions = new QuestionsQueries(db, logger);
         answers = new AnswersQueries(db, logger);
         contacts = new ContactsQueries(db, logger);
-        phoneNumbers = new PhoneNumbersQueries(db, logger);
-        contactsPhonesLinks = new ContactsPhonesLinksQueries(db, logger);
     }
 
     public String getDbPath() {

@@ -16,6 +16,10 @@ import ru.mail.colloquium.R;
 import ru.mail.colloquium.ui.ReqCodes;
 import ru.mail.colloquium.ui.base.BaseActivity;
 import ru.mail.colloquium.ui.login.LoginActivity;
+import ru.mail.colloquium.ui.main.answers.AnswersFragment;
+import ru.mail.colloquium.ui.main.contacts.ContactsFragment;
+import ru.mail.colloquium.ui.main.profile.ProfileFragment;
+import ru.mail.colloquium.ui.main.questions.QuestionsFragment;
 
 import static ru.mail.colloquium.App.prefs;
 

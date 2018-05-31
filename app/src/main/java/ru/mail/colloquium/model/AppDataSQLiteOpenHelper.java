@@ -20,8 +20,6 @@ import ru.mail.colloquium.diagnostics.Logger;
 
 import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.model.entities.Contact;
-import ru.mail.colloquium.model.entities.ContactPhoneLink;
-import ru.mail.colloquium.model.entities.PhoneNumber;
 import ru.mail.colloquium.model.entities.Question;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.data.DbUtils;
@@ -70,12 +68,6 @@ public class AppDataSQLiteOpenHelper extends SQLiteOpenHelper {
         String sql;
 
         sql = DbUtils.buildCreateScript(Contact.class);
-        db.execSQL(sql);
-
-        sql = DbUtils.buildCreateScript(PhoneNumber.class);
-        db.execSQL(sql);
-
-        sql = DbUtils.buildCreateScript(ContactPhoneLink.class);
         db.execSQL(sql);
 
         sql = DbUtils.buildCreateScript(Question.class);

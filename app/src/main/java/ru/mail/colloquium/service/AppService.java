@@ -1,5 +1,7 @@
 package ru.mail.colloquium.service;
 
+import android.support.v4.util.LongSparseArray;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -11,7 +13,9 @@ import ru.mail.colloquium.api.model.GsonQuestionResponse;
 import ru.mail.colloquium.api.model.GsonResponse;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.entities.Answer;
+import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.model.entities.Question;
+import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.service.ab.AddressBookSyncHelper;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.events.ObservableEvent;
@@ -140,8 +144,33 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     private void syncAnsweredQuestionsSync(AppData appData) throws IOException, ServerException {
         List<Question> questions = appData.questions.selectToSend().toList();
+        LongSparseArray<Contact> contacts = appData.contacts.selectQuestionsVariants().toLongSparseArray(c -> c._id);
+
         for (Question question : questions) {
-            Response<GsonResponse> response = api().answer(question.serverId, question.selectedPhone, question.allPhones).execute();
+            String p1 = contacts.get(question.variant1).phone;
+            String p2 = contacts.get(question.variant2).phone;
+            String p3 = contacts.get(question.variant3).phone;
+            String p4 = contacts.get(question.variant4).phone;
+            String allPhones = p1 + ',' + p2 + ',' + p3 + ',' + p4;
+
+            String selectedPhone = null;
+            if (question.answer != null) {
+                switch (question.answer) {
+                    case A:
+                        selectedPhone = p1;
+                        break;
+                    case B:
+                        selectedPhone = p2;
+                        break;
+                    case C:
+                        selectedPhone = p3;
+                        break;
+                    case D:
+                        selectedPhone = p4;
+                        break;
+                }
+            }
+            Response<GsonResponse> response = api().answer(question.serverId, selectedPhone, allPhones).execute();
             switch (response.code()) {
                 case HttpURLConnection.HTTP_OK:
                     break;
@@ -157,14 +186,13 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     }
 
-    public void answer(Question question, String allPhones, String selectedPhone) {
+    public void answer(Question question, Choice answer) {
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new AbsRequestTask("answer") {
 
             @Override
             protected void performRequest(AppData appData) throws IOException, ServerException {
                 if (!question.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
-                    question.allPhones = allPhones;
-                    question.selectedPhone = selectedPhone;
+                    question.answer = answer;
                     appData.questions.save(question);
                 }
                 syncAnsweredQuestionsSync(appData);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 
 import java.io.Closeable;
 import java.util.Iterator;
@@ -14,10 +15,8 @@ public class AbReader implements Iterable<SyncUnit>, Closeable {
                     "AND (" + ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " != '') " +
                     "AND (" + ContactsContract.CommonDataKinds.GroupMembership.IN_VISIBLE_GROUP + " != 0) " +
                     "AND (" +
-                    "(" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "')" +
-                    " OR (" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "')" +
-                    " OR (" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "')" +
-                    " OR (" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE + "' AND " + ContactsContract.CommonDataKinds.Event.TYPE + " = " + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + ")" +
+                        "(" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "')" +
+                        " OR (" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "')" +
                     ")";
 
     private static final String CONTACT_INFO_SORT_ORDER =
@@ -78,6 +77,7 @@ public class AbReader implements Iterable<SyncUnit>, Closeable {
         helper = new AbReadHelper(cursor);
     }
 
+    @NonNull
     @Override
     public ABIterator iterator() {
         return new ABIterator(helper.iterator(), cursor.getCount());
@@ -90,16 +90,12 @@ public class AbReader implements Iterable<SyncUnit>, Closeable {
 
     public static class ABIterator implements Iterator<SyncUnit> {
         private final Iterator<SyncDataUnit> it;
-        private final int count;
-        private int progress;
         private SyncUnit aggr;
 
         ABIterator(Iterator<SyncDataUnit> it, int count) {
             this.it = it;
-            this.count = count;
             if (it.hasNext()) {
                 aggr = new SyncUnit(it.next());
-                progress = 1;
             }
         }
 
@@ -114,22 +110,13 @@ public class AbReader implements Iterable<SyncUnit>, Closeable {
             SyncDataUnit next = null;
 
             while (it.hasNext() && (next = it.next()).contactId == unit.contact.abContactId) {
-                progress++;
                 unit.merge(next);
                 next = null;
             }
-            progress++;
             aggr = next == null ? null : new SyncUnit(next);
 
             return unit;
         }
 
-        public int count() {
-            return count;
-        }
-
-        public int progress() {
-            return progress;
-        }
     }
 }
