@@ -3,114 +3,88 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:background="#505090">
+                tools:background="#03C383"
+                tools:context=".ui.login.LoginActivity">
 
-    <RelativeLayout
-        android:id="@+id/code_container"
+    <TextView
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="24dp"
-        >
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/padding"
+        android:fontFamily="sans-serif-medium"
+        android:foreground="@drawable/ripple_none_view_dark"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/indent"
+        android:text="войти"
+        android:textAppearance="@style/TitleTextAppearance"
+        android:visibility="invisible"
+        tools:ignore="RtlHardcoded"
+        tools:visibility="visible"/>
 
-        <TextView
-            android:id="@+id/code_explanation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center_horizontal"
-            android:lineSpacingExtra="3.5sp"
-            android:text="@string/enter_sms_code_explanation"
-            android:textColor="@color/mw_fade_white_87"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:gravity="center_horizontal"
+        android:text="Введи код из смс"
+        android:textAppearance="@style/TitleTextAppearance"
+        />
 
-        <TextView
-            android:id="@+id/code_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/code_explanation"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="21dp"
-            android:text="@string/enter_sms_code"
-            android:textAppearance="@style/TitleTextAppearance"
-            />
+    <EditText
+        android:id="@+id/code_edit"
+        android:layout_width="272dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padding"
+        android:background="#ffffff"
+        android:digits="0123456789_"
+        android:gravity="center"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:padding="@dimen/indent"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#000000"
+        tools:text="_ _ _ _"
+        />
 
-        <EditText
-            android:id="@+id/code_edit"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/code_title"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="56dp"
-            android:layout_marginTop="6dp"
-            android:background="@null"
-            android:fontFamily="sans-serif"
-            android:imeOptions="actionNext"
-            android:inputType="numberDecimal"
-            android:lineSpacingExtra="8sp"
-            android:textColor="@color/mw_fade_white_87"
-            android:textSize="16sp"
-            android:textStyle="normal"
+    <TextView
+        android:id="@+id/code_explanation"
+        android:layout_width="272dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/code_edit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal"
+        android:text="@string/enter_sms_code_explanation"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        />
 
-            tools:text="1234567890"/>
 
-        <View
-            android:id="@+id/code_underline"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_alignEnd="@+id/code_edit"
-            android:layout_alignStart="@+id/code_edit"
-            android:layout_below="@id/code_edit"
-            android:background="@color/colorWhite"
-            />
-
-        <ImageView
-            android:id="@+id/code_repeat"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignBottom="@+id/code_edit"
-            android:layout_toEndOf="@+id/code_edit"
-            android:background="@drawable/ripple_none_icon_light"
-            android:clickable="true"
-            android:scaleType="center"
-            android:src="@drawable/ic_refresh"/>
-
-        <TextView
-            android:id="@+id/code_repeat_countdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/code_edit"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="9dp"
-            android:textColor="@color/mw_fade_white_87"
-            android:visibility="visible"
-            tools:text="Повторная отправка кода через 49 сек."/>
-
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/code_repeat"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignBottom="@+id/code_edit"
+        android:layout_toEndOf="@+id/code_edit"
+        android:background="@drawable/ripple_none_icon_light"
+        android:clickable="true"
+        android:scaleType="center"
+        android:src="@drawable/ic_refresh"/>
 
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="172dp"
         android:visibility="gone"
         tools:visibility="visible"/>
 
-    <TextView
-        android:id="@+id/button"
-        style="@style/WhiteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
-        android:text="Войти"
-        />
 </RelativeLayout>

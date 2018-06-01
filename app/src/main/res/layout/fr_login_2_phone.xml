@@ -14,20 +14,24 @@
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/padding"
         android:fontFamily="sans-serif-medium"
+        android:foreground="@drawable/ripple_none_view_dark"
         android:gravity="center_horizontal"
         android:padding="@dimen/indent"
         android:text="войти"
         android:textAppearance="@style/TitleTextAppearance"
-        />
+        android:visibility="invisible"
+        tools:ignore="RtlHardcoded"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/enter_phone_title"
+        android:layout_marginTop="80dp"
         android:textAppearance="@style/TitleTextAppearance"
+        android:text="@string/enter_phone_title"
         />
 
     <TextView
@@ -35,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/phone_edit"
-        android:layout_marginRight="@dimen/padding"
+        android:layout_marginRight="@dimen/indent"
         android:layout_toLeftOf="@+id/phone_edit"
         android:text="@string/default_country_code"
         android:textAppearance="@style/SubtitleTextAppearance"

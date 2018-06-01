@@ -15,8 +15,6 @@ import ru.mail.colloquium.utils.Utils;
 public class LoginPage1IntroViewHolder implements LoginActivity.LoginPageViewHolder {
 
     private final View root;
-    @BindView(R.id.title) TextView title;
-    @BindView(R.id.subtitle) TextView subtitle;
     @BindView(R.id.button) TextView button;
 
     public LoginPage1IntroViewHolder(View root) {

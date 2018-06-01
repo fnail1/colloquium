@@ -1,48 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
+                tools:background="#03C383"
+                tools:context=".ui.login.LoginActivity"
+    >
 
     <ImageView
-        android:layout_width="192dp"
-        android:layout_height="192dp"
+        android:id="@+id/icon1"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignTop="@id/icon2"
+        android:layout_margin="4dp"
+        android:layout_toStartOf="@id/icon2"
+        android:src="@drawable/ic_login_emodji_1"/>
+
+    <ImageView
+        android:id="@+id/icon2"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/cat_1"/>
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/ic_login_emodji_2"/>
 
-    <TextView
+
+    <ImageView
+        android:id="@+id/icon3"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignTop="@id/icon2"
+        android:layout_margin="4dp"
+        android:layout_toEndOf="@id/icon2"
+        android:src="@drawable/ic_login_emodji_3"/>
+
+
+    <ImageView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/subtitle"
+        android:layout_below="@id/icon2"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/indent"
-        android:text="@string/app_name"
-        android:textAppearance="@style/TitleTextAppearance"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/app_name"
+        android:gravity="center_horizontal"
+        android:src="@drawable/logo"
+        android:textColor="#2767a9"
+        android:textSize="48sp"
         />
 
     <TextView
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button"
+        android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="108dp"
         android:text="Узнай, кому нравишься"
         android:textAppearance="@style/SubtitleTextAppearance"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subtitle"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="@dimen/indent"
+        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="8sp"
+        android:text="Отвечай анонимно на вопросы про друзей. Они узнают, что ты думаешь о них, но не будут знать, кто это!"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textStyle="normal"
         />
 
     <TextView
         android:id="@+id/button"
         style="@style/WhiteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="276dp"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
-        android:text="Войти"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="Поехали!"
+        android:textColor="#000000"
         />
+
 
 </RelativeLayout>

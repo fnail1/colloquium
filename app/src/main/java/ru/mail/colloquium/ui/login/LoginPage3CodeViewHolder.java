@@ -1,6 +1,6 @@
 package ru.mail.colloquium.ui.login;
 
-import android.support.annotation.NonNull;
+import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +18,6 @@ import java.net.HttpURLConnection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.api.model.GsonAuth;
@@ -37,14 +34,11 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
     private final View root;
     private final String phone;
     @BindView(R.id.code_explanation) TextView codeExplanation;
-    @BindView(R.id.code_title) TextView codeTitle;
     @BindView(R.id.code_edit) EditText codeEdit;
-    @BindView(R.id.code_underline) View codeUnderline;
     @BindView(R.id.code_repeat) ImageView codeRepeat;
-    @BindView(R.id.code_repeat_countdown) TextView codeRepeatCountdown;
-    @BindView(R.id.code_container) RelativeLayout codeContainer;
     @BindView(R.id.progress) ProgressBar progress;
     @BindView(R.id.button) TextView button;
+    @BindView(R.id.title) TextView title;
 
 
     public LoginPage3CodeViewHolder(ViewGroup parent, String phone) {
@@ -60,67 +54,73 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
 
     @OnClick(R.id.button)
     public void onViewClicked() {
-        codeContainer.setVisibility(View.GONE);
-        progress.setVisibility(View.VISIBLE);
-
+        setViewMode(ViewMode.CHECK_CODE);
 
         String code = codeEdit.getText().toString();
 
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.HIGH).execute(new Runnable() {
-            @Override
-            public void run() {
-                GsonAuth authBbody = null;
-                GsonProfileResponse.GsonUser profileBody = null;
-                try {
-                    Response<GsonAuth> authResponse = api().auth(phone, code).execute();
-                    if (authResponse.code() != HttpURLConnection.HTTP_OK) {
-                        throw new ServerException(authResponse);
-                    }
-                    authBbody = authResponse.body();
-                    if (authBbody == null) {
-                        throw new ServerException(200, "authBbody is null");
-                    }
-
-                    Response<GsonProfileResponse.GsonUser> profileResponse = api().getProfile("Bearer " + authBbody.token).execute();
-                    if (profileResponse.code() != HttpURLConnection.HTTP_OK) {
-                        throw new ServerException(authResponse);
-                    }
-
-                    profileBody = profileResponse.body();
-                    if (profileBody == null) {
-                        throw new ServerException(200, "profileBody is null");
-                    }
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ServerException e) {
-                    safeThrow(e);
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.HIGH).execute(() -> {
+            GsonAuth authBbody = null;
+            GsonProfileResponse.GsonUser profileBody = null;
+            try {
+                Response<GsonAuth> authResponse = api().auth(phone, code).execute();
+                if (authResponse.code() != HttpURLConnection.HTTP_OK) {
+                    throw new ServerException(authResponse);
                 }
-                LoginActivity activity = (LoginActivity) Utils.getActivity(root);
-                if (activity == null)
-                    return;
+                authBbody = authResponse.body();
+                if (authBbody == null) {
+                    throw new ServerException(200, "authBbody is null");
+                }
 
-                GsonAuth finalAuthBbody = authBbody;
-                GsonProfileResponse.GsonUser finalProfileBody = profileBody;
+                Response<GsonProfileResponse.GsonUser> profileResponse = api().getProfile("Bearer " + authBbody.token).execute();
+                if (profileResponse.code() != HttpURLConnection.HTTP_OK) {
+                    throw new ServerException(authResponse);
+                }
 
-                activity.runOnUiThread(() -> {
-                    if (finalAuthBbody != null) {
-                        activity.onSmsCode(finalAuthBbody.token, finalProfileBody);
-                    } else {
-                        Toast.makeText(activity, "Что-то пошло не так, но мне некогда разбираться", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                profileBody = profileResponse.body();
+                if (profileBody == null) {
+                    throw new ServerException(200, "profileBody is null");
+                }
 
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServerException e) {
+                safeThrow(e);
             }
+            LoginActivity activity = (LoginActivity) Utils.getActivity(root);
+            if (activity == null)
+                return;
+
+            GsonAuth finalAuthBbody = authBbody;
+            GsonProfileResponse.GsonUser finalProfileBody = profileBody;
+
+            activity.runOnUiThread(() -> {
+                if (finalAuthBbody != null) {
+                    activity.onSmsCode(finalAuthBbody.token, finalProfileBody);
+                } else {
+                    Toast.makeText(activity, "Что-то пошло не так, но мне некогда разбираться", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         });
 
     }
 
+    private void setViewMode(ViewMode mode) {
+        button.setVisibility(mode != ViewMode.CHECK_CODE && codeEdit.length() == 4 ? View.INVISIBLE : View.INVISIBLE);
+        title.setVisibility(mode != ViewMode.CHECK_CODE ? View.VISIBLE : View.INVISIBLE);
+        codeEdit.setVisibility(mode != ViewMode.CHECK_CODE ? View.VISIBLE : View.INVISIBLE);
+        codeRepeat.setVisibility(mode == ViewMode.WAIT_CODE_2 ? View.VISIBLE : View.INVISIBLE);
+        codeExplanation.setVisibility(mode != ViewMode.CHECK_CODE ? View.VISIBLE : View.INVISIBLE);
+        progress.setVisibility(mode == ViewMode.CHECK_CODE ? View.VISIBLE : View.INVISIBLE);
+    }
+
     @Override
     public void onShow() {
         Utils.showKeyboard(codeEdit);
+        root.postDelayed(() -> {
+            setViewMode(ViewMode.WAIT_CODE_2);
+        }, 30 * 1000);
     }
 
     @Override
@@ -130,5 +130,9 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
             return true;
         }
         return false;
+    }
+
+    private enum ViewMode {
+        WAIT_CODE_1, WAIT_CODE_2, CHECK_CODE
     }
 }

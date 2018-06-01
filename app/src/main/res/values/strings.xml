@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Лавки</string>
+    <string name="app_name">Лайки</string>
     <string name="share">Поделиться</string>
     <string name="icon">icon</string>
 
 
     <string name="enter_phone_title">Твой номер телефона</string>
     <string name="default_country_code">+7</string>
-    <string name="enter_sms_code_explanation">Мы отправили СМС с кодом. Для вашей безопасности просим подтвердить номер</string>
+    <string name="enter_sms_code_explanation">Мы выслали код на номер: %s</string>
     <string name="sms_code_repeat_countdown">Повторная отправка кода через %d сек.</string>
     <string name="enter_sms_code">Введите код из СМС</string>
     <string name="error_wrong_sms_code">Введите корректный код</string>
