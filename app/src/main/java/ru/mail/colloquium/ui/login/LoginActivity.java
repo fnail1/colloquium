@@ -1,8 +1,10 @@
 package ru.mail.colloquium.ui.login;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -11,7 +13,10 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +32,7 @@ import ru.mail.colloquium.ui.base.BaseActivity;
 import ru.mail.colloquium.ui.main.MainActivity;
 
 import static ru.mail.colloquium.App.app;
+import static ru.mail.colloquium.diagnostics.Logger.trace;
 import static ru.mail.colloquium.toolkit.collections.Query.query;
 
 public class LoginActivity extends BaseActivity {
@@ -45,40 +51,6 @@ public class LoginActivity extends BaseActivity {
     private String phone;
     private String accessToken;
     private Profile profile = new Profile();
-
-    private int getBackgroundColor(int page) {
-        int random = (int) ((startTime + page) & 0x000fffff);
-        int r = 170 + (random * 33) % 80;
-        int g = 170 + (random * 57) % 80;
-        int b = 170 + (random * 79) % 80;
-
-        int w = (random >> 2) % 6;
-        switch (w) {
-            case 0:
-                r -= (random * 29) % 120;
-                break;
-            case 1:
-                g -= (random * 29) % 120;
-                break;
-            case 2:
-                b -= (random * 29) % 120;
-                break;
-            case 3:
-                r -= (random * 29) % 120;
-                g -= (random * 29) % 120;
-                break;
-            case 4:
-                g -= (random * 29) % 120;
-                b -= (random * 29) % 120;
-                break;
-            case 5:
-                r -= (random * 29) % 120;
-                b -= (random * 29) % 120;
-                break;
-        }
-        return Color.argb(0xff, r, g, b);
-    }
-
 
     @BindView(R.id.page1) FrameLayout page1;
     @BindView(R.id.page2) FrameLayout page2;
@@ -130,7 +102,6 @@ public class LoginActivity extends BaseActivity {
 
     private LoginPageViewHolder inflatePage(FrameLayout parent, int page) {
         parent.removeAllViews();
-        parent.setBackgroundColor(getBackgroundColor(page));
         int viewType = PAGES[page];
         View view = LayoutInflater.from(this).inflate(viewType, parent);
         LoginPageViewHolder pageViewHolder;

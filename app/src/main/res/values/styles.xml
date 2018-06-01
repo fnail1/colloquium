@@ -18,7 +18,7 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="AppTheme.TransparentStatus" />
+    <style name="AppTheme.TransparentStatus"/>
 
     <style name="ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:minHeight">@dimen/action_bar_height</item>
@@ -63,18 +63,23 @@
         <item name="android:letterSpacing" tools:ignore="NewApi">0.04</item>
     </style>
 
+
     <style name="TitleTextAppearance">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/colorTitle</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="SubtitleTextAppearance">
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/colorSubtitle</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+        <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="DefaultButton">

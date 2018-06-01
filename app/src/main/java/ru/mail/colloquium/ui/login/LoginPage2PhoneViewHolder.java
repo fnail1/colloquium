@@ -1,5 +1,7 @@
 package ru.mail.colloquium.ui.login;
 
+import android.support.annotation.NonNull;
+import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,20 +23,21 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.api.model.GsonResponse;
+import ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils;
+import ru.mail.colloquium.utils.PhoneEditListener;
 import ru.mail.colloquium.utils.Utils;
 
 import static ru.mail.colloquium.App.api;
 import static ru.mail.colloquium.toolkit.collections.Query.query;
+import static ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils.digitsOnly;
 
 public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHolder, TextView.OnEditorActionListener {
 
     private final View root;
-    @BindView(R.id.phone_title) TextView phoneTitle;
+    @BindView(R.id.title) TextView phoneTitle;
     @BindView(R.id.phone_prefix) TextView phonePrefix;
     @BindView(R.id.phone_edit) EditText phoneEdit;
-    @BindView(R.id.phone_underline) View phoneUnderline;
     @BindView(R.id.phone_error) TextView phoneError;
-    @BindView(R.id.phone_container) RelativeLayout phoneContainer;
     @BindView(R.id.button) TextView button;
     @BindView(R.id.progress) ProgressBar progress;
 
@@ -46,17 +49,20 @@ public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHol
         this.root = root;
         ButterKnife.bind(this, root);
         phoneEdit.setOnEditorActionListener(this);
+        phoneEdit.addTextChangedListener(new MyPhoneEditListener(phoneEdit));
+
     }
 
     @OnClick(R.id.button)
     public void onViewClicked() {
-        String phone = "7" + phoneEdit.getText().toString();
-        phoneContainer.setVisibility(View.GONE);
+        String phone = "7" + digitsOnly(phoneEdit.getText().toString());
+//        phoneContainer.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
 
         api().login(phone).enqueue(new Callback<GsonResponse>() {
             @Override
-            public void onResponse(Call<GsonResponse> call, Response<GsonResponse> response) {
+            public void onResponse(@NonNull Call<GsonResponse> call, @NonNull Response<GsonResponse> response) {
+                progress.setVisibility(View.GONE);
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     LoginActivity activity = (LoginActivity) Utils.getActivity(root);
                     if (activity != null) {
@@ -68,12 +74,14 @@ public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHol
             }
 
             @Override
-            public void onFailure(Call<GsonResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<GsonResponse> call, @NonNull Throwable t) {
+                progress.setVisibility(View.GONE);
                 onError();
             }
 
             private void onError() {
                 phoneError.setText(R.string.login_phone_error);
+                phoneError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -91,5 +99,31 @@ public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHol
             return true;
         }
         return false;
+    }
+
+    private class MyPhoneEditListener extends PhoneEditListener {
+
+        MyPhoneEditListener(EditText editText) {
+            super(editText);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            super.afterTextChanged(s);
+            int digits = calcDigits(s);
+            button.setVisibility(digits == 10 ? View.VISIBLE : View.INVISIBLE);
+            phoneError.setVisibility(View.GONE);
+        }
+
+        private int calcDigits(Editable s) {
+            int digits = 0;
+            for (int i = 0; i < s.length(); i++) {
+                char currentChar = s.charAt(i);
+                if (Character.isDigit(currentChar)) {
+                    digits++;
+                }
+            }
+            return digits;
+        }
     }
 }

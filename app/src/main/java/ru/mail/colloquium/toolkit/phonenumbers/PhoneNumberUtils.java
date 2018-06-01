@@ -1,8 +1,10 @@
 package ru.mail.colloquium.toolkit.phonenumbers;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -62,6 +64,17 @@ public class PhoneNumberUtils {
         }
     }
 
+    public static String formatPhone(AsYouTypeFormatter formatter, @NonNull String phone) {
+        String formattedPhone = "";
+        for (int i = 0; i < phone.length(); i++) {
+            char currentChar = phone.charAt(i);
+            if (Character.isDigit(currentChar) || currentChar == '+')
+                formattedPhone = formatter.inputDigit(currentChar);
+        }
+        return formattedPhone;
+    }
+
+
     @Nullable
     public static String digitsOnly(String number) {
         if (TextUtils.isEmpty(number))
@@ -114,4 +127,6 @@ public class PhoneNumberUtils {
 
         return sb == null ? null : sb.toString();
     }
+
+
 }

@@ -4,7 +4,7 @@
     <string name="icon">icon</string>
 
 
-    <string name="enter_phone_title">Введите номер телефона</string>
+    <string name="enter_phone_title">Твой номер телефона</string>
     <string name="default_country_code">+7</string>
     <string name="enter_sms_code_explanation">Мы отправили СМС с кодом. Для вашей безопасности просим подтвердить номер</string>
     <string name="sms_code_repeat_countdown">Повторная отправка кода через %d сек.</string>

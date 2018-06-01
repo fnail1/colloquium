@@ -31,7 +31,7 @@
             android:name=".ui.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Fullscreen"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

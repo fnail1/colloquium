@@ -2,105 +2,97 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:background="#03C383"
+                tools:context=".ui.login.LoginActivity">
 
-    <RelativeLayout
-        android:id="@+id/phone_container"
-
+    <TextView
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        >
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/padding"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/indent"
+        android:text="войти"
+        android:textAppearance="@style/TitleTextAppearance"
+        />
 
-        <TextView
-            android:id="@+id/phone_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="21dp"
-            android:fontFamily="sans-serif"
-            android:lineSpacingExtra="4sp"
-            android:text="@string/enter_phone_title"
-            android:textAppearance="@style/TitleTextAppearance"
-            />
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/enter_phone_title"
+        android:textAppearance="@style/TitleTextAppearance"
+        />
 
-        <TextView
-            android:id="@+id/phone_prefix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/phone_title"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="3dp"
-            android:fontFamily="sans-serif"
-            android:lineSpacingExtra="8sp"
-            android:text="@string/default_country_code"
-            android:textColor="@color/mw_fade_white_87"
-            android:textSize="16sp"
-            android:textStyle="normal"/>
+    <TextView
+        android:id="@+id/phone_prefix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/phone_edit"
+        android:layout_marginRight="@dimen/padding"
+        android:layout_toLeftOf="@+id/phone_edit"
+        android:text="@string/default_country_code"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        tools:ignore="RtlHardcoded"/>
 
-        <EditText
-            android:id="@+id/phone_edit"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/phone_prefix"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="4dp"
-            android:layout_toEndOf="@+id/phone_prefix"
-            android:background="@null"
-            android:digits="0123456789- "
-            android:fontFamily="sans-serif"
-            android:imeOptions="actionNext"
-            android:inputType="phone"
-            android:lineSpacingExtra="8sp"
-            android:textColor="@color/mw_fade_white_87"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            />
+    <EditText
+        android:id="@+id/phone_edit"
+        android:layout_width="272dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padding"
+        android:background="#ffffff"
+        android:digits="0123456789- "
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:padding="@dimen/indent"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#000000"
+        tools:text="(999) 123-45-67"
+        />
 
-        <View
-            android:id="@+id/phone_underline"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_alignEnd="@+id/phone_edit"
-            android:layout_alignStart="@id/phone_edit"
-            android:layout_below="@id/phone_prefix"
-            android:background="@color/colorWhite"/>
+    <TextView
+        android:id="@+id/phone_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/phone_edit"
+        android:layout_below="@+id/phone_edit"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif"
+        android:textColor="#ff0000"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        android:visibility="gone"
+        tools:text="Введите корректный код"
+        tools:visibility="visible"/>
 
-        <TextView
-            android:id="@+id/phone_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/phone_edit"
-            android:layout_marginTop="2dp"
-            android:fontFamily="sans-serif"
-            android:lineSpacingExtra="4sp"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            android:visibility="gone"
-            tools:text="Введите корректный код"/>
-
-    </RelativeLayout>
+    <TextView
+        android:layout_width="272dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/phone_edit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:gravity="center_horizontal"
+        android:text="Мы вышлем тебе бесплатную смс с кодом, чтобы зарегистрировать
+в приложении"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        />
 
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/phone_edit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
         android:visibility="gone"
         tools:visibility="visible"/>
-
-    <TextView
-        android:id="@+id/button"
-        style="@style/WhiteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
-        android:text="Войти"
-        />
 
 </RelativeLayout>
