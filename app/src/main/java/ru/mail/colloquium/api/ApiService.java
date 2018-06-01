@@ -34,6 +34,7 @@ import ru.mail.colloquium.api.model.GsonQuestionResponse;
 import ru.mail.colloquium.api.model.GsonResponse;
 import ru.mail.colloquium.diagnostics.Logger;
 import ru.mail.colloquium.model.types.Age;
+import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.toolkit.http.HttpHeaders;
 import ru.mail.colloquium.toolkit.http.LoginRequiredException;
@@ -94,19 +95,24 @@ public interface ApiService {
 
 
     /**
-     * Создание ответа
      *
      * @param questionId    обязательно
-     * @param selectedPhone опционально, длина строго 11 символов
-     * @param allPhones     обязательно, длина 47 символов, представляет из себя строку с номерами телефонов разделенными запятыми
+     * @param selectedVariant   обязательно, enum: A,B,C,D,E
+     * @param variantA  обязательно, MD5, длина 32 символа
+     * @param variantB  обязательно, MD5, длина 32 символа
+     * @param variantC  обязательно, MD5, длина 32 символа
+     * @param variantD  обязательно, MD5, длина 32 символа
      * @return
      */
     @POST("answer")
     @FormUrlEncoded
     Call<GsonResponse> answer(
             @Field("question_id") String questionId,
-            @Field("selected_phone") String selectedPhone,
-            @Field("all_phones") String allPhones
+            @Field("selected_variant") Choice selectedVariant,
+            @Field("variantA") String variantA,
+            @Field("variantB") String variantB,
+            @Field("variantC") String variantC,
+            @Field("variantD") String variantD
     );
 
 

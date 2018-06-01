@@ -16,9 +16,11 @@ public class Answer extends BaseRow {
     public long createdAt;
     public Gender gender;
     public final Flags32 flags = new Flags32();
-    public String allPhones;
-    public String selectedPhone;
-
+    public String variantA;
+    public String variantB;
+    public String variantC;
+    public String variantD;
+    public Choice answer;
     public String questionServerId;
     public String questionEmoji;
     public String questionText;

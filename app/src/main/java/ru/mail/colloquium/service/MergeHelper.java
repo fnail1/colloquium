@@ -1,5 +1,6 @@
 package ru.mail.colloquium.service;
 
+import java.security.interfaces.DSAKey;
 import java.util.Map;
 
 import ru.mail.colloquium.api.model.GsonAnswers;
@@ -21,8 +22,12 @@ public class MergeHelper {
 
     public static void merge(Question dst, GsonQuestionResponse.GsonQuestion src) {
         dst.serverId = src.id;
-//        dst.emoji = src.emoji;
-        dst.emoji = "https://emojipedia-us.s3.amazonaws.com/thumbs/144/apple/129/grinning-face_1f600.png";
+        dst.emojiUrl = src.url;
+        dst.emojiText = src.alt;
+        if (dst.emojiUrl == null) {
+            dst.emojiUrl = "https://emojipedia-us.s3.amazonaws.com/thumbs/144/apple/129/grinning-face_1f600.png";
+            dst.emojiText = "\uD83D\uDE00";
+        }
         dst.question = src.question;
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.updatedAt = dateTimeService().parseServerTime(src.updated_at);
@@ -30,7 +35,7 @@ public class MergeHelper {
 
     public static void merge(Answer dst, GsonQuestionResponse.GsonQuestion src) {
         dst.questionServerId = src.id;
-        dst.questionEmoji = src.emoji;
+        dst.questionEmoji = src.url;
         dst.questionText = src.question;
         dst.questionCreatedAt = dateTimeService().parseServerTime(src.created_at);
         dst.questionUpdatedAt = dateTimeService().parseServerTime(src.updated_at);
@@ -43,10 +48,13 @@ public class MergeHelper {
 
     public static void merge(Answer dst, GsonAnswers.GsonAnswer src) {
         dst.serverId = src.id;
-        dst.allPhones = src.all_phones;
+        dst.variantA = src.variantA;
+        dst.variantB = src.variantB;
+        dst.variantC = src.variantC;
+        dst.variantD = src.variantD;
+        dst.answer = src.selected_variant;
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.flags.set(Answer.FLAG_VIEWED, src.is_viewed);
-        dst.selectedPhone = src.selected_phone;
         dst.gender = src.sex;
 
         merge(dst, src.question);

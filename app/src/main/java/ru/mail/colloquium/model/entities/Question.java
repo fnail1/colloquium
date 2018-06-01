@@ -15,7 +15,8 @@ public class Question extends BaseRow {
 
     @DbColumn(unique = true)
     public String serverId;
-    public String emoji;
+    public String emojiUrl;
+    public String emojiText;
     public String question;
     public long createdAt;
     public long updatedAt;

@@ -4,10 +4,13 @@ import android.content.Context;
 import android.support.v4.util.LongSparseArray;
 import android.text.TextUtils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.entities.Contact;
+import ru.mail.colloquium.utils.Utils;
 
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.toolkit.collections.Query.query;
@@ -29,6 +32,7 @@ public class AddressBookSyncHelper {
                     if (idxContact < 0) {
                         // новый контакт
                         abContact.contact.onUpdateName();
+                        abContact.contact.serverId = Utils.md5(abContact.contact.phone);
                         storage.contacts.save(abContact.contact);
                     } else {
                         // существующий контакт
@@ -39,6 +43,7 @@ public class AddressBookSyncHelper {
                             abContact.contact._id = dbContact._id;
                             dbContact = abContact.contact;
                             dbContact.onUpdateName();
+                            dbContact.serverId = Utils.md5(dbContact.phone);
                             storage.contacts.save(dbContact);
                         }
 
@@ -55,5 +60,6 @@ public class AddressBookSyncHelper {
         }
 //        DebugUtils.importFile(app());
     }
+
 
 }

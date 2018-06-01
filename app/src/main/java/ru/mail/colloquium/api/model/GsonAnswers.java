@@ -1,5 +1,6 @@
 package ru.mail.colloquium.api.model;
 
+import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.model.types.Gender;
 
 public class GsonAnswers {
@@ -8,8 +9,11 @@ public class GsonAnswers {
     public class GsonAnswer {
         public String id;
         public String question_id;
-        public String selected_phone;
-        public String all_phones;
+        public String variantA;
+        public String variantB;
+        public String variantC;
+        public String variantD;
+        public Choice selected_variant;
         public boolean is_viewed;
         public Gender sex;
         public String created_at;

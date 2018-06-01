@@ -26,6 +26,7 @@ public class Contact extends BaseRow {
 
     public long abPhoneId;
     public String phone;
+    public String serverId;
 
     public String displayNameOrder;
     public long contactLastUpdatedTimestamp;

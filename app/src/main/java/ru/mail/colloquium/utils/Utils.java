@@ -17,7 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import ru.mail.colloquium.R;
@@ -196,4 +199,56 @@ public final class Utils {
         return null;
     }
 
+    public static final char[] DIGITS = {
+            '0', '1', '2', '3', '4', '5',
+            '6', '7', '8', '9', 'a', 'b',
+            'c', 'd', 'e', 'f', 'g', 'h',
+            'i', 'j', 'k', 'l', 'm', 'n',
+            'o', 'p', 'q', 'r', 's', 't',
+            'u', 'v', 'w', 'x', 'y', 'z'
+    };
+
+    public static String md5(String s) {
+        return toHexString(md5(s.getBytes()));
+    }
+
+    public static byte[] md5(byte[] bytes) {
+        MessageDigest md5 = getMd5();
+        md5.update(bytes);
+        return md5.digest();
+
+    }
+
+    private static WeakReference<MessageDigest> md5ref;
+
+    private static MessageDigest getMd5() {
+        if (md5ref != null) {
+            MessageDigest md5 = md5ref.get();
+            if (md5 != null)
+                return md5;
+        }
+
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5ref = new WeakReference<>(md5);
+            return md5;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static String toHexString(byte[] hash) {
+//        StringBuilder sb = new StringBuilder(hash.length * 2);
+        char[] buf = new char[hash.length << 1];
+        for (int i = 0, hashLength = hash.length; i < hashLength; i++) {
+            byte b = hash[i];
+            int idx = i << 1;
+            buf[idx] = DIGITS[(b >> 4) & 0xf];
+            buf[idx + 1] = DIGITS[b & 0xf];
+
+        }
+
+        return new String(buf);
+    }
 }

@@ -1,17 +1,32 @@
 package ru.mail.colloquium.model.types;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum Age {
-    grade6,
-    grade7,
-    grade8,
-    grade9,
-    grade10,
-    grade11,
-    year1,
-    year2,
-    year3,
-    year4,
-    year5,
-    year6,
-    superstar,
+    @SerializedName("GRADE6")
+    GRADE6,
+    @SerializedName("GRADE7")
+    GRADE7,
+    @SerializedName("GRADE8")
+    GRADE8,
+    @SerializedName("GRADE9")
+    GRADE9,
+    @SerializedName("GRADE10")
+    GRADE10,
+    @SerializedName("GRADE11")
+    GRADE11,
+    @SerializedName("COURSE1")
+    YEAR1,
+    @SerializedName("COURSE2")
+    YEAR2,
+    @SerializedName("COURSE3")
+    YEAR3,
+    @SerializedName("COURSE4")
+    YEAR4,
+    @SerializedName("COURSE5")
+    YEAR5,
+    @SerializedName("COURSE6")
+    YEAR6,
+    @SerializedName("")
+    SUPERSTAR,
 }

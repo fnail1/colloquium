@@ -5,7 +5,8 @@ public class GsonQuestionResponse {
 
     public class GsonQuestion {
         public String id;
-        public String emoji;
+        public String url;
+        public String alt;
         public String question;
         public String created_at;
         public String updated_at;

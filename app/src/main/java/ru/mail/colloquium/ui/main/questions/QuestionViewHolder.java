@@ -61,7 +61,7 @@ public class QuestionViewHolder {
     public void bind(Question question) {
         this.question = question;
         root.setBackgroundColor(COLORS[(int) ((question._id & 0xff) % COLORS.length)]);
-        photos().attach(icon, question.emoji).commit();
+        photos().attach(icon, question.emojiUrl).commit();
         message.setText(question.question);
         List<Contact> contacts;
         if (question.variant1 <= 0) {

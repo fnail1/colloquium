@@ -34,43 +34,43 @@ public class LoginPage5AgeViewHolder implements LoginActivity.LoginPageViewHolde
                 activity.onBack();
                 break;
             case R.id.skip:
-                activity.onAgeResolved(Age.superstar);
+                activity.onAgeResolved(Age.SUPERSTAR);
                 break;
             case R.id.grade6:
-                activity.onAgeResolved(Age.grade6);
+                activity.onAgeResolved(Age.GRADE6);
                 break;
             case R.id.grade7:
-                activity.onAgeResolved(Age.grade7);
+                activity.onAgeResolved(Age.GRADE7);
                 break;
             case R.id.grade8:
-                activity.onAgeResolved(Age.grade8);
+                activity.onAgeResolved(Age.GRADE8);
                 break;
             case R.id.grade9:
-                activity.onAgeResolved(Age.grade9);
+                activity.onAgeResolved(Age.GRADE9);
                 break;
             case R.id.grade10:
-                activity.onAgeResolved(Age.grade10);
+                activity.onAgeResolved(Age.GRADE10);
                 break;
             case R.id.grade11:
-                activity.onAgeResolved(Age.grade11);
+                activity.onAgeResolved(Age.GRADE11);
                 break;
             case R.id.year1:
-                activity.onAgeResolved(Age.year1);
+                activity.onAgeResolved(Age.YEAR1);
                 break;
             case R.id.year2:
-                activity.onAgeResolved(Age.year2);
+                activity.onAgeResolved(Age.YEAR2);
                 break;
             case R.id.year3:
-                activity.onAgeResolved(Age.year3);
+                activity.onAgeResolved(Age.YEAR3);
                 break;
             case R.id.year4:
-                activity.onAgeResolved(Age.year4);
+                activity.onAgeResolved(Age.YEAR4);
                 break;
             case R.id.year5:
-                activity.onAgeResolved(Age.year5);
+                activity.onAgeResolved(Age.YEAR5);
                 break;
             case R.id.year6:
-                activity.onAgeResolved(Age.year6);
+                activity.onAgeResolved(Age.YEAR6);
                 break;
         }
 
