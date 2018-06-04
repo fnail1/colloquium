@@ -3,7 +3,6 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#9090e0"
                 android:fitsSystemWindows="true">
 
     <FrameLayout
@@ -44,7 +43,7 @@
                 android:fontFamily="sans-serif"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="8sp"
-                android:text="Кто из них самый красивый и
+                tools:text="Кто из них самый красивый и
 больше всего нравится тебе
 в твоем классе?"
                 android:textColor="#ffffff"

@@ -60,7 +60,7 @@ public class QuestionViewHolder {
 
     public void bind(Question question) {
         this.question = question;
-        root.setBackgroundColor(COLORS[(int) ((question._id & 0xff) % COLORS.length)]);
+        root.setBackgroundColor(COLORS[(question.serverId.hashCode() & 0xff) % COLORS.length]);
         photos().attach(icon, question.emojiUrl)
                 .size(
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
@@ -101,25 +101,24 @@ public class QuestionViewHolder {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.variant1:
-                appService().answer(question, Choice.A);
+                callback.onQuestionAnswered(Choice.A);
                 break;
             case R.id.variant2:
-                appService().answer(question, Choice.B);
+                callback.onQuestionAnswered(Choice.B);
                 break;
             case R.id.variant3:
-                appService().answer(question, Choice.C);
+                callback.onQuestionAnswered(Choice.C);
                 break;
             case R.id.variant4:
-                appService().answer(question, Choice.D);
+                callback.onQuestionAnswered(Choice.D);
                 break;
             case R.id.skip:
-                appService().answer(question, null);
+                callback.onQuestionAnswered(Choice.E);
                 break;
         }
-        callback.onQuestionAnswered();
     }
 
     public interface QuestionAnsweredCallback {
-        void onQuestionAnswered();
+        void onQuestionAnswered(Choice a);
     }
 }

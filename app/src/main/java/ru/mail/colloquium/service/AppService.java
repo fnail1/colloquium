@@ -40,10 +40,10 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
-    public final ObservableEvent<AnswerUpdatedEventHandler, AppService, Void> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, Void>(this) {
+    public final ObservableEvent<AnswerUpdatedEventHandler, AppService, Question> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, Question>(this) {
         @Override
-        protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, Void args) {
-            handler.onFeedbackUpdated();
+        protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, Question args) {
+            handler.onAnswerUpdated(args);
         }
     };
 
@@ -142,7 +142,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         });
     }
 
-    private void syncAnsweredQuestionsSync(AppData appData) throws IOException, ServerException {
+    public void syncAnsweredQuestionsSync(AppData appData) throws IOException, ServerException {
         List<Question> questions = appData.questions.selectToSend().toList();
         LongSparseArray<Contact> contacts = appData.contacts.selectQuestionsVariants().toLongSparseArray(c -> c._id);
 
@@ -163,7 +163,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                     break;
             }
 
-            question.flags.set(Question.FLAG_SENT);
+            question.flags.set(Question.FLAG_SENT, true);
             appData.questions.save(question);
         }
     }
@@ -182,7 +182,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void onFinish() {
-                answerUpdatedEvent.fire(null);
+                answerUpdatedEvent.fire(question);
             }
 
         });
@@ -228,6 +228,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     public interface AnswerUpdatedEventHandler {
-        void onFeedbackUpdated();
+        void onAnswerUpdated(Question args);
     }
 }
