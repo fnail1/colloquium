@@ -23,6 +23,19 @@
         tools:ignore="RtlHardcoded"
         tools:visibility="visible"/>
 
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginRight="24dp"
+        android:theme="@style/ProgressBarTheme"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -44,13 +57,19 @@
         android:layout_marginTop="@dimen/padding"
         android:background="#ffffff"
         android:digits="0123456789_"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="center"
+        android:hint="____"
         android:imeOptions="actionNext"
         android:inputType="phone"
+        android:letterSpacing=".3"
+        android:maxLength="4"
         android:padding="@dimen/indent"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#000000"
-        tools:text="_ _ _ _"
+        android:windowSoftInputMode="stateVisible"
+        tools:text="1234"
         />
 
     <TextView
@@ -65,26 +84,51 @@
         android:textAppearance="@style/SubtitleTextAppearance"
         />
 
-
-    <ImageView
-        android:id="@+id/code_repeat"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignBottom="@+id/code_edit"
-        android:layout_toEndOf="@+id/code_edit"
-        android:background="@drawable/ripple_none_icon_light"
-        android:clickable="true"
-        android:scaleType="center"
-        android:src="@drawable/ic_refresh"/>
-
-    <ProgressBar
-        android:id="@+id/progress"
+    <TextView
+        android:id="@+id/code_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/code_edit"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal"
+        android:text="Упс!... Код неверный!"
+        android:textAppearance="@style/SubtitleTextAppearance"
         android:visibility="gone"
         tools:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/code_repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/back"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padding"
+        android:background="@drawable/ripple_none_view_dark"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
+        android:text="Отправить еще раз?"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#093e2d"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/code_explanation"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ripple_none_view_dark"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
+        android:paddingTop="32dp"
+        android:text="Ошиблись номером?"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#093e2d"
+
+        />
+
 
 </RelativeLayout>

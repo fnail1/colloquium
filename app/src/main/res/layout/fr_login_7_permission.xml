@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:background="#03C383"
+                tools:context=".ui.login.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="36dp"
+            android:gravity="center_horizontal"
+            android:text="Отлично!
+Осталось чуть-чуть.."
+            android:textAppearance="@style/TitleTextAppearance"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/indent"
+            android:gravity="center_horizontal"
+            android:text="Чтобы найти твоих друзей нужен
+доступ к адресной книге."
+            android:textAppearance="@style/SubtitleTextAppearance"
+            />
+
+        <TextView
+            android:id="@+id/contacts"
+            style="@style/WhiteButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="36dp"
+            android:drawablePadding="@dimen/indent"
+            android:drawableStart="@drawable/ic_address_book"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding"
+            android:text="Включить контакты"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

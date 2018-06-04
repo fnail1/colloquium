@@ -6,7 +6,7 @@
 
     <string name="enter_phone_title">Твой номер телефона</string>
     <string name="default_country_code">+7</string>
-    <string name="enter_sms_code_explanation">Мы выслали код на номер: %s</string>
+    <string name="enter_sms_code_explanation">Мы выслали код\nна номер: %s</string>
     <string name="sms_code_repeat_countdown">Повторная отправка кода через %d сек.</string>
     <string name="enter_sms_code">Введите код из СМС</string>
     <string name="error_wrong_sms_code">Введите корректный код</string>
@@ -66,6 +66,8 @@
 
     <string name="smart_time_units_1_d_genitive">день</string>
     <string name="login_phone_error">Введите корректный мобильный номер</string>
+    <string name="request_notifications_male">А чтобы ты знал, когда друзья выбирают тебя в опросах надо включить уведомления.</string>
+    <string name="request_notifications_female">А чтобы ты знала, когда друзья выбирают тебя в опросах надо включить уведомления.</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>

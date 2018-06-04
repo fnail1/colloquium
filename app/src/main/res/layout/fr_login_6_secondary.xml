@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:background="#03C383"
+                tools:context=".ui.login.LoginActivity">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding"
+        android:background="@drawable/ripple_circle_icon_dark"
+        android:padding="@dimen/indent"
+        android:src="@drawable/ic_back"
+        />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="68dp"
+            android:gravity="center_horizontal"
+            android:text="В каком классе ты учишься?"
+            android:textAppearance="@style/SubtitleTextAppearance"/>
+
+        <TextView
+            android:id="@+id/grade6"
+            style="@style/WhiteButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_margin="@dimen/indent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="6 класс"
+            />
+
+        <TextView
+            android:id="@+id/grade7"
+            style="@style/WhiteButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_margin="@dimen/indent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="7 класс"
+            />
+
+        <TextView
+            android:id="@+id/grade8"
+            style="@style/WhiteButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_margin="@dimen/indent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="8 класс"
+            />
+
+        <TextView
+            android:id="@+id/grade9"
+            style="@style/WhiteButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_margin="@dimen/indent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="9 класс"
+            />
+
+        <TextView
+            android:id="@+id/grade10"
+            style="@style/WhiteButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_margin="@dimen/indent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="10 класс"
+            />
+
+        <TextView
+            android:id="@+id/grade11"
+            style="@style/WhiteButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_margin="@dimen/indent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="11  класс"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

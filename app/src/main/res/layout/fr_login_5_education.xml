@@ -6,6 +6,17 @@
                 tools:background="#03C383"
                 tools:context=".ui.login.LoginActivity">
 
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding"
+        android:background="@drawable/ripple_circle_icon_dark"
+        android:padding="@dimen/indent"
+        android:src="@drawable/ic_back"
+        />
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,36 +27,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/indent"
-            android:text="Твой пол?"
+            android:layout_margin="@dimen/indent"
+            android:text="Где ты сейчас учишься?"
             android:textAppearance="@style/TitleTextAppearance"
             />
 
         <TextView
-            android:id="@+id/male"
+            android:id="@+id/secondary"
             style="@style/WhiteButton"
             android:layout_width="268dp"
             android:layout_height="58dp"
-            android:layout_marginEnd="@dimen/indent"
-            android:layout_marginTop="@dimen/indent"
+            android:layout_margin="@dimen/indent"
             android:drawablePadding="40dp"
-            android:drawableStart="@drawable/ic_male"
+            android:drawableStart="@drawable/ic_school"
             android:gravity="start|center_vertical"
             android:paddingStart="28dp"
-            android:text="Парень"/>
+            android:text="Школа"/>
 
         <TextView
-            android:id="@+id/female"
+            android:id="@+id/high"
             style="@style/WhiteButton"
             android:layout_width="268dp"
             android:layout_height="58dp"
-            android:layout_marginEnd="@dimen/indent"
-            android:layout_marginTop="@dimen/indent"
+            android:layout_margin="@dimen/indent"
             android:drawablePadding="40dp"
-            android:drawableStart="@drawable/ic_female"
+            android:drawableStart="@drawable/ic_institute"
             android:gravity="start|center_vertical"
             android:paddingStart="28dp"
-            android:text="Девушка"/>
+            android:text="Универ"/>
 
     </LinearLayout>
 

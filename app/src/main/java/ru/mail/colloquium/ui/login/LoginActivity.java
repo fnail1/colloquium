@@ -1,28 +1,20 @@
 package ru.mail.colloquium.ui.login;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.api.model.GsonProfileResponse;
-import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.model.types.Profile;
@@ -43,8 +35,9 @@ public class LoginActivity extends BaseActivity {
             R.layout.fr_login_2_phone,
             R.layout.fr_login_3_code,
             R.layout.fr_login_4_gender,
-            R.layout.fr_login_5_age,
-            R.layout.fr_login_6_permission
+            R.layout.fr_login_5_education,
+            R.layout.fr_login_6_high,
+            R.layout.fr_login_7_permission
     };
 
     private static final String STATE_PAGE = "page";
@@ -58,6 +51,7 @@ public class LoginActivity extends BaseActivity {
     private FrameLayout foreground;
 
     private int currentPage;
+    private AgeStrage1 strage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,9 +94,15 @@ public class LoginActivity extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    @NonNull
     private LoginPageViewHolder inflatePage(FrameLayout parent, int page) {
-        parent.removeAllViews();
         int viewType = PAGES[page];
+        return inflatePage(parent, page, viewType);
+    }
+
+    @NonNull
+    private LoginPageViewHolder inflatePage(FrameLayout parent, int page, int viewType) {
+        parent.removeAllViews();
         View view = LayoutInflater.from(this).inflate(viewType, parent);
         LoginPageViewHolder pageViewHolder;
         switch (viewType) {
@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity {
                 pageViewHolder = new LoginPage1IntroViewHolder(view);
                 break;
             case R.layout.fr_login_2_phone:
-                pageViewHolder = new LoginPage2PhoneViewHolder(view);
+                pageViewHolder = new LoginPage2PhoneViewHolder(view, phone);
                 break;
             case R.layout.fr_login_3_code:
                 pageViewHolder = new LoginPage3CodeViewHolder(view, phone);
@@ -118,11 +118,17 @@ public class LoginActivity extends BaseActivity {
             case R.layout.fr_login_4_gender:
                 pageViewHolder = new LoginPage4GenderViewHolder(view);
                 break;
-            case R.layout.fr_login_5_age:
-                pageViewHolder = new LoginPage5AgeViewHolder(view);
+            case R.layout.fr_login_5_education:
+                pageViewHolder = new LoginPage5EducationViewHolder(view);
                 break;
-            case R.layout.fr_login_6_permission:
-                pageViewHolder = new LoginPage6PermissionViewHolder(view);
+            case R.layout.fr_login_6_secondary:
+                pageViewHolder = new LoginPage6SecondaryViewHolder(view);
+                break;
+            case R.layout.fr_login_6_high:
+                pageViewHolder = new LoginPage6HighViewHolder(view);
+                break;
+            case R.layout.fr_login_7_permission:
+                pageViewHolder = new LoginPage7PermissionViewHolder(view);
                 break;
             default:
                 throw new IllegalArgumentException(String.valueOf(viewType));
@@ -139,12 +145,16 @@ public class LoginActivity extends BaseActivity {
 
         LoginPageViewHolder pageViewHolder = inflatePage(background, currentPage + 1);
 
+        animateTransition(pageViewHolder, -foreground.getWidth(), background.getWidth());
+    }
+
+    private void animateTransition(LoginPageViewHolder pageViewHolder, int foregroundEnd, int backgroundStart) {
         foreground.animate()
-                .translationX(-foreground.getWidth())
+                .translationX(foregroundEnd)
                 .setDuration(350);
 
         background.setVisibility(View.VISIBLE);
-        background.setTranslationX(background.getWidth());
+        background.setTranslationX(backgroundStart);
         background.animate()
                 .translationX(0)
                 .setDuration(350)
@@ -165,9 +175,9 @@ public class LoginActivity extends BaseActivity {
 
     public void onSmsCode(String accessToken, GsonProfileResponse.GsonUser profile) {
         this.accessToken = accessToken;
-        MergeHelper.merge(this.profile,profile);
+        MergeHelper.merge(this.profile, profile);
 
-        if(profile.info != null && profile.sex != null) {
+        if (profile.info != null && profile.sex != null) {
             onComplete(accessToken);
         } else {
             onContinue();
@@ -196,32 +206,36 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
-        inflatePage(background, currentPage - 1);
-
-        foreground.animate()
-                .translationX(foreground.getWidth())
-                .setDuration(350);
-
-        background.setVisibility(View.VISIBLE);
-        background.setTranslationX(-background.getWidth());
-        background.animate()
-                .translationX(0)
-                .setDuration(350)
-                .withEndAction(() -> {
-                    FrameLayout t = this.foreground;
-                    foreground = background;
-                    background = t;
-                    background.setVisibility(View.GONE);
-                    background.removeAllViews();
-                });
+        LoginPageViewHolder pageViewHolder = inflatePage(background, currentPage - 1);
+        animateTransition(pageViewHolder, foreground.getWidth(), -background.getWidth());
     }
 
     public void onPermissionGranted() {
         onContinue();
     }
 
+    public void onAgeStage1(AgeStrage1 strage) {
+        this.strage = strage;
+        LoginPageViewHolder pageViewHolder;
+        switch (strage) {
+            case SECONDARY:
+                pageViewHolder = inflatePage(background, 5, R.layout.fr_login_6_secondary);
+                break;
+            case HIGH:
+                pageViewHolder = inflatePage(background, 5, R.layout.fr_login_6_high);
+                break;
+            default:
+                throw new IllegalArgumentException("" + strage);
+        }
+        animateTransition(pageViewHolder, -foreground.getWidth(), background.getWidth());
+    }
+
     public interface LoginPageViewHolder {
         default void onShow() {
         }
+    }
+
+    public enum AgeStrage1 {
+        SECONDARY, HIGH
     }
 }

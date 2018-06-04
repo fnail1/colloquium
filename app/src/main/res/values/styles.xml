@@ -45,6 +45,12 @@
         <item name="tabTextAppearance">@style/TabTextAppearance</item>
     </style>
 
+    <style name="ProgressBarTheme">
+        <item name="colorAccent">@color/colorTitle</item>
+        <item name="android:colorAccent">@color/colorTitle</item>
+
+    </style>
+
     <style name="WhiteButton" parent="SubtitleTextAppearance">
         <item name="android:background">@drawable/bg_contact</item>
         <item name="android:elevation">4dp</item>

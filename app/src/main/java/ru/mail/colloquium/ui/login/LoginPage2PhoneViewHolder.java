@@ -41,28 +41,38 @@ public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHol
     @BindView(R.id.button) TextView button;
     @BindView(R.id.progress) ProgressBar progress;
 
-    public LoginPage2PhoneViewHolder(ViewGroup parent) {
-        this(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_login_2_phone, parent, false));
+    public LoginPage2PhoneViewHolder(ViewGroup parent, String phone) {
+        this(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_login_2_phone, parent, false), phone);
     }
 
-    public LoginPage2PhoneViewHolder(View root) {
+    public LoginPage2PhoneViewHolder(View root, String phone) {
         this.root = root;
         ButterKnife.bind(this, root);
         phoneEdit.setOnEditorActionListener(this);
         phoneEdit.addTextChangedListener(new MyPhoneEditListener(phoneEdit));
-
+        if (phone != null && phone.length() > 1) {
+            phone = phone.substring(1);
+            phoneEdit.setText(phone);
+            phoneEdit.setSelection(phoneEdit.length());
+        }
     }
 
     @OnClick(R.id.button)
     public void onViewClicked() {
+        Utils.hideKeyboard(phoneEdit);
+        phoneEdit.clearFocus();
+
         String phone = "7" + digitsOnly(phoneEdit.getText().toString());
 //        phoneContainer.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
+        int buttonVisibility = button.getVisibility();
+        button.setVisibility(View.INVISIBLE);
 
         api().login(phone).enqueue(new Callback<GsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<GsonResponse> call, @NonNull Response<GsonResponse> response) {
                 progress.setVisibility(View.GONE);
+                button.setVisibility(buttonVisibility);
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     LoginActivity activity = (LoginActivity) Utils.getActivity(root);
                     if (activity != null) {
@@ -76,6 +86,7 @@ public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHol
             @Override
             public void onFailure(@NonNull Call<GsonResponse> call, @NonNull Throwable t) {
                 progress.setVisibility(View.GONE);
+                button.setVisibility(buttonVisibility);
                 onError();
             }
 
@@ -88,6 +99,7 @@ public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHol
 
     @Override
     public void onShow() {
+        phoneEdit.clearFocus();
         phoneEdit.requestFocus();
         Utils.showKeyboard(phoneEdit);
     }

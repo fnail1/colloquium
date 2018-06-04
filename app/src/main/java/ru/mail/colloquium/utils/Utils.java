@@ -25,6 +25,8 @@ import java.util.UUID;
 
 import ru.mail.colloquium.R;
 
+import static ru.mail.colloquium.diagnostics.Logger.trace;
+
 
 public final class Utils {
 
