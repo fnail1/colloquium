@@ -24,8 +24,6 @@ import ru.mail.colloquium.ui.base.BaseActivity;
 import ru.mail.colloquium.ui.main.MainActivity;
 
 import static ru.mail.colloquium.App.app;
-import static ru.mail.colloquium.diagnostics.Logger.trace;
-import static ru.mail.colloquium.toolkit.collections.Query.query;
 
 public class LoginActivity extends BaseActivity {
 
@@ -42,8 +40,8 @@ public class LoginActivity extends BaseActivity {
 
     private static final String STATE_PAGE = "page";
     private String phone;
-    private String accessToken;
-    private Profile profile = new Profile();
+    String accessToken;
+    Profile profile = new Profile();
 
     @BindView(R.id.page1) FrameLayout page1;
     @BindView(R.id.page2) FrameLayout page2;
@@ -51,7 +49,6 @@ public class LoginActivity extends BaseActivity {
     private FrameLayout foreground;
 
     private int currentPage;
-    private AgeStrage1 strage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,10 +119,10 @@ public class LoginActivity extends BaseActivity {
                 pageViewHolder = new LoginPage5EducationViewHolder(view);
                 break;
             case R.layout.fr_login_6_secondary:
-                pageViewHolder = new LoginPage6SecondaryViewHolder(view);
+                pageViewHolder = new LoginPage6EducationViewHolder(view);
                 break;
             case R.layout.fr_login_6_high:
-                pageViewHolder = new LoginPage6HighViewHolder(view);
+                pageViewHolder = new LoginPage6EducationViewHolder(view);
                 break;
             case R.layout.fr_login_7_permission:
                 pageViewHolder = new LoginPage7PermissionViewHolder(view);
@@ -139,7 +136,7 @@ public class LoginActivity extends BaseActivity {
 
     public void onContinue() {
         if (currentPage == PAGES.length - 1) {
-            onComplete(accessToken);
+            onComplete();
             return;
         }
 
@@ -177,14 +174,15 @@ public class LoginActivity extends BaseActivity {
         this.accessToken = accessToken;
         MergeHelper.merge(this.profile, profile);
 
-        if (profile.info != null && profile.sex != null) {
-            onComplete(accessToken);
+        if (profile.education != null && profile.sex != null) {
+            LoginPageViewHolder pageViewHolder = inflatePage(background, 6);
+            animateTransition(pageViewHolder, -foreground.getWidth(), background.getWidth());
         } else {
             onContinue();
         }
     }
 
-    private void onComplete(String accessToken) {
+    private void onComplete() {
         app().onLogin(accessToken, this.profile);
         startActivity(new Intent(this, MainActivity.class));
         finish();
@@ -215,7 +213,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void onAgeStage1(AgeStrage1 strage) {
-        this.strage = strage;
         LoginPageViewHolder pageViewHolder;
         switch (strage) {
             case SECONDARY:

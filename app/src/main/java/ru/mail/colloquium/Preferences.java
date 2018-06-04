@@ -46,6 +46,7 @@ public class Preferences {
     private final AtomicInteger uniqueIdCurrentValue;
 
     private int oldVersion;
+    private ApiSet apiSet;
 
     Preferences(App context) {
         common = PreferenceManager.getDefaultSharedPreferences(context);
@@ -108,11 +109,15 @@ public class Preferences {
     public ApiSet getApiSet() {
         ApiSet defaultSet = BuildConfig.DEBUG ? ApiSet.TEST : ApiSet.PROD;
 //        ApiSet defaultSet = ApiSet.PROD;
-        return ApiSet.valueOf(common.getString(API_BASE_URL, defaultSet.name()));
+        if (apiSet == null) {
+            apiSet = ApiSet.valueOf(common.getString(API_BASE_URL, defaultSet.name()));
+        }
+        return apiSet;
     }
 
     void setApiBaseUrl(ApiSet apiSet) {
         common.edit().putString(API_BASE_URL, apiSet.name()).apply();
+        this.apiSet = null;
     }
 
     public String getUserId() {

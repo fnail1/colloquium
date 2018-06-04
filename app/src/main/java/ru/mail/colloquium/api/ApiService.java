@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -33,9 +34,7 @@ import ru.mail.colloquium.api.model.GsonProfileResponse;
 import ru.mail.colloquium.api.model.GsonQuestionResponse;
 import ru.mail.colloquium.api.model.GsonResponse;
 import ru.mail.colloquium.diagnostics.Logger;
-import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Choice;
-import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.toolkit.http.HttpHeaders;
 import ru.mail.colloquium.toolkit.http.LoginRequiredException;
 import ru.mail.colloquium.utils.Utils;
@@ -45,6 +44,14 @@ import static ru.mail.colloquium.App.prefs;
 
 
 public interface ApiService {
+
+    static String serialize(Enum<?> value) {
+        try {
+            return value.getClass().getField(value.name()).getAnnotation(SerializedName.class).value();
+        } catch (NoSuchFieldException e) {
+            return value.name();
+        }
+    }
 
     /**
      * Запрос кода по СМС.
@@ -73,7 +80,7 @@ public interface ApiService {
      * Заполнение информации пользователя
      *
      * @param name   max длина 30 символов
-     * @param info   max длина 25 символов
+     * @param age   max длина 25 символов
      * @param gender длина 1 символ
      * @return
      */
@@ -81,8 +88,26 @@ public interface ApiService {
     @FormUrlEncoded
     Call<GsonProfileResponse> saveProfile(
             @Field("name") String name,
-            @Field("info") Age info,
-            @Field("sex") Gender gender
+            @Field("education") String age,
+            @Field("sex") String gender
+    );
+
+    /**
+     * Заполнение информации пользователя
+     *
+     * @param token  "Bearer" + accessToken
+     * @param name   max длина 30 символов
+     * @param age   max длина 25 символов
+     * @param gender длина 1 символ
+     * @return
+     */
+    @POST("info")
+    @FormUrlEncoded
+    Call<GsonProfileResponse> saveProfile(
+            @Header("Authorization") String token,
+            @Field("name") String name,
+            @Field("education") String age,
+            @Field("sex") String gender
     );
 
     /**
@@ -95,13 +120,12 @@ public interface ApiService {
 
 
     /**
-     *
-     * @param questionId    обязательно
-     * @param selectedVariant   обязательно, enum: A,B,C,D,E
-     * @param variantA  обязательно, MD5, длина 32 символа
-     * @param variantB  обязательно, MD5, длина 32 символа
-     * @param variantC  обязательно, MD5, длина 32 символа
-     * @param variantD  обязательно, MD5, длина 32 символа
+     * @param questionId      обязательно
+     * @param selectedVariant обязательно, enum: A,B,C,D,E
+     * @param variantA        обязательно, MD5, длина 32 символа
+     * @param variantB        обязательно, MD5, длина 32 символа
+     * @param variantC        обязательно, MD5, длина 32 символа
+     * @param variantD        обязательно, MD5, длина 32 символа
      * @return
      */
     @POST("answer")
@@ -143,6 +167,7 @@ public interface ApiService {
 
     @GET("user")
     Call<GsonProfileResponse.GsonUser> getProfile();
+
 
     class Creator {
 

@@ -12,6 +12,7 @@ import ru.mail.colloquium.model.entities.Question;
 import ru.mail.colloquium.model.types.Profile;
 
 import static ru.mail.colloquium.App.dateTimeService;
+import static ru.mail.colloquium.App.prefs;
 
 public class MergeHelper {
 
@@ -22,7 +23,7 @@ public class MergeHelper {
 
     public static void merge(Question dst, GsonQuestionResponse.GsonQuestion src) {
         dst.serverId = src.id;
-        dst.emojiUrl = src.url;
+        dst.emojiUrl = prefs().getApiSet().fixSslForSandbox(src.url);
         dst.emojiText = src.alt;
         if (dst.emojiUrl == null) {
             dst.emojiUrl = "https://emojipedia-us.s3.amazonaws.com/thumbs/144/apple/129/grinning-face_1f600.png";
@@ -35,7 +36,7 @@ public class MergeHelper {
 
     public static void merge(Answer dst, GsonQuestionResponse.GsonQuestion src) {
         dst.questionServerId = src.id;
-        dst.questionEmoji = src.url;
+        dst.questionEmoji =  prefs().getApiSet().fixSslForSandbox(src.url);
         dst.questionText = src.question;
         dst.questionCreatedAt = dateTimeService().parseServerTime(src.created_at);
         dst.questionUpdatedAt = dateTimeService().parseServerTime(src.updated_at);
@@ -80,7 +81,7 @@ public class MergeHelper {
         dst.updatedAt = dateTimeService().parseServerTime(src.updated_at);
         dst.phone = src.phone;
         dst.gender = src.sex;
-        dst.age = src.info;
+        dst.age = src.education;
 
 
     }

@@ -11,6 +11,6 @@ public class GsonProfileResponse {
         public String updated_at;
         public String phone;
         public Gender sex;
-        public Age info;
+        public Age education;
     }
 }

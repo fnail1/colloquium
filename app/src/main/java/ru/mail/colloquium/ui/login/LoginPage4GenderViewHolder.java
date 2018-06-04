@@ -31,6 +31,9 @@ public class LoginPage4GenderViewHolder implements LoginActivity.LoginPageViewHo
     @OnClick({R.id.male, R.id.female})
     public void onViewClicked(View view) {
         LoginActivity activity = (LoginActivity) Utils.getActivity(root);
+        if (activity == null)
+            return;
+
         switch (view.getId()) {
             case R.id.male:
                 activity.onGenderResolved(Gender.MALE);
