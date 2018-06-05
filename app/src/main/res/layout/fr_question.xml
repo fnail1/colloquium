@@ -8,13 +8,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/answers">
+        android:layout_above="@+id/answers"
+        android:paddingTop="72dp"
+        >
 
         <LinearLayout
             android:layout_width="310dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             tools:ignore="UselessParent">
 
             <FrameLayout
@@ -40,15 +44,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:fontFamily="sans-serif"
+                android:layout_marginTop="@dimen/padding"
+                android:textAppearance="@style/TitleTextAppearance"
                 android:gravity="center_horizontal"
-                android:lineSpacingExtra="8sp"
-                tools:text="Кто из них самый красивый и
-больше всего нравится тебе
-в твоем классе?"
-                android:textColor="#ffffff"
-                android:textSize="22sp"
-                android:textStyle="normal"
+                android:text="The one that always stays cool under stress"
                 />
         </LinearLayout>
 
@@ -75,7 +74,10 @@
                 android:id="@+id/variant1"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_margin="4dp"
+                android:layout_marginTop="@dimen/indent"
+                android:layout_marginBottom="@dimen/indent"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/bg_contact"
                 android:clickable="true"
                 android:elevation="4dp"
@@ -96,7 +98,10 @@
                 android:id="@+id/variant2"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_margin="4dp"
+                android:layout_marginTop="@dimen/indent"
+                android:layout_marginBottom="@dimen/indent"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/bg_contact"
                 android:clickable="true"
                 android:elevation="4dp"
@@ -125,7 +130,10 @@
                 android:id="@+id/variant3"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_margin="4dp"
+                android:layout_marginTop="@dimen/indent"
+                android:layout_marginBottom="@dimen/indent"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/bg_contact"
                 android:clickable="true"
                 android:elevation="4dp"
@@ -146,7 +154,10 @@
                 android:id="@+id/variant4"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_margin="4dp"
+                android:layout_marginTop="@dimen/indent"
+                android:layout_marginBottom="@dimen/indent"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/bg_contact"
                 android:clickable="true"
                 android:elevation="4dp"
@@ -177,12 +188,10 @@
         android:layout_marginRight="@dimen/padding"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_fast_forward"
-        android:fontFamily="sans-serif-medium"
         android:gravity="center_horizontal"
         android:text="Пропустить"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
-        android:textStyle="normal"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="@color/mw_fade_white_70"
         />
 
 </RelativeLayout>

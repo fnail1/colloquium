@@ -72,13 +72,10 @@
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="@dimen/indent"
-        android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
-        android:lineSpacingExtra="8sp"
         android:text="Отвечай анонимно на вопросы про друзей. Они узнают, что ты думаешь о них, но не будут знать, кто это!"
         android:textColor="#ffffff"
-        android:textSize="18sp"
-        android:textStyle="normal"
+        android:textAppearance="@style/SubtitleTextAppearance"
         />
 
     <TextView

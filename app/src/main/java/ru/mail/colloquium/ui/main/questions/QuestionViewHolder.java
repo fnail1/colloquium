@@ -66,7 +66,7 @@ public class QuestionViewHolder {
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size))
                 .commit();
-        message.setText(question.question);
+//        message.setText(question.question);
         List<Contact> contacts;
         if (question.variant1 <= 0) {
             contacts = data().contacts.selectRandom(4).toList();

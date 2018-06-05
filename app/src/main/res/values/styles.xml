@@ -89,10 +89,10 @@
 
     <style name="SubtitleTextAppearance">
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:lineSpacingExtra">5sp</item>
+        <item name="android:lineSpacingExtra">8sp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
