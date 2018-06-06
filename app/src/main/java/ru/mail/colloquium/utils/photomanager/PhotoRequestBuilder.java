@@ -92,6 +92,9 @@ public class PhotoRequestBuilder<TView> {
 
     public void commit() {
         committed = true;
+        if (photo == null)
+            return;
+
         resolveSize();
         PhotoRequest<TView> request = new PhotoRequest<>(photoManager, imageView, photo, width, height, extraEffect, placeholder);
         request.doNotAnimateBefore = doNotAnimateBefore;

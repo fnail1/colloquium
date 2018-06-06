@@ -4,14 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.LongSparseArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,12 +18,9 @@ import butterknife.Unbinder;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.ui.base.BaseFragment;
-import ru.mail.colloquium.ui.main.questions.ContactViewHolder;
 import ru.mail.colloquium.ui.views.MyFrameLayout;
 
 import static ru.mail.colloquium.App.data;
-import static ru.mail.colloquium.App.dateTimeService;
-import static ru.mail.colloquium.toolkit.collections.Query.query;
 
 public class ContactsFragment extends BaseFragment {
     @BindView(R.id.list) RecyclerView list;
@@ -85,7 +80,7 @@ public class ContactsFragment extends BaseFragment {
 
         @Override
         public int getItemViewType(int position) {
-            return position % 2 == 0 ? R.layout.item_contact : R.layout.item_phone;
+            return R.layout.item_contact;
         }
 
         @NonNull
@@ -94,8 +89,6 @@ public class ContactsFragment extends BaseFragment {
             switch (viewType) {
                 case R.layout.item_contact:
                     return new ContactViewHolder(inflater, parent);
-                case R.layout.item_phone:
-                    return new PhoneViewHolder(inflater, parent);
             }
             throw new IllegalArgumentException(String.valueOf(viewType));
         }
@@ -104,18 +97,14 @@ public class ContactsFragment extends BaseFragment {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             switch (holder.getItemViewType()) {
                 case R.layout.item_contact:
-                    ((ContactViewHolder) holder).bind(contacts.get(position / 2));
+                    ((ContactViewHolder) holder).bind(contacts.get(position));
                     break;
-                case R.layout.item_phone:
-                    ((PhoneViewHolder) holder).bind(contacts.get(position / 2));
-                    break;
-
             }
         }
 
         @Override
         public int getItemCount() {
-            return contacts.size() * 2;
+            return contacts.size();
         }
     }
 }

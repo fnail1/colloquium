@@ -30,6 +30,7 @@ public class Contact extends BaseRow {
 
     public String displayNameOrder;
     public long contactLastUpdatedTimestamp;
+    public String avatar;
 
     public void onUpdateName() {
         if (namePrefix != null) {

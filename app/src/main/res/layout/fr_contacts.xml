@@ -6,7 +6,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#90e0e0"
+    android:background="#F8F8F8"
     android:fitsSystemWindows="true"
     >
 
@@ -17,6 +17,5 @@
         android:layout_height="match_parent"
         android:layout_marginTop="72dp"
         />
-        android:background="#7d000000"
 
 </ru.mail.colloquium.ui.views.MyFrameLayout>
