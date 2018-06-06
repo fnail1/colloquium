@@ -168,6 +168,8 @@ public interface ApiService {
     @GET("user")
     Call<GsonProfileResponse.GsonUser> getProfile();
 
+    @GET("answer/reset")
+    Call<GsonResponse> resetAnswers();
 
     class Creator {
 

@@ -16,9 +16,9 @@
             android:layout_width="310dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:orientation="vertical"
             tools:ignore="UselessParent">
 
             <FrameLayout
@@ -45,9 +45,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/padding"
-                android:textAppearance="@style/TitleTextAppearance"
                 android:gravity="center_horizontal"
-                android:text="The one that always stays cool under stress"
+                android:textAppearance="@style/TitleTextAppearance"
+                tools:text="The one that always stays cool under stress"
                 />
         </LinearLayout>
 
@@ -70,53 +70,30 @@
             android:orientation="vertical"
             >
 
-            <FrameLayout
+            <TextView
                 android:id="@+id/variant1"
+                style="@style/WhiteButton"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_marginTop="@dimen/indent"
                 android:layout_marginBottom="@dimen/indent"
-                android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:background="@drawable/bg_contact"
-                android:clickable="true"
-                android:elevation="4dp"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_none_view_light"
-                android:padding="@dimen/indent"
-                tools:targetApi="lollipop">
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="@dimen/indent"
+                tools:text="variant1"
+                />
 
-                <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/variant1text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/indent"/>
 
-            </FrameLayout>
-
-            <FrameLayout
+            <TextView
                 android:id="@+id/variant2"
+                style="@style/WhiteButton"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_marginTop="@dimen/indent"
                 android:layout_marginBottom="@dimen/indent"
-                android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:background="@drawable/bg_contact"
-                android:clickable="true"
-                android:elevation="4dp"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_none_view_light"
-                android:padding="@dimen/indent"
-                tools:targetApi="lollipop">
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="@dimen/indent"
+                tools:text="variant2"/>
 
-                <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/variant2text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/indent"/>
-
-            </FrameLayout>
 
         </LinearLayout>
 
@@ -126,53 +103,28 @@
             android:layout_weight=".5"
             android:orientation="vertical">
 
-            <FrameLayout
+            <TextView
                 android:id="@+id/variant3"
+                style="@style/WhiteButton"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_marginTop="@dimen/indent"
                 android:layout_marginBottom="@dimen/indent"
-                android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:background="@drawable/bg_contact"
-                android:clickable="true"
-                android:elevation="4dp"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_none_view_light"
-                android:padding="@dimen/indent"
-                tools:targetApi="lollipop">
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="@dimen/indent"
+                tools:text="variant3"/>
 
-                <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/variant3text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/indent"/>
 
-            </FrameLayout>
-
-            <FrameLayout
+            <TextView
                 android:id="@+id/variant4"
+                style="@style/WhiteButton"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_marginTop="@dimen/indent"
                 android:layout_marginBottom="@dimen/indent"
-                android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:background="@drawable/bg_contact"
-                android:clickable="true"
-                android:elevation="4dp"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_none_view_light"
-                android:padding="@dimen/indent"
-                tools:targetApi="lollipop">
-
-                <ru.mail.colloquium.ui.views.ContactNameView
-                    android:id="@+id/variant4text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/indent"/>
-
-            </FrameLayout>
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="@dimen/indent"
+                tools:text="variant3"/>
 
         </LinearLayout>
     </LinearLayout>

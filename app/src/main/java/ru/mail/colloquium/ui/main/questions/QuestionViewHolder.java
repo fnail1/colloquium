@@ -34,14 +34,10 @@ public class QuestionViewHolder {
     private final QuestionAnsweredCallback callback;
     public final View root;
     @BindView(R.id.icon) ImageView icon;
-    @BindView(R.id.variant1text) ContactNameView variant1text;
-    @BindView(R.id.variant1) FrameLayout variant1;
-    @BindView(R.id.variant2text) ContactNameView variant2text;
-    @BindView(R.id.variant2) FrameLayout variant2;
-    @BindView(R.id.variant3text) ContactNameView variant3text;
-    @BindView(R.id.variant3) FrameLayout variant3;
-    @BindView(R.id.variant4text) ContactNameView variant4text;
-    @BindView(R.id.variant4) FrameLayout variant4;
+    @BindView(R.id.variant1) TextView variant1;
+    @BindView(R.id.variant2) TextView variant2;
+    @BindView(R.id.variant3) TextView variant3;
+    @BindView(R.id.variant4) TextView variant4;
     @BindView(R.id.answers) LinearLayout answers;
     @BindView(R.id.skip) TextView skip;
     @BindView(R.id.message) TextView message;
@@ -66,7 +62,7 @@ public class QuestionViewHolder {
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size))
                 .commit();
-//        message.setText(question.question);
+        message.setText(question.question);
         List<Contact> contacts;
         if (question.variant1 <= 0) {
             contacts = data().contacts.selectRandom(4).toList();
@@ -89,10 +85,10 @@ public class QuestionViewHolder {
                 data().questions.save(question);
             });
         }
-        variant1text.setContact(contact1);
-        variant2text.setContact(contact2);
-        variant3text.setContact(contact3);
-        variant4text.setContact(contact4);
+        variant1.setText(contact1.displayName);
+        variant2.setText(contact2.displayName);
+        variant3.setText(contact3.displayName);
+        variant4.setText(contact4.displayName);
 
 
     }

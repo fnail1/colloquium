@@ -106,9 +106,7 @@ public class App extends Application {
 
         AppData old = this.data;
         this.data = new AppData(this, profile.phone);
-        ThreadPool.UI.postDelayed(() -> {
-            old.close();
-        }, 10 * 1000);
+        ThreadPool.UI.postDelayed(old::close, 10 * 1000);
         appService.shutdown();
         appService = new AppService(appStateObserver);
         if (this.data.questions.selectCurrent() == null) {
