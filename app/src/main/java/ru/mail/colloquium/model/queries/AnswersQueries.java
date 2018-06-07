@@ -2,6 +2,8 @@ package ru.mail.colloquium.model.queries;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.List;
+
 import ru.mail.colloquium.api.model.GsonAnswers;
 import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.toolkit.data.CursorWrapper;
@@ -18,6 +20,13 @@ public class AnswersQueries extends SQLiteCommands<Answer> {
     public CursorWrapper<Answer> select(GsonAnswers.GsonAnswer[] src) {
         String sql = selectAll + "\n" +
                 "where serverId in (" + query(src).select(s -> s.id).toString() + ")";
+
+        return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Answer.class, null);
+    }
+
+    public CursorWrapper<Answer> select(int skip, int limit) {
+        String sql = selectAll + "\n" +
+                "limit " + limit + " offset " + skip;
 
         return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Answer.class, null);
     }

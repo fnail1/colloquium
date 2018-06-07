@@ -1,6 +1,7 @@
 package ru.mail.colloquium.model.entities;
 
 import ru.mail.colloquium.model.AppData;
+import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.toolkit.Flags32;
@@ -15,6 +16,7 @@ public class Answer extends BaseRow {
     public String serverId;
     public long createdAt;
     public Gender gender;
+    public Age age = Age.SUPERSTAR;
     public final Flags32 flags = new Flags32();
     public String variantA;
     public String variantB;

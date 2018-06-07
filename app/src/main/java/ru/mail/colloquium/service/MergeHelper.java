@@ -57,6 +57,7 @@ public class MergeHelper {
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.flags.set(Answer.FLAG_VIEWED, src.is_viewed);
         dst.gender = src.sex;
+        dst.age = src.user_education;
 
         merge(dst, src.question);
     }

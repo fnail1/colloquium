@@ -4,29 +4,37 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import java.util.Random;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.mail.colloquium.R;
+import ru.mail.colloquium.model.PagedDataSource;
 import ru.mail.colloquium.model.entities.Answer;
-import ru.mail.colloquium.model.types.Gender;
+import ru.mail.colloquium.model.entities.Question;
+import ru.mail.colloquium.service.AppService;
 import ru.mail.colloquium.ui.base.BaseFragment;
 import ru.mail.colloquium.ui.views.MyFrameLayout;
 
-import static ru.mail.colloquium.App.dateTimeService;
+import static ru.mail.colloquium.App.appService;
+import static ru.mail.colloquium.App.data;
 
-public class AnswersFragment extends BaseFragment {
+public class AnswersFragment extends BaseFragment implements AppService.AnswerUpdatedEventHandler {
+
+    Unbinder unbinder;
     @BindView(R.id.list) RecyclerView list;
     @BindView(R.id.root) MyFrameLayout root;
-    Unbinder unbinder;
+    @BindView(R.id.placeholder) View placeholder;
 
     @Nullable
     @Override
@@ -39,9 +47,10 @@ public class AnswersFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        list.setAdapter(new MyAdapter());
-        list.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        list.addItemDecoration(new AnswerCardDecoration(getActivity()));
+        MyAdapter adapter = new MyAdapter();
+        adapter.init();
+        list.setAdapter(adapter);
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override
@@ -50,23 +59,46 @@ public class AnswersFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        appService().answerUpdatedEvent.add(this);
+        appService().requestAnswers();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        appService().answerUpdatedEvent.remove(this);
+    }
+
+    @Override
+    public void onAnswerUpdated(Question args) {
+        FragmentActivity activity = getActivity();
+        if (activity == null)
+            return;
+        activity.runOnUiThread(() -> {
+            MyAdapter adapter = (MyAdapter) list.getAdapter();
+            adapter.init();
+            adapter.notifyDataSetChanged();
+
+            placeholder.setVisibility(adapter.getItemCount() > 0 ? View.GONE : View.VISIBLE);
+
+        });
+    }
+
     private static class MyAdapter extends RecyclerView.Adapter {
 
         private RecyclerView list;
         private Context context;
         private LayoutInflater inflater;
-        private final Answer[] data;
+        private AnswersDataSource dataSource;
 
         private MyAdapter() {
-            data = new Answer[50];
-            Random random = new Random();
-            long serverTime = dateTimeService().getServerTime();
-            for (int i = 0; i < data.length; i++) {
-                Answer datum = data[i] = new Answer();
-                datum.gender = random.nextBoolean() ? Gender.MALE : Gender.FEMALE;
-                datum.createdAt = serverTime - random.nextInt(5 * 24 * 60 * 60) * 1000;
-            }
+        }
 
+        public void init() {
+            dataSource = new AnswersDataSource();
         }
 
 
@@ -95,12 +127,32 @@ public class AnswersFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            ((AnswerViewHolder) holder).bind(data[position]);
+            ((AnswerViewHolder) holder).bind(dataSource.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return data.length;
+            return dataSource.count();
+        }
+    }
+
+    private static class AnswersDataSource extends PagedDataSource<Answer> {
+
+        private final int count;
+
+        public AnswersDataSource() {
+            super(new Answer());
+            count = (int) data().answers.count();
+        }
+
+        @Override
+        protected List<Answer> prepareDataSync(int skip, int limit) {
+            return data().answers.select(skip, limit).toList();
+        }
+
+        @Override
+        public int count() {
+            return count;
         }
     }
 }

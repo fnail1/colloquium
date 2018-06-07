@@ -6,7 +6,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#90e090"
+    android:background="#f8f8f8"
     android:fitsSystemWindows="true"
     >
 
@@ -17,5 +17,55 @@
         android:layout_height="match_parent"
         android:layout_marginTop="72dp"
         />
+
+    <FrameLayout
+        android:id="@+id/placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="88dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="72dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/indent"
+                android:src="@drawable/ic_answers_placeholder"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/indent"
+                android:gravity="center_horizontal"
+                android:text="Здесь будут лайки от твоих друзей. Хочешь лайки? Зови друзей!"
+                android:textAppearance="@style/SubtitleTextAppearance"
+                android:textColor="#546d79"
+
+                />
+        </LinearLayout>
+
+
+        <TextView
+            style="@style/AccentButton"
+            android:layout_width="276dp"
+            android:layout_height="58dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="sans-serif"
+            android:text="Позвать друзей"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+    </FrameLayout>
 
 </ru.mail.colloquium.ui.views.MyFrameLayout>

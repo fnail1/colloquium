@@ -2,6 +2,8 @@
     <string name="app_name">Лайки</string>
     <string name="share">Поделиться</string>
     <string name="icon">icon</string>
+    <string name="male">Парень</string>
+    <string name="female">Девушка</string>
 
 
     <string name="enter_phone_title">Твой номер телефона</string>
@@ -66,6 +68,19 @@
 
     <string name="smart_time_units_1_d_genitive">день</string>
     <string name="login_phone_error">Введите корректный мобильный номер</string>
+    <string name="age_grade6">6 класс</string>
+    <string name="age_grade7">7 класс</string>
+    <string name="age_grade8">8 класс</string>
+    <string name="age_grade9">9 класс</string>
+    <string name="age_grade10">10 класс</string>
+    <string name="age_grade11">11 класс</string>
+    <string name="age_year1">1 курс</string>
+    <string name="age_year2">2 курс</string>
+    <string name="age_year3">3 курс</string>
+    <string name="age_year4">4 курс</string>
+    <string name="age_year5">5 курс</string>
+    <string name="age_year6">6 курс</string>
+    <string name="age_superstar">Не известно</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>

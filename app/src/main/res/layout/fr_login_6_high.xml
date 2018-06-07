@@ -43,7 +43,7 @@
             android:layout_margin="@dimen/indent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="1 курс"
+            android:text="@string/age_year1"
             />
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_margin="@dimen/indent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="2 курс"
+            android:text="@string/age_year2"
             />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_margin="@dimen/indent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="3 курс"
+            android:text="@string/age_year3"
             />
 
         <TextView
@@ -76,7 +76,7 @@
             android:layout_margin="@dimen/indent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="4 курс"
+            android:text="@string/age_year4"
             />
 
         <TextView
@@ -87,7 +87,7 @@
             android:layout_margin="@dimen/indent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="5 курс"
+            android:text="@string/age_year5"
             />
 
         <TextView
@@ -98,7 +98,7 @@
             android:layout_margin="@dimen/indent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="6 курс"
+            android:text="@string/age_year6"
             />
     </LinearLayout>
 

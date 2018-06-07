@@ -20,13 +20,17 @@ import ru.mail.colloquium.ui.main.answers.AnswersFragment;
 import ru.mail.colloquium.ui.main.contacts.ContactsFragment;
 import ru.mail.colloquium.ui.main.profile.ProfileFragment;
 import ru.mail.colloquium.ui.main.questions.QuestionsFragment;
+import ru.mail.colloquium.utils.Utils;
 
 import static ru.mail.colloquium.App.prefs;
+import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
+import static ru.mail.colloquium.diagnostics.Logger.trace;
 
 public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pages) ViewPager pages;
+    private TabsTheme tabsTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,50 @@ public class MainActivity extends BaseActivity {
         requestPermissions(ReqCodes.CONTACTS_PERMISSIONS, R.string.contacts_permission_explanation, Manifest.permission.READ_CONTACTS);
 
         pages.setAdapter(new MyAdapter(getSupportFragmentManager()));
+        pages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                float f = position + positionOffset;
+                if (f > 1.5f) {
+                    if (tabsTheme == TabsTheme.LIGHT)
+                        return;
+                    tabsTheme = TabsTheme.LIGHT;
+                } else {
+                    if (tabsTheme == TabsTheme.DARK)
+                        return;
+                    tabsTheme = TabsTheme.DARK;
+                }
+
+                int colorTitle;
+                int colorSubtitle;
+                switch (tabsTheme) {
+                    case DARK:
+                        colorTitle = 0xff546d79;
+                        colorSubtitle = 0xff9ab3c0;
+                        break;
+                    case LIGHT:
+                        colorTitle = Utils.getColor(MainActivity.this, R.color.colorTitle);
+                        colorSubtitle = Utils.getColor(MainActivity.this, R.color.colorSubtitle);
+                        break;
+                    default:
+                        safeThrow(new Exception("" + tabsTheme));
+                        return;
+                }
+
+                tabs.setTabTextColors(colorSubtitle, colorTitle);
+                tabs.setSelectedTabIndicatorColor(colorTitle);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         tabs.setupWithViewPager(pages);
     }
 
@@ -97,5 +145,9 @@ public class MainActivity extends BaseActivity {
             }
             throw new IllegalArgumentException();
         }
+    }
+
+    private enum TabsTheme {
+        DARK, LIGHT
     }
 }

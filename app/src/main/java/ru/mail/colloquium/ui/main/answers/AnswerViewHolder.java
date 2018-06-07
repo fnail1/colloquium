@@ -6,22 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.entities.Answer;
 
-import static ru.mail.colloquium.App.appState;
 import static ru.mail.colloquium.App.dateTimeService;
 
 public class AnswerViewHolder extends RecyclerView.ViewHolder {
 
+
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.title) TextView title;
-    @BindView(R.id.root) RelativeLayout root;
+    @BindView(R.id.time) TextView time;
     private Answer answer;
 
     public AnswerViewHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -39,28 +40,34 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder {
             case CAMEL:
                 break;
             case MALE:
-                icon.setImageResource(R.drawable.ic_favorite_blue);
-                root.setBackgroundColor(0xffa0a0f0);
+                icon.setImageResource(R.drawable.ic_male_heart);
+                title.setText(title.getResources().getString(R.string.male) + ", " + answer.age.localName(title.getContext()));
                 break;
             case FEMALE:
-                icon.setImageResource(R.drawable.ic_favorite_pink);
-                root.setBackgroundColor(0xfff0a0a0);
+                icon.setImageResource(R.drawable.ic_female_heart);
+                title.setText(title.getResources().getString(R.string.female) + ", " + answer.age.localName(title.getContext()));
                 break;
         }
 
 
-        title.setText(formatTerm(title.getResources(), answer.createdAt));
+        String timeText = formatTerm(answer.createdAt);
+        time.setText(timeText);
     }
 
-    private String formatTerm(Resources resources, long timestamp) {
+    private String formatTerm(long timestamp) {
         long t = dateTimeService().getServerTime() - timestamp;
         if (t < 60 * 1000)
-            return resources.getString(R.string.just_now);
+            return "";
+        if (t < 60 * 60 * 1000) {
+            t /= 60 * 1000;
+            return t + "м";
+        }
         if (t < 24 * 60 * 60 * 1000) {
             t /= 60 * 60 * 1000;
-            return resources.getQuantityString(R.plurals.hours, (int) t, t);
+            return t + "ч";
         }
+
         t /= 24 * 60 * 60 * 1000;
-        return resources.getQuantityString(R.plurals.days, (int) t, t);
+        return t + "д";
     }
 }

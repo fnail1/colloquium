@@ -40,6 +40,13 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
+    public final ObservableEvent<AnswerSentEventHandler, AppService, Question> answerSentEvent = new ObservableEvent<AnswerSentEventHandler, AppService, Question>(this) {
+        @Override
+        protected void notifyHandler(AnswerSentEventHandler handler, AppService sender, Question args) {
+            handler.onAnswerSent(args);
+        }
+    };
+
     public final ObservableEvent<AnswerUpdatedEventHandler, AppService, Question> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, Question>(this) {
         @Override
         protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, Question args) {
@@ -110,7 +117,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask<GsonAnswers>("requestAnswers") {
             @Override
             protected Call<GsonAnswers> getRequest() {
-                return api().feedback();
+                return api().getAnswers();
             }
 
             @Override
@@ -126,17 +133,21 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         });
     }
 
-    public void syncAnsweredQuestions() {
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new AbsRequestTask("syncAnsweredQuestions") {
+    public void answer(Question question, @NonNull Choice answer) {
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new AbsRequestTask("answer") {
 
             @Override
             protected void performRequest(AppData appData) throws IOException, ServerException {
+                if (!question.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
+                    question.answer = answer;
+                    appData.questions.save(question);
+                }
                 syncAnsweredQuestionsSync(appData);
             }
 
             @Override
             protected void onFinish() {
-                answerUpdatedEvent.fire(null);
+                answerSentEvent.fire(question);
             }
 
         });
@@ -166,26 +177,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             question.flags.set(Question.FLAG_SENT, true);
             appData.questions.save(question);
         }
-    }
-
-    public void answer(Question question, @NonNull Choice answer) {
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new AbsRequestTask("answer") {
-
-            @Override
-            protected void performRequest(AppData appData) throws IOException, ServerException {
-                if (!question.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
-                    question.answer = answer;
-                    appData.questions.save(question);
-                }
-                syncAnsweredQuestionsSync(appData);
-            }
-
-            @Override
-            protected void onFinish() {
-                answerUpdatedEvent.fire(question);
-            }
-
-        });
     }
 
     public void answerViewed(Answer answer) {
@@ -225,6 +216,10 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     public interface NewQuestionEventHandler {
         void onNewQuestion(Question args);
+    }
+
+    public interface AnswerSentEventHandler {
+        void onAnswerSent(Question args);
     }
 
     public interface AnswerUpdatedEventHandler {

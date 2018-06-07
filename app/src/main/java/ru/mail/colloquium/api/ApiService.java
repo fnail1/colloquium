@@ -146,7 +146,7 @@ public interface ApiService {
      * @return
      */
     @GET("answer")
-    Call<GsonAnswers> feedback();
+    Call<GsonAnswers> getAnswers();
 
 
     /**

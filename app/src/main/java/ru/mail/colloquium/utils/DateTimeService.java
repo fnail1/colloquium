@@ -320,6 +320,8 @@ public class DateTimeService {
 
 
     public long parseServerTime(String dateString) {
+        if (dateString == null)
+            return 0;
         try {
             return serverDateTimeFormat.parse(dateString).getTime();
         } catch (ParseException e) {

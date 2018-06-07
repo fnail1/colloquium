@@ -23,7 +23,7 @@ import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.screenMetrics;
 
-public class QuestionsFragment extends BaseFragment implements AppService.NewQuestionEventHandler, QuestionViewHolder.QuestionAnsweredCallback, AppService.AnswerUpdatedEventHandler {
+public class QuestionsFragment extends BaseFragment implements AppService.NewQuestionEventHandler, QuestionViewHolder.QuestionAnsweredCallback, AppService.AnswerSentEventHandler {
     public static final String STATE_QUESTION_ID = "question_id";
 
     @BindView(R.id.page1) View page1;
@@ -72,7 +72,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onResume() {
         super.onResume();
         appService().newQuestionEvent.add(this);
-        appService().answerUpdatedEvent.add(this);
+        appService().answerSentEvent.add(this);
 
         if (question == null) {
             page1.setVisibility(View.GONE);
@@ -91,7 +91,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onPause() {
         super.onPause();
         appService().newQuestionEvent.remove(this);
-        appService().answerUpdatedEvent.remove(this);
+        appService().answerSentEvent.remove(this);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     }
 
     @Override
-    public void onAnswerUpdated(Question args) {
+    public void onAnswerSent(Question args) {
         progress.setVisibility(View.GONE);
         appService().requestNextQuestion();
     }
