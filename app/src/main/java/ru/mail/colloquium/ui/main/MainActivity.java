@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity {
                 case 1:
                     return "Контакты";
                 case 2:
-                    return "Опрос";
+                    return "Вопросы";
                 case 3:
                     return "Профиль";
             }

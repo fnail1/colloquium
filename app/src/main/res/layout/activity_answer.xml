@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
+
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/indent"
+        android:src="@drawable/ic_arrow_back"
+        android:foreground="@drawable/ripple_none_icon_dark"
+        android:layout_margin="@dimen/indent"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -21,13 +32,25 @@
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
+
             <ImageView
                 android:id="@+id/icon"
                 android:layout_width="@dimen/question_icon_size"
                 android:layout_height="@dimen/question_icon_size"
+
                 android:layout_gravity="center_horizontal"
                 android:scaleType="fitXY"
                 tools:background="#7fff33ff"/>
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/SubtitleTextAppearance"
+                tools:text="Девушка, 8 класс"
+                />
 
 
             <TextView
@@ -48,7 +71,7 @@
         android:id="@+id/answers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/skip"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="38dp"
         android:orientation="horizontal"
         android:paddingEnd="12dp"
@@ -120,22 +143,5 @@
         </LinearLayout>
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="@dimen/padding"
-        android:background="@drawable/ripple_none_view_dark"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_fast_forward"
-        android:gravity="center_horizontal"
-        android:text="Пропустить"
-        android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="@color/mw_fade_white_70"
-        />
 
 </RelativeLayout>

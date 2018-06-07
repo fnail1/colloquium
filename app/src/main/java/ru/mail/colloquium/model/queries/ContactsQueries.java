@@ -3,9 +3,9 @@ package ru.mail.colloquium.model.queries;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.Arrays;
 import java.util.Random;
 
+import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.toolkit.data.CursorWrapper;
 import ru.mail.colloquium.toolkit.data.SQLiteCommands;
@@ -13,7 +13,6 @@ import ru.mail.colloquium.toolkit.data.SimpleCursorWrapper;
 
 import static ru.mail.colloquium.model.entities.Question.FLAG_ANSWERED;
 import static ru.mail.colloquium.model.entities.Question.FLAG_SENT;
-import static ru.mail.colloquium.toolkit.collections.Query.query;
 
 public class ContactsQueries extends SQLiteCommands<Contact> {
     public ContactsQueries(SQLiteDatabase db, Logger logger) {
@@ -57,6 +56,19 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
                 "from Contacts c \n" +
                 "join Questions q on c._id in (q.variant1,q.variant2,q.variant3,q.variant4)\n" +
                 "where q.flags & " + (FLAG_ANSWERED | FLAG_SENT) + " = " + FLAG_ANSWERED + "\n";
+
+        return new ContactsCursor(db.rawQuery(sql, null));
+    }
+
+    public CursorWrapper<Contact> select(Answer answer) {
+        String sql = "select c.* \n" +
+                "from Contacts c \n" +
+                "join Answers a on c.serverId in (" +
+                "\'" + answer.variantA + "', " +
+                "\'" + answer.variantB + "', " +
+                "\'" + answer.variantC + "', " +
+                "\'" + answer.variantD + "'" +
+                ")\n";
 
         return new ContactsCursor(db.rawQuery(sql, null));
     }
