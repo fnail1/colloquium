@@ -138,6 +138,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="@dimen/padding"
+        android:background="@drawable/ripple_none_view_dark"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_fast_forward"
         android:gravity="center_horizontal"

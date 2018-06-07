@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 float f = position + positionOffset;
-                if (f > 1.5f) {
+                if (1.5f < f && f <= 2.5f) {
                     if (tabsTheme == TabsTheme.LIGHT)
                         return;
                     tabsTheme = TabsTheme.LIGHT;
