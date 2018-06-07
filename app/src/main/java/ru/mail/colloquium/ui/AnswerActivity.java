@@ -53,8 +53,8 @@ public class AnswerActivity extends BaseActivity {
 
         switch (answer.gender) {
             case CAMEL:
-                root.setBackgroundColor(0xfff8f8f8);
-                getWindow().setStatusBarColor(0xfff8f8f8);
+                root.setBackgroundColor(0xffF5F5F5);
+                getWindow().setStatusBarColor(0xffF5F5F5);
                 break;
             case MALE:
                 root.setBackgroundColor(0xff2767A9);

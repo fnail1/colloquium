@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="58dp"
-    android:layout_margin="@dimen/indent"
-    android:elevation="4dp"
-    android:padding="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="@dimen/indent"
+    android:layout_marginStart="@dimen/indent"
+    android:layout_marginTop="4dp"
     android:background="@drawable/bg_item_answer"
+    android:elevation="1dp"
+    android:padding="8dp"
     >
 
     <ImageView
@@ -17,7 +20,7 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:contentDescription="@string/icon"
         android:scaleType="centerInside"
         android:src="@drawable/ic_male_heart"
@@ -31,9 +34,9 @@
         android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
         android:layout_toEndOf="@id/icon"
-        android:text="Тетка, 2й раз замужем"
         android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        tools:text="Тетка, 2й раз замужем"/>
 
     <TextView
         android:id="@+id/time"
@@ -41,10 +44,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
         android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="#546d79"
+        android:textColor="#a7a7a7"
         tools:text="2м"
         />
 

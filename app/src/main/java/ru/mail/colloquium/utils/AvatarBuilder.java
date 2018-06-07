@@ -107,7 +107,7 @@ public class AvatarBuilder {
             super.setBounds(left, top, right, bottom);
             selectMaxTextWidth(foreground, text, right - left, FONT_SIZE_MIN, FONT_SIZE_MAX, measures);
             textHeight = foreground.getTextSize() + foreground.baselineShift - foreground.getFontMetrics().bottom;
-            trace("T = %s, F = %d, S = %f, H = %f", text, measures.fontSize, measures.textSize, textHeight);
+//            trace("T = %s, F = %d, S = %f, H = %f", text, measures.fontSize, measures.textSize, textHeight);
         }
 
         @Override

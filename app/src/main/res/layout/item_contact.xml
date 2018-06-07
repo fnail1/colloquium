@@ -8,7 +8,7 @@
               android:orientation="horizontal"
               android:paddingEnd="8dp"
               android:paddingStart="8dp"
-              tools:background="#F8F8F8">
+              tools:background="#F5F5F5">
 
     <ImageView
         android:id="@+id/avatar"
