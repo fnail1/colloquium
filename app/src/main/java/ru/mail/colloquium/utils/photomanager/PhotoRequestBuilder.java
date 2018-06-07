@@ -16,6 +16,7 @@ import ru.mail.colloquium.utils.photomanager.adapters.RoundedRectDrawable;
 import static ru.mail.colloquium.App.screenMetrics;
 
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class PhotoRequestBuilder<TView> {
     private final PhotoManager photoManager;
     private PhotoRequest.Target<TView> imageView;

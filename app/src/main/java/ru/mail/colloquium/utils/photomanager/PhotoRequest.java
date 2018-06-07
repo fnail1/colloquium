@@ -3,9 +3,12 @@ package ru.mail.colloquium.utils.photomanager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
@@ -46,6 +50,7 @@ import ru.mail.colloquium.utils.GraphicUtils;
 import ru.mail.colloquium.utils.photomanager.adapters.AutoScaledDrawable;
 import ru.mail.colloquium.utils.photomanager.adapters.DebugDrawable;
 
+import static ru.mail.colloquium.App.app;
 import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.networkObserver;
@@ -65,6 +70,7 @@ public final class PhotoRequest<TView> implements Runnable {
     private final int targetHeight;
     private final File file;
     private final String cacheKey;
+    private final boolean isContentUri;
     private String photo;
     private final PhotoManager photoManager;
     Bitmap bitmap;
@@ -83,10 +89,16 @@ public final class PhotoRequest<TView> implements Runnable {
                         @Nullable Func<Drawable, Drawable> extraEffect,
                         @Nullable AbstractPlaceholder<TView> placeholder) {
         String fileName = null;
-        try {
-            fileName = URLEncoder.encode(photo, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            safeThrow(e);
+        isContentUri = photo.startsWith("content://");
+        if (isContentUri) {
+            fileName = photo;
+//            file = photo;
+        } else {
+            try {
+                fileName = URLEncoder.encode(photo, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                safeThrow(e);
+            }
         }
         if (TextUtils.isEmpty(fileName)) {
             fileName = "noimage";
@@ -270,7 +282,10 @@ public final class PhotoRequest<TView> implements Runnable {
 //        }
         try {
 //            _history.add("load {" + (SystemClock.elapsedRealtime() - _t0) + "}; ");
-            bitmap = GraphicUtils.decodeUri(file.getPath(), targetWidth, targetHeight);
+            if (isContentUri)
+                bitmap = MediaStore.Images.Media.getBitmap(app().getContentResolver(), Uri.parse(photo));
+            else
+                bitmap = GraphicUtils.decodeUri(file.getPath(), targetWidth, targetHeight);
             if (bitmap != null) {
                 photoManager.cache.update(cacheKey, bitmap);
 //                trace("2 complete %s %d %d", requestId, bitmap.getWidth(), bitmap.getHeight());
@@ -394,12 +409,12 @@ public final class PhotoRequest<TView> implements Runnable {
 
     public abstract static class AbstractPlaceholder<TView> {
 
-        static AbstractPlaceholder wrap(@DrawableRes int resId) {
-            return new ResourcePlaceholder(resId);
+        static <TView> AbstractPlaceholder<TView> wrap(@DrawableRes int resId) {
+            return new ResourcePlaceholder<TView>(resId);
         }
 
-        static AbstractPlaceholder wrap(Drawable drawable) {
-            return new DrawablePlaceholder(drawable);
+        static <TView> AbstractPlaceholder<TView> wrap(Drawable drawable) {
+            return new DrawablePlaceholder<TView>(drawable);
         }
 
         protected AbstractPlaceholder() {
@@ -408,19 +423,22 @@ public final class PhotoRequest<TView> implements Runnable {
         protected abstract void apply(PhotoRequest<TView> request);
 
         protected void apply(PhotoRequest<TView> request, TView imageView, Drawable drawable) {
-            Drawable d = request.viewHolder.staticEffect(request, imageView, drawable);
+            if (request.viewHolder == null)
+                return;
 
+            Drawable d = request.viewHolder.staticEffect(request, imageView, drawable);
             if (Logger.LOG_GLIDE) {
                 d = new DebugDrawable(request.photo, d);
             }
 
             request.viewHolder.apply(request, imageView, d, false);
+
         }
 
 
     }
 
-    private static class ResourcePlaceholder<TView extends View> extends AbstractPlaceholder<TView> {
+    private static class ResourcePlaceholder<TView> extends AbstractPlaceholder<TView> {
         private final int resId;
 
         ResourcePlaceholder(@DrawableRes int resId) {
@@ -429,11 +447,14 @@ public final class PhotoRequest<TView> implements Runnable {
 
         @Override
         protected void apply(PhotoRequest<TView> request) {
+            if (request.viewHolder == null)
+                return;
+
             TView imageView = request.viewHolder.viewRef.get();
             if (imageView == null)
                 return;
 
-            Context context = imageView.getContext();
+            Context context = request.viewHolder.getContext(imageView);
             Drawable drawable = ResourcesCompat.getDrawable(context.getResources(), resId, context.getTheme());
             if (drawable != null) {
 //                    drawable = new AutoScaledDrawable(drawable, request.targetWidth, request.targetHeight);
@@ -443,7 +464,7 @@ public final class PhotoRequest<TView> implements Runnable {
 
     }
 
-    private static class DrawablePlaceholder<TView extends View> extends AbstractPlaceholder<TView> {
+    private static class DrawablePlaceholder<TView> extends AbstractPlaceholder<TView> {
         private final Drawable drawable;
 
         DrawablePlaceholder(Drawable drawable) {
@@ -452,9 +473,13 @@ public final class PhotoRequest<TView> implements Runnable {
 
         @Override
         protected void apply(PhotoRequest<TView> request) {
+            if (request.viewHolder == null)
+                return;
+
             TView imageView = request.viewHolder.viewRef.get();
             if (imageView == null)
                 return;
+
             apply(request, imageView, drawable);
         }
 

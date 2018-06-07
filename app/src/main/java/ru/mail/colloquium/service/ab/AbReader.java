@@ -15,8 +15,9 @@ public class AbReader implements Iterable<SyncUnit>, Closeable {
                     "AND (" + ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " != '') " +
                     "AND (" + ContactsContract.CommonDataKinds.GroupMembership.IN_VISIBLE_GROUP + " != 0) " +
                     "AND (" +
-                        "(" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "')" +
-                        " OR (" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "')" +
+                    "(" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "')" +
+                    " OR (" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "')" +
+                    " OR (" + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "')" +
                     ")";
 
     private static final String CONTACT_INFO_SORT_ORDER =

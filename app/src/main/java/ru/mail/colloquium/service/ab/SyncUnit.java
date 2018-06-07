@@ -63,6 +63,10 @@ public class SyncUnit {
                 contact.contactLastUpdatedTimestamp = ab.contactLastUpdatedTimestamp;
                 hasGoogleName = hasName && isGoogle;
                 break;
+            case ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE:
+                if (contact.avatar == null || isGoogle)
+                    contact.avatar = ab.photoUri;
+                break;
             case ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE:
                 if (contact.abPhoneId <= 0 || isPhoneNumberDirty) {
                     isPhoneNumberDirty = false;

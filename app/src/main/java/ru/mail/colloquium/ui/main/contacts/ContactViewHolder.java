@@ -1,6 +1,7 @@
 package ru.mail.colloquium.ui.main.contacts;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.entities.Contact;
+import ru.mail.colloquium.utils.AvatarBuilder;
 import ru.mail.colloquium.utils.photomanager.PhotoRequest;
 
 import static ru.mail.colloquium.App.networkObserver;
@@ -33,15 +35,19 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Contact contact) {
         this.contact = contact;
-        photos().attach(avatar,contact.avatar)
-                .circle()
-                .placeholder(new PhotoRequest.AbstractPlaceholder<ImageView>() {
-                    @Override
-                    protected void apply(PhotoRequest<ImageView> request) {
-                        ImageView imageView = request.viewHolder.viewRef.get();
-//                        imageView.setImageDrawable();
-                    }
-                }).commit();
+        if (TextUtils.isEmpty(contact.avatar)) {
+            avatar.setImageDrawable(AvatarBuilder.build(contact));
+        } else {
+            photos().attach(avatar, contact.avatar)
+                    .circle()
+                    .placeholder(new PhotoRequest.AbstractPlaceholder<ImageView>() {
+                        @Override
+                        protected void apply(PhotoRequest<ImageView> request) {
+                            ImageView imageView = request.viewHolder.viewRef.get();
+                            imageView.setImageDrawable(AvatarBuilder.build(contact));
+                        }
+                    }).commit();
+        }
         name.setText(contact.displayName);
     }
 }
