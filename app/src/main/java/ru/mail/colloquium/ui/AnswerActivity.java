@@ -18,6 +18,7 @@ import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.ui.base.BaseActivity;
 
+import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.photos;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
@@ -55,22 +56,19 @@ public class AnswerActivity extends BaseActivity {
             case CAMEL:
                 root.setBackgroundColor(0xffF5F5F5);
                 getWindow().setStatusBarColor(0xffF5F5F5);
+                icon.setImageResource(R.drawable.ic_camel);
                 break;
             case MALE:
                 root.setBackgroundColor(0xff2767A9);
                 getWindow().setStatusBarColor(0xff2767A9);
+                icon.setImageResource(R.drawable.ic_male);
                 break;
             case FEMALE:
                 root.setBackgroundColor(0xffED1C45);
                 getWindow().setStatusBarColor(0xffED1C45);
+                icon.setImageResource(R.drawable.ic_female);
                 break;
         }
-
-        photos().attach(icon, answer.questionEmoji)
-                .size(
-                        icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
-                        icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size))
-                .commit();
 
         author.setText(answer.gender.localName(this) + ", " + answer.age.localName(this));
 
@@ -107,6 +105,12 @@ public class AnswerActivity extends BaseActivity {
                 safeThrow(new Exception("No answer: " + answer.serverId));
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appService().answerViewed(answer);
     }
 
     @OnClick(R.id.back)

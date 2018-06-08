@@ -41,15 +41,29 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void bind(Answer answer) {
         this.answer = answer;
+        if (!answer.flags.get(Answer.FLAG_VIEWED)) {
+            switch (answer.gender) {
+                case CAMEL:
+                    icon.setImageResource(R.drawable.ic_camel_heart);
+                    break;
+                case MALE:
+                    icon.setImageResource(R.drawable.ic_male_heart);
+                    break;
+                case FEMALE:
+                    icon.setImageResource(R.drawable.ic_female_heart);
+                    break;
+            }
+        } else {
+            icon.setImageResource(R.drawable.ic_camel_heart);
+        }
+
         switch (answer.gender) {
             case CAMEL:
                 break;
             case MALE:
-                icon.setImageResource(R.drawable.ic_male_heart);
                 title.setText(title.getResources().getString(R.string.male) + ", " + answer.age.localName(title.getContext()));
                 break;
             case FEMALE:
-                icon.setImageResource(R.drawable.ic_female_heart);
                 title.setText(title.getResources().getString(R.string.female) + ", " + answer.age.localName(title.getContext()));
                 break;
         }
