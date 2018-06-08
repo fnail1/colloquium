@@ -19,7 +19,7 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.TransparentStatus">
+            android:theme="@style/MainActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -37,6 +37,32 @@
             android:name=".ui.AnswerActivity"
             android:screenOrientation="portrait"
             />
+
+        <service
+            android:name=".service.fcm.FcmRegistrationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.fcm.FcmMessagingService"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:exported="false"
+            android:name=".service.notifications.NotificationJobService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"

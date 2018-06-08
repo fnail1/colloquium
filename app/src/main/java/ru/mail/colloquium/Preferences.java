@@ -59,7 +59,7 @@ public class Preferences {
         onOpen(context);
     }
 
-    Preferences(App context, String userId, Profile profile) {
+    Preferences(App context, String userId) {
         common = PreferenceManager.getDefaultSharedPreferences(context);
         common.edit().putString(USER_ID, userId).apply();
 
@@ -67,7 +67,6 @@ public class Preferences {
         uniqueIdCurrentValue = new AtomicInteger(uniqueIdStoredValue + 100);
 
         personal = context.getSharedPreferences(AppData.normalizeDbName(userId), Context.MODE_PRIVATE);
-        this.profile = profile;
         onOpen(context);
     }
 
@@ -140,8 +139,8 @@ public class Preferences {
         return personal.getString(ACCESS_TOKEN, null);
     }
 
-    public void onLogin(String accessToken) {
-        profile = null;
+    public void onLogin(String accessToken, Profile profile) {
+        this.profile = profile;
         personal.edit()
                 .putString(ACCESS_TOKEN, accessToken)
                 .apply();

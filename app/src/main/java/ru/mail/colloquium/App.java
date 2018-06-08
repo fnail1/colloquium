@@ -2,17 +2,25 @@ package ru.mail.colloquium;
 
 import android.app.Application;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import ru.mail.colloquium.api.ApiService;
 import ru.mail.colloquium.api.model.GsonProfileResponse;
+import ru.mail.colloquium.diagnostics.Logger;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Gender;
 import ru.mail.colloquium.model.types.Profile;
+import ru.mail.colloquium.service.AbsRequestTask;
 import ru.mail.colloquium.service.AppService;
 import ru.mail.colloquium.service.AppStateObserver;
+import ru.mail.colloquium.service.fcm.FcmRegistrationService;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
+import ru.mail.colloquium.toolkit.http.ServerException;
 import ru.mail.colloquium.toolkit.network.NetworkObserver;
 import ru.mail.colloquium.ui.ScreenMetrics;
 import ru.mail.colloquium.utils.DateTimeService;
@@ -30,6 +38,7 @@ public class App extends Application {
     private ApiService apiService;
     private DateTimeService dateTimeService;
     private PhotoManager photoManager;
+    private FirebaseJobDispatcher jobDispatcher;
 
 
     public static AppData data() {
@@ -76,6 +85,10 @@ public class App extends Application {
         return instance.photoManager;
     }
 
+    public static FirebaseJobDispatcher dispatcher() {
+        return instance.jobDispatcher;
+    }
+
     public static App app() {
         return instance;
     }
@@ -94,14 +107,23 @@ public class App extends Application {
         apiService = ApiService.Creator.newService(preferences.getApiSet(), this);
         dateTimeService = new DateTimeService(this, preferences);
         photoManager = new PhotoManager(this, appStateObserver);
+        jobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
 
         instance = this;
 
+
+//        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(() -> {
+//            try {
+//                Logger.logV("FCM", FcmRegistrationService.getAccessToken());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
 
     public void onLogin(String accessToken, Profile profile) {
-        preferences = new Preferences(this, profile.phone, profile);
-        preferences.onLogin(accessToken);
+        preferences = new Preferences(this, profile.phone);
+        preferences.onLogin(accessToken, profile);
         preferences.save(profile);
 
         AppData old = this.data;
@@ -112,6 +134,8 @@ public class App extends Application {
         if (this.data.questions.selectCurrent() == null) {
             appService.requestNextQuestion();
         }
+
+        appService.syncFcm();
     }
 
     public void logout() {

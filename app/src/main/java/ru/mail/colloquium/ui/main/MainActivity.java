@@ -2,6 +2,7 @@ package ru.mail.colloquium.ui.main;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,10 +73,22 @@ public class MainActivity extends BaseActivity {
                     case DARK:
                         colorTitle = 0xff546d79;
                         colorSubtitle = 0xff9ab3c0;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            View decorView = getWindow().getDecorView();
+                            int flags = decorView.getSystemUiVisibility();
+                            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                            decorView.setSystemUiVisibility(flags);
+                        }
                         break;
                     case LIGHT:
                         colorTitle = Utils.getColor(MainActivity.this, R.color.colorTitle);
                         colorSubtitle = Utils.getColor(MainActivity.this, R.color.colorSubtitle);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            View decorView = getWindow().getDecorView();
+                            int flags = decorView.getSystemUiVisibility();
+                            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                            decorView.setSystemUiVisibility(flags);
+                        }
                         break;
                     default:
                         safeThrow(new Exception("" + tabsTheme));

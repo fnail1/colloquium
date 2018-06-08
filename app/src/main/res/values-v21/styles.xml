@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -22,11 +22,20 @@
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.TransparentStatus">
+    <style name="AppTheme.TransparentStatus" parent="Theme.AppCompat">
         <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:statusBarColor">#00000000</item>
         <!--<item name="android:windowFullscreen">true</item>-->
         <!--<item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
 
     </style>
+
+    <style name="MainActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <item name="android:statusBarColor">@color/mw_fade_black_30</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
+
+    </style>
+
 </resources>

@@ -1,5 +1,8 @@
 package ru.mail.colloquium.ui.main.profile;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.net.HttpURLConnection;
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -20,6 +24,8 @@ import retrofit2.Response;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.api.model.GsonResponse;
 import ru.mail.colloquium.diagnostics.DebugUtils;
+import ru.mail.colloquium.model.entities.Contact;
+import ru.mail.colloquium.service.fcm.FcmRegistrationService;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.ui.base.BaseFragment;
 
@@ -43,7 +49,7 @@ public class ProfileFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.import_db, R.id.reset})
+    @OnClick({R.id.import_db, R.id.reset, R.id.copy_fcm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.import_db:
@@ -80,6 +86,16 @@ public class ProfileFragment extends BaseFragment {
                         Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
                     }
                 });
+                break;
+            case R.id.copy_fcm:
+                ClipboardManager clipboardManager;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    clipboardManager = Objects.requireNonNull(getActivity()).getSystemService(ClipboardManager.class);
+                } else {
+                    clipboardManager = (ClipboardManager) Objects.requireNonNull(getActivity()).getSystemService(Context.CLIPBOARD_SERVICE);
+                }
+                ClipData data = ClipData.newPlainText("Colloquium FCM token", FcmRegistrationService.getFcmToken());
+                clipboardManager.setPrimaryClip(data);
                 break;
         }
     }

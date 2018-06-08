@@ -75,12 +75,15 @@ public interface ApiService {
             @Path("code") String code
     );
 
+    @POST("user/fcm_token")
+    @FormUrlEncoded
+    Call<GsonResponse> subscribeFcm(@Field("fcm_token") String token);
 
     /**
      * Заполнение информации пользователя
      *
      * @param name   max длина 30 символов
-     * @param age   max длина 25 символов
+     * @param age    max длина 25 символов
      * @param gender длина 1 символ
      * @return
      */
@@ -97,7 +100,7 @@ public interface ApiService {
      *
      * @param token  "Bearer" + accessToken
      * @param name   max длина 30 символов
-     * @param age   max длина 25 символов
+     * @param age    max длина 25 символов
      * @param gender длина 1 символ
      * @return
      */

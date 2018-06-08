@@ -2,6 +2,7 @@ package ru.mail.colloquium.service;
 
 import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
+import android.text.TextUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -18,6 +19,7 @@ import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.model.entities.Question;
 import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.service.ab.AddressBookSyncHelper;
+import ru.mail.colloquium.service.fcm.FcmRegistrationService;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.events.ObservableEvent;
 import ru.mail.colloquium.toolkit.http.ServerException;
@@ -212,6 +214,33 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     public boolean waitForSynchronisationComplete(long timeout) {
         return true;
+    }
+
+    public void syncFcm() {
+        if (!prefs().hasAccount())
+            return;
+
+        String token = FcmRegistrationService.getFcmToken();
+        if (TextUtils.isEmpty(token))
+            return;
+
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(new SimpleRequestTask<GsonResponse>("syncFcm") {
+            @Override
+            protected void onFinish() {
+
+            }
+
+            @Override
+            protected Call<GsonResponse> getRequest() {
+                return api().subscribeFcm(token);
+            }
+
+            @Override
+            protected void processResponse(AppData appData, GsonResponse body) {
+
+            }
+
+        });
     }
 
     public interface NewQuestionEventHandler {
