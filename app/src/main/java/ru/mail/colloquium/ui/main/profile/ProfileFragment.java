@@ -3,6 +3,7 @@ package ru.mail.colloquium.ui.main.profile;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,9 +25,9 @@ import retrofit2.Response;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.api.model.GsonResponse;
 import ru.mail.colloquium.diagnostics.DebugUtils;
-import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.service.fcm.FcmRegistrationService;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
+import ru.mail.colloquium.ui.settings.SettingsActivity;
 import ru.mail.colloquium.ui.base.BaseFragment;
 
 import static ru.mail.colloquium.App.api;
@@ -49,12 +50,13 @@ public class ProfileFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.import_db, R.id.reset, R.id.copy_fcm})
+    @OnClick({R.id.import_db, R.id.reset, R.id.copy_fcm, R.id.settings})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.import_db:
                 DebugUtils.importFile(getActivity());
                 break;
+
             case R.id.reset:
                 api().resetAnswers().enqueue(new Callback<GsonResponse>() {
                     @Override
@@ -87,6 +89,7 @@ public class ProfileFragment extends BaseFragment {
                     }
                 });
                 break;
+
             case R.id.copy_fcm:
                 ClipboardManager clipboardManager;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -96,6 +99,10 @@ public class ProfileFragment extends BaseFragment {
                 }
                 ClipData data = ClipData.newPlainText("Colloquium FCM token", FcmRegistrationService.getFcmToken());
                 clipboardManager.setPrimaryClip(data);
+                break;
+
+            case R.id.settings:
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
                 break;
         }
     }

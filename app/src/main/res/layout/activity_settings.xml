@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f8"
+    android:paddingTop="24dp"
+    tools:context=".ui.settings.SettingsActivity"
+    >
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back"
+        android:tint="@color/mw_fade_black_80"
+        tools:ignore="RtlHardcoded"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:text="Настройки"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        android:textStyle="bold"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/title"
+        android:background="#9ab3c0"/>
+
+
+    <Switch
+        android:id="@+id/notifications"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/title"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:drawableLeft="@drawable/ic_cellphone"
+        android:drawablePadding="24dp"
+        android:foreground="@drawable/ripple_rect_view_light"
+        android:text="Уведомления"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        tools:ignore="RtlHardcoded"/>
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/notifications"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:background="@drawable/ripple_rect_view_light"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_exit"
+        android:drawablePadding="24dp"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:text="Выход"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#ff0000"
+        tools:ignore="RtlHardcoded"/>
+
+</RelativeLayout>

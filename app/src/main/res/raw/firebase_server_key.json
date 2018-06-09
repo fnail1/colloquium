@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "colloquium-dc2c9",
+  "private_key_id": "b6a38849c65d44d59fe2044f6205d69d873272e3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAk+/+/Qv8H1QV\n2Epgs2Jd2LXlzr9xcoPBBMBhgPRVRtFyp9TexEGwkGhU95CcslSzKECs77400r7d\n0yMxi0vllRZ8pEMDiigGdxMaxE8QXc8oROy0Z1h7Glx2bZ4/xsEb1tUuGO3Ywi+3\ntoX9YWSZnG/M5yEaV5/+Tx/lc9t1M2Yy/oAR+Z6IpwYTDiUEgTlwdIhW3vAAf9rD\n2fgg5UOja3HbpsMZvsdXXjlbkn23gmlbtayi11G/30RHahmGPcf1JvzGbOpYmVsx\n/UEOM89PamZFxJqNOfsyH6ky85bThNTD/KZwz3aWjW5Q74qiftmOJTrfjZH2j1Ij\n07rGYJkVAgMBAAECggEAAq48fbvnfg2wlbJCTMjKcnx5AbcoRou9xkLK68CIBiTb\ndwFbjvND59GGxkIA7xFzaOADUHTw3JrfYcaV25NxDcPOwZLmxOaYKojfSPTZFeT8\nZHbbJaK3olUKWvKpLIGXgAv0QTVDIEyJrgC6Kj4AELxS+RLxjMSR+0/+JWtAr4eu\nray3QIsi0c9duCIP157wmx/Sh+loVeJI8uPIDlwYf8U58Yzx9hM72K+NVuxuqgwY\nbM4lOpSjWF4zE26APSaFpm/NmrC8nl1/cp/WstYnNvTvNqbWNF0Cu1YVcQfW+RfX\n4G9OkKKBbvcVqvGavr/hZI0f8/sPahhoXQCyBNuTSQKBgQDwqfcQ/D7mpRR46FVk\nKgeESk+y/SRwXFu3SWnw1vVU4Ur4T1Mi+1RMaBweERBllDRpnmipnX1mD7JL1KI9\nJapzCEMZb9TX3kYk+Pg75OKPL0JGwdf+pKpbvVMj54tl+PbQxv06rjv2Te9uTEkw\nvo+qM7ewen3rBngpOwTPpmq2vQKBgQDM2YcjhiaoMGlcjIK9b0SJJJ7clL9FHoeq\nwrQ8SYs6WqdBRnt4i4Y2w+4fXe9xc9dfY+bsycF99lG/g86ePxuhjChrTYSxSGlL\nGFEMjH1dR5ziqm0JA+6EfTMC15IAvtMOyNH1tBqsR6FClqN96+WakjJ3xhVdOu1J\nxIVjf3ydOQKBgHZwXywXx+kAoyOhy6yA1rQvUivXUyCNA4IfeijR0WkVeyza9SJJ\nKEJ2Fihh43zqRCUalY2r+TPKU8fn/HQ1Xj5Aea1CETCvrjux35CyYyFuc6KY8XDb\nnw+JDCqmYD8uGGHFHIjNiKr9zfCtUHPRxKhRzXvnvKJ2y5oW9pYu42PNAoGBAMDV\noNY7CZbYA8bgao5i+NRVCcrBp5AsXi/MG5iI7qxe/AWBkOd4CD7zj+wtJCLblomw\nZIjQn/mwb2HmdREYfS1E4COqlFfCv4O2f01dzwGJUVE6d2u+LMDBjsyFG2biO5I2\nTxeJlHZK863YWk1GTByGtUV0zVW3C/qeKabxMuBZAoGBALvM2caclhPBy/RL4DlQ\neaf4pUj7GTdYc2lT2KQj5kdOxOTeJ82vegZdFkTnDhvKZsRqCiP61QbFDfTtuOc9\nxHpG1UNBxT205pvaCpRE96068dNIdUQPwN6HK37peO+4WZhQMsm1xbjGwom+6v7C\n7qKkHVHaBP0pruuCxVZGnmps\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-gzrmd@colloquium-dc2c9.iam.gserviceaccount.com",
+  "client_id": "108324482047867200880",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gzrmd%40colloquium-dc2c9.iam.gserviceaccount.com"
+}

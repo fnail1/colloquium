@@ -34,7 +34,7 @@ public class FcmRegistrationService extends FirebaseInstanceIdService {
     }
 
 //    public static String getAccessToken() throws IOException {
-//        InputStream stream = app().getResources().openRawResource(R.raw.firebase_server);
+//        InputStream stream = app().getResources().openRawResource(R.raw.firebase_server_key);
 //        GoogleCredential googleCredential = GoogleCredential
 //                .fromStream(stream)
 //                .createScoped(Collections.singletonList("https://www.googleapis.com/auth/firebase.messaging"));
