@@ -10,13 +10,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
+import ru.mail.colloquium.service.AppService;
 import ru.mail.colloquium.ui.ReqCodes;
 import ru.mail.colloquium.ui.base.BaseActivity;
 import ru.mail.colloquium.ui.login.LoginActivity;
@@ -26,20 +28,21 @@ import ru.mail.colloquium.ui.main.profile.ProfileFragment;
 import ru.mail.colloquium.ui.main.questions.QuestionsFragment;
 import ru.mail.colloquium.utils.Utils;
 
+import static ru.mail.colloquium.App.appService;
+import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
-import static ru.mail.colloquium.diagnostics.Logger.trace;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements AppService.AnswerUpdatedEventHandler {
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pages) ViewPager pages;
     private TabsTheme tabsTheme;
+    private int answersCounter = -1;
+    private TextView answersTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
         super.onCreate(savedInstanceState);
         if (!prefs().hasAccount()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -121,8 +124,70 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateAnswersCounter();
+        appService().answerUpdatedEvent.add(this);
+    }
+
+    @Override
+    protected void onPause() {
+        appService().answerUpdatedEvent.remove(this);
+        super.onPause();
+    }
+
+    private void updateAnswersCounter() {
+        if (answersTitle == null) {
+            TextView textView = findTitleMy(tabs);
+            if (textView == null)
+                return;
+
+            answersTitle = textView;
+        }
+
+        answersCounter = data().answers.countUnread();
+        CharSequence text = formatAnswersTitle();
+        answersTitle.setText(text);
+    }
+
+    private CharSequence formatAnswersTitle() {
+        String text;
+        if (answersCounter < 0)
+            answersCounter = data().answers.countUnread();
+
+        if (answersCounter == 0)
+            return "Мои";
+        if (answersCounter > 99)
+            text = "Мои <font color='red'><b>(99+)</b></font>";
+        else
+            text = "Мои <font color='red'><b>(" + answersCounter + ")</b></font>";
+        return Html.fromHtml(text);
+    }
+
+    private TextView findTitleMy(ViewGroup root) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View child = root.getChildAt(i);
+            if (child instanceof TextView) {
+                TextView textView = (TextView) child;
+                if (textView.getText().toString().equals("Мои"))
+                    return textView;
+            } else if (child instanceof ViewGroup) {
+                TextView textView = findTitleMy((ViewGroup) child);
+                if (textView != null)
+                    return textView;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void onAnswerUpdated() {
+        runOnUiThread(this::updateAnswersCounter);
+    }
+
     private class MyAdapter extends FragmentStatePagerAdapter {
-        public MyAdapter(FragmentManager fm) {
+        MyAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -151,7 +216,7 @@ public class MainActivity extends BaseActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Мои";
+                    return formatAnswersTitle();
                 case 1:
                     return "Контакты";
                 case 2:

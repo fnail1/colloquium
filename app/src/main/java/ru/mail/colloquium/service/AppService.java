@@ -49,10 +49,10 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
-    public final ObservableEvent<AnswerUpdatedEventHandler, AppService, Question> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, Question>(this) {
+    public final ObservableEvent<AnswerUpdatedEventHandler, AppService, Void> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, Void>(this) {
         @Override
-        protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, Question args) {
-            handler.onAnswerUpdated(args);
+        protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, Void args) {
+            handler.onAnswerUpdated();
         }
     };
 
@@ -252,6 +252,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     public interface AnswerUpdatedEventHandler {
-        void onAnswerUpdated(Question args);
+        void onAnswerUpdated();
     }
 }
