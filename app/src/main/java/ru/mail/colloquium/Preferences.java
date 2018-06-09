@@ -151,7 +151,7 @@ public class Preferences {
         if (common != null)
             common.edit()
                     .remove(USER_ID)
-                    .apply();
+                    .commit();
     }
 
     public boolean isPermissionRequested(String permission) {

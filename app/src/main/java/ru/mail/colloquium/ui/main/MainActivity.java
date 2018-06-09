@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -32,9 +33,11 @@ import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
+import static ru.mail.colloquium.diagnostics.Logger.trace;
 
 public class MainActivity extends BaseActivity implements AppService.AnswerUpdatedEventHandler {
 
+    public static final String MY_TITLE_TAG = "MyTitleTag";
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pages) ViewPager pages;
     private TabsTheme tabsTheme;
@@ -127,7 +130,6 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
     @Override
     protected void onResume() {
         super.onResume();
-        updateAnswersCounter();
         appService().answerUpdatedEvent.add(this);
     }
 
@@ -137,24 +139,12 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
         super.onPause();
     }
 
-    private void updateAnswersCounter() {
-        if (answersTitle == null) {
-            TextView textView = findTitleMy(tabs);
-            if (textView == null)
-                return;
-
-            answersTitle = textView;
-        }
-
-        answersCounter = data().answers.countUnread();
-        CharSequence text = formatAnswersTitle();
-        answersTitle.setText(text);
-    }
-
     private CharSequence formatAnswersTitle() {
         String text;
         if (answersCounter < 0)
             answersCounter = data().answers.countUnread();
+
+        trace("%d", answersCounter);
 
         if (answersCounter == 0)
             return "Мои";
@@ -165,25 +155,13 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
         return Html.fromHtml(text);
     }
 
-    private TextView findTitleMy(ViewGroup root) {
-        for (int i = 0; i < root.getChildCount(); i++) {
-            View child = root.getChildAt(i);
-            if (child instanceof TextView) {
-                TextView textView = (TextView) child;
-                if (textView.getText().toString().equals("Мои"))
-                    return textView;
-            } else if (child instanceof ViewGroup) {
-                TextView textView = findTitleMy((ViewGroup) child);
-                if (textView != null)
-                    return textView;
-            }
-        }
-        return null;
-    }
-
     @Override
     public void onAnswerUpdated() {
-        runOnUiThread(this::updateAnswersCounter);
+        runOnUiThread(() -> {
+            answersCounter = data().answers.countUnread();
+            trace("" + answersCounter);
+            pages.getAdapter().notifyDataSetChanged();
+        });
     }
 
     private class MyAdapter extends FragmentStatePagerAdapter {

@@ -140,6 +140,7 @@ public class App extends Application {
 
     public void logout() {
         preferences.onLogout();
+        data.close();
         System.exit(0);
     }
 }

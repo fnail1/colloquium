@@ -27,7 +27,6 @@ import static ru.mail.colloquium.diagnostics.Logger.logFcm;
 public class FcmMessagingService extends FirebaseMessagingService {
 
 
-
     @Override
     public void onMessageReceived(RemoteMessage message) {
         super.onMessageReceived(message);
@@ -36,16 +35,16 @@ public class FcmMessagingService extends FirebaseMessagingService {
         logFcm("new message %s, %s, %s",
                 message.getTo(), message.getMessageType(), message.getData());
 
-        String uid = data.get("uid");
-        String loggedUid = prefs().profile().phone;
-        if (!TextUtils.equals(uid, loggedUid)) {
-            logFcm("Message ignored: addressee is \'%s\', but logged user is \'%s\'", uid, loggedUid);
-            return;
-        }
+//        String uid = data.get("uid");
+//        String loggedUid = prefs().profile().phone;
+//        if (!TextUtils.equals(uid, loggedUid)) {
+//            logFcm("Message ignored: addressee is \'%s\', but logged user is \'%s\'", uid, loggedUid);
+//            return;
+//        }
 
         Gson gson = gson();
         try {
-
+            startNotificationJob(NotificationJobService.TYPE_SYNC_ANSWERS, null);
 
         } catch (Exception e) {
             safeThrow(e);
@@ -63,7 +62,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
         Job job = dispatcher.newJobBuilder()
                 .setService(NotificationJobService.class)
                 .setTag(tag)
-                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                .setLifetime(Lifetime.FOREVER)
                 .setTrigger(Trigger.executionWindow(0, 120))
                 .setReplaceCurrent(true)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
