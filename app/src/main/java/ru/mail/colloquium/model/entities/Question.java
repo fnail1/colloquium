@@ -13,8 +13,9 @@ public class Question extends BaseRow {
     public static final int FLAG_ANSWERED = 1;
     public static final int FLAG_SENT = 2;
 
-    @DbColumn(unique = true)
     public String serverId;
+    @DbColumn(unique = true)
+    public String uniqueId;
     public String emojiUrl;
     public String emojiText;
     public String question;

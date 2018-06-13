@@ -30,8 +30,8 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
         int k = random.nextInt() & m;
         String sql = selectAll + "\n" +
 //                "order by (phone like '7999111223%') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n" +
-                "order by length(displayName) desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n" +
-//                "order by (" + a + " + _id * " + k + ") & " + m + "\n" +
+//                "order by length(displayName) desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n" +
+                "order by (" + a + " + _id * " + k + ") & " + m + "\n" +
                 "limit " + count + " offset 0";
 
         return new ContactsCursor(db.rawQuery(sql, null));

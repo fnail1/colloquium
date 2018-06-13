@@ -2,6 +2,7 @@ package ru.mail.colloquium.api.model;
 
 public class GsonQuestionResponse {
     public GsonQuestion question;
+    public int question_cycle;
 
     public class GsonQuestion {
         public String id;

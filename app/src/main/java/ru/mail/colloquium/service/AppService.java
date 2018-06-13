@@ -99,7 +99,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                     @Override
                     protected void processResponse(AppData appData, GsonQuestionResponse body) {
                         question = new Question();
-                        MergeHelper.merge(question, body.question);
+                        MergeHelper.merge(question, body.question, body.question_cycle);
                         data().questions.save(question);
                     }
 

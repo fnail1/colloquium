@@ -16,13 +16,14 @@ import static ru.mail.colloquium.App.prefs;
 
 public class MergeHelper {
 
-    public static void merge(AppData appData, Question dst, GsonQuestionResponse.GsonQuestion src) {
-        merge(dst, src);
+    public static void merge(AppData appData, Question dst, GsonQuestionResponse.GsonQuestion src, int questionCycle) {
+        merge(dst, src, questionCycle);
         appData.questions.save(dst);
     }
 
-    public static void merge(Question dst, GsonQuestionResponse.GsonQuestion src) {
+    public static void merge(Question dst, GsonQuestionResponse.GsonQuestion src, int questionCycle) {
         dst.serverId = src.id;
+        dst.uniqueId = src.id + ':' + questionCycle;
         dst.emojiUrl = prefs().getApiSet().fixSslForSandbox(src.url);
         dst.emojiText = src.alt;
         if (dst.emojiUrl == null) {
@@ -36,7 +37,7 @@ public class MergeHelper {
 
     public static void merge(Answer dst, GsonQuestionResponse.GsonQuestion src) {
         dst.questionServerId = src.id;
-        dst.questionEmoji =  prefs().getApiSet().fixSslForSandbox(src.url);
+        dst.questionEmoji = prefs().getApiSet().fixSslForSandbox(src.url);
         dst.questionText = src.question;
         dst.questionCreatedAt = dateTimeService().parseServerTime(src.created_at);
         dst.questionUpdatedAt = dateTimeService().parseServerTime(src.updated_at);
