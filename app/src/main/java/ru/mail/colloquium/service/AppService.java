@@ -193,7 +193,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     public void answerViewed(Answer answer) {
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask("answerViewed") {
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask("answerViewed" + answer.serverId) {
 
             @Override
             protected void performRequest(AppData appData) throws IOException, ServerException {

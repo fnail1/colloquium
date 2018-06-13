@@ -48,7 +48,6 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MyAdapter adapter = new MyAdapter();
-        adapter.init();
         list.setAdapter(adapter);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -64,6 +63,10 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
         super.onResume();
         appService().answerUpdatedEvent.add(this);
         appService().requestAnswers();
+
+        MyAdapter adapter = (MyAdapter) list.getAdapter();
+        adapter.init();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -137,7 +140,7 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
 
         @Override
         public int getItemCount() {
-            return dataSource.count();
+            return dataSource != null ? dataSource.count() : 0;
         }
     }
 
