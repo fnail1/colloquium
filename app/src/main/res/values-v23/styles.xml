@@ -2,12 +2,8 @@
 <resources>
 
     <style name="MainActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:statusBarColor">#00000000</item>
-        <item name="android:windowLightStatusBar">true</item>
-
-        <!--<item name="android:windowFullscreen">true</item>-->
-        <!--<item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
-
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@drawable/bg_main</item>
     </style>
 </resources>

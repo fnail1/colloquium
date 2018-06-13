@@ -56,6 +56,13 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
+    public final ObservableEvent<ContactsSynchronizationEventHandler, AppService, Void> contactsSynchronizationEvent = new ObservableEvent<ContactsSynchronizationEventHandler, AppService, Void>(this) {
+        @Override
+        protected void notifyHandler(ContactsSynchronizationEventHandler handler, AppService sender, Void args) {
+            handler.onContactsSynchronizationComoplete();
+        }
+    };
+
     public AppService(AppStateObserver appStateObserver) {
         this.appStateObserver = appStateObserver;
         appStateObserver.stateEvent.add(this);
@@ -78,6 +85,10 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(() -> {
             AddressBookSyncHelper.doSync(app());
+            ServiceState serviceState = prefs().serviceState();
+            serviceState.lastSync = dateTimeService().getServerTime();
+            prefs().save(serviceState);
+            contactsSynchronizationEvent.fire(null);
         });
     }
 
@@ -253,5 +264,9 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     public interface AnswerUpdatedEventHandler {
         void onAnswerUpdated();
+    }
+
+    public interface ContactsSynchronizationEventHandler {
+        void onContactsSynchronizationComoplete();
     }
 }

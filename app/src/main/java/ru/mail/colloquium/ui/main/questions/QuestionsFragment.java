@@ -18,12 +18,14 @@ import ru.mail.colloquium.model.entities.Question;
 import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.service.AppService;
 import ru.mail.colloquium.ui.base.BaseFragment;
+import ru.mail.colloquium.ui.main.MainActivity;
 
 import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
+import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.App.screenMetrics;
 
-public class QuestionsFragment extends BaseFragment implements AppService.NewQuestionEventHandler, QuestionViewHolder.QuestionAnsweredCallback, AppService.AnswerSentEventHandler {
+public class QuestionsFragment extends BaseFragment implements AppService.NewQuestionEventHandler, QuestionViewHolder.QuestionAnsweredCallback, AppService.AnswerSentEventHandler, AppService.ContactsSynchronizationEventHandler {
     public static final String STATE_QUESTION_ID = "question_id";
 
     @BindView(R.id.page1) View page1;
@@ -53,13 +55,20 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         page1.setVisibility(View.GONE);
         page2.setVisibility(View.GONE);
 
-        if (savedInstanceState == null) {
-            question = data().questions.selectCurrent();
-        } else {
-            long qid = savedInstanceState.getLong(STATE_QUESTION_ID);
-            question = data().questions.selectById(qid);
-        }
+        question = data().questions.selectCurrent();
 
+        if (question == null || prefs().serviceState().lastSync <= 0) {
+            page1.setVisibility(View.GONE);
+            page2.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
+            if (question == null)
+                appService().requestNextQuestion();
+        } else {
+            foreground.bind(question);
+            foreground.root.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.GONE);
+            noQuestions.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -73,18 +82,8 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         super.onResume();
         appService().newQuestionEvent.add(this);
         appService().answerSentEvent.add(this);
+        appService().contactsSynchronizationEvent.add(this);
 
-        if (question == null) {
-            page1.setVisibility(View.GONE);
-            page2.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);
-            appService().requestNextQuestion();
-        } else {
-            foreground.bind(question);
-            foreground.root.setVisibility(View.VISIBLE);
-            progress.setVisibility(View.GONE);
-            noQuestions.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -92,6 +91,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         super.onPause();
         appService().newQuestionEvent.remove(this);
         appService().answerSentEvent.remove(this);
+        appService().contactsSynchronizationEvent.remove(this);
     }
 
     @Override
@@ -107,29 +107,22 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             return;
 
         Question q = data().questions.selectCurrent();
+        if (q == null || prefs().serviceState().lastSync <= 0)
+            return;
+
         activity.runOnUiThread(() -> {
             noQuestions.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
 
             if (question == null) {
-                if (q != null) {
-                    foreground.root.setVisibility(View.VISIBLE);
-                    foreground.bind(question = q);
-                } else {
-                    noQuestions.setVisibility(View.VISIBLE);
-                    foreground.root.setVisibility(View.GONE);
-                    background.root.setVisibility(View.GONE);
-                }
+                foreground.root.setVisibility(View.VISIBLE);
+                foreground.bind(question = q);
             } else {
-                if (q != null) {
-                    QuestionViewHolder t = foreground;
-                    foreground = background;
-                    background = t;
-                    foreground.bind(question = q);
-                    animateSwap(background.root, foreground.root);
-                } else {
-                    animateSwap(foreground.root, noQuestions);
-                }
+                QuestionViewHolder t = foreground;
+                foreground = background;
+                background = t;
+                foreground.bind(question = q);
+                animateSwap(background.root, foreground.root);
             }
         });
     }
@@ -159,5 +152,10 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onAnswerSent(Question args) {
         progress.setVisibility(View.GONE);
         appService().requestNextQuestion();
+    }
+
+    @Override
+    public void onContactsSynchronizationComoplete() {
+        onNewQuestion(null);
     }
 }

@@ -12,9 +12,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,12 +34,10 @@ import static ru.mail.colloquium.diagnostics.Logger.trace;
 
 public class MainActivity extends BaseActivity implements AppService.AnswerUpdatedEventHandler {
 
-    public static final String MY_TITLE_TAG = "MyTitleTag";
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pages) ViewPager pages;
     private TabsTheme tabsTheme;
     private int answersCounter = -1;
-    private TextView answersTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +58,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 float f = position + positionOffset;
-                if (1.5f < f && f <= 2.5f) {
+                if (.5f < f && f <= 1.5f) {
                     if (tabsTheme == TabsTheme.LIGHT)
                         return;
                     tabsTheme = TabsTheme.LIGHT;
@@ -107,7 +102,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
 
             @Override
             public void onPageSelected(int position) {
-
+                trace();
             }
 
             @Override
@@ -116,6 +111,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
             }
         });
         tabs.setupWithViewPager(pages);
+        pages.setCurrentItem(1);
     }
 
     @Override
@@ -175,18 +171,18 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
                 case 0:
                     return new AnswersFragment();
                 case 1:
-                    return new ContactsFragment();
-                case 2:
                     return new QuestionsFragment();
-                case 3:
+                case 2:
                     return new ProfileFragment();
+                case 3:
+                    return new ContactsFragment();
             }
             throw new IllegalArgumentException();
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
 
         @Nullable
@@ -196,11 +192,11 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
                 case 0:
                     return formatAnswersTitle();
                 case 1:
-                    return "Контакты";
-                case 2:
                     return "Вопросы";
-                case 3:
+                case 2:
                     return "Профиль";
+                case 3:
+                    return "Контакты";
             }
             throw new IllegalArgumentException();
         }
