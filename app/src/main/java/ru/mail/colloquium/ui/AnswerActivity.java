@@ -16,6 +16,7 @@ import butterknife.OnClick;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.model.entities.Contact;
+import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.ui.base.BaseActivity;
 
 import static ru.mail.colloquium.App.appService;
@@ -88,23 +89,32 @@ public class AnswerActivity extends BaseActivity {
         Contact d = contacts.get(answer.variantD);
         variant4.setText(d != null ? d.displayName : "?");
 
-        switch (answer.answer) {
-            case A:
-                variant1.setBackgroundResource(R.drawable.bg_white_button_selected);
-                break;
-            case B:
-                variant2.setBackgroundResource(R.drawable.bg_white_button_selected);
-                break;
-            case C:
-                variant3.setBackgroundResource(R.drawable.bg_white_button_selected);
-                break;
-            case D:
-                variant4.setBackgroundResource(R.drawable.bg_white_button_selected);
-                break;
-            case E:
-                safeThrow(new Exception("No answer: " + answer.serverId));
-                break;
-        }
+        if (answer.answer != Choice.A)
+            variant1.setAlpha(.5f);
+        if (answer.answer != Choice.B)
+            variant2.setAlpha(.5f);
+        if (answer.answer != Choice.C)
+            variant3.setAlpha(.5f);
+        if (answer.answer != Choice.D)
+            variant4.setAlpha(.5f);
+
+//        switch (answer.answer) {
+//            case A:
+//                variant1.setBackgroundResource(R.drawable.bg_white_button_selected);
+//                break;
+//            case B:
+//                variant2.setBackgroundResource(R.drawable.bg_white_button_selected);
+//                break;
+//            case C:
+//                variant3.setBackgroundResource(R.drawable.bg_white_button_selected);
+//                break;
+//            case D:
+//                variant4.setBackgroundResource(R.drawable.bg_white_button_selected);
+//                break;
+//            case E:
+//                safeThrow(new Exception("No answer: " + answer.serverId));
+//                break;
+//        }
     }
 
     @Override
