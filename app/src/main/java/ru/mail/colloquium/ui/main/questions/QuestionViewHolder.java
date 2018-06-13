@@ -52,7 +52,7 @@ public class QuestionViewHolder {
     }
 
     public void bind(Question question) {
-        root.setBackgroundColor(COLORS[(question.serverId.hashCode() & 0xff) % COLORS.length]);
+        root.setBackgroundColor(COLORS[(question.uniqueId.hashCode() & 0xffff) % COLORS.length]);
         photos().attach(icon, question.emojiUrl)
                 .size(
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
