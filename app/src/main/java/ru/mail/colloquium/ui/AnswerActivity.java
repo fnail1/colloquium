@@ -78,16 +78,16 @@ public class AnswerActivity extends BaseActivity {
         HashMap<String, Contact> contacts = data().contacts.select(answer).toMap(c -> c.serverId);
 
         Contact a = contacts.get(answer.variantA);
-        variant1.setText(a != null ? a.displayName : "?");
+        variant1.setText(a != null ? a.displayName : getString(R.string.hidden));
 
         Contact b = contacts.get(answer.variantB);
-        variant2.setText(b != null ? b.displayName : "?");
+        variant2.setText(b != null ? b.displayName : getString(R.string.hidden));
 
         Contact c = contacts.get(answer.variantC);
-        variant3.setText(c != null ? c.displayName : "?");
+        variant3.setText(c != null ? c.displayName : getString(R.string.hidden));
 
         Contact d = contacts.get(answer.variantD);
-        variant4.setText(d != null ? d.displayName : "?");
+        variant4.setText(d != null ? d.displayName : getString(R.string.hidden));
 
         if (answer.answer != Choice.A)
             variant1.setAlpha(.5f);
