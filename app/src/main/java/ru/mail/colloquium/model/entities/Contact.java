@@ -32,6 +32,8 @@ public class Contact extends BaseRow {
     public long contactLastUpdatedTimestamp;
     public String avatar;
 
+    public boolean inviteSent;
+
     public void onUpdateName() {
         if (namePrefix != null) {
             namePrefix = namePrefix.trim();

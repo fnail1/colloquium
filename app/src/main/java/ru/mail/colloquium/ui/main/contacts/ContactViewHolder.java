@@ -10,12 +10,16 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.mail.colloquium.R;
+import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.entities.Contact;
+import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
+import ru.mail.colloquium.utils.AntiDoubleClickLock;
 import ru.mail.colloquium.utils.AvatarBuilder;
 import ru.mail.colloquium.utils.photomanager.PhotoRequest;
 
-import static ru.mail.colloquium.App.networkObserver;
+import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.photos;
 
 public class ContactViewHolder extends RecyclerView.ViewHolder {
@@ -49,5 +53,16 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
                     }).commit();
         }
         name.setText(contact.displayName);
+        invite.setVisibility(contact.inviteSent ? View.GONE : View.VISIBLE);
+    }
+
+    @OnClick(R.id.invite)
+    public void onViewClicked() {
+        if (!AntiDoubleClickLock.onClick(this, R.id.invite))
+            return;
+        contact.inviteSent = true;
+        Runnable runnable = () -> data().contacts.save(contact);
+        ThreadPool.DB.execute(runnable);
+        bind(contact);
     }
 }

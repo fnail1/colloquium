@@ -82,6 +82,7 @@
     <string name="age_year6">6 курс</string>
     <string name="age_superstar">Не известно</string>
     <string name="gender_unknown">Не указан</string>
+    <string name="search">Найти</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>

@@ -57,6 +57,7 @@
 
 
         <TextView
+            android:id="@+id/contacts"
             style="@style/AccentButton"
             android:layout_width="276dp"
             android:layout_height="58dp"
