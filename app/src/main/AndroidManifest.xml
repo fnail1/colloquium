@@ -41,13 +41,14 @@
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MainActivityTheme"/>
+            />
 
         <activity
             android:name=".ui.ContactsActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/MainActivityTheme"/>
+            android:theme="@style/AppTheme"
+            />
 
 
         <service
