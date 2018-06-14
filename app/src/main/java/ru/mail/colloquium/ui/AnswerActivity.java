@@ -2,7 +2,7 @@ package ru.mail.colloquium.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,11 +17,12 @@ import ru.mail.colloquium.R;
 import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.model.types.Choice;
+import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.ui.base.BaseActivity;
+import ru.mail.colloquium.ui.main.questions.VariantViewHolder;
 
 import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
-import static ru.mail.colloquium.App.photos;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 
 public class AnswerActivity extends BaseActivity {
@@ -29,27 +30,57 @@ public class AnswerActivity extends BaseActivity {
 
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.message) TextView message;
-    @BindView(R.id.variant1) TextView variant1;
-    @BindView(R.id.variant2) TextView variant2;
-    @BindView(R.id.variant3) TextView variant3;
-    @BindView(R.id.variant4) TextView variant4;
     @BindView(R.id.answers) LinearLayout answers;
     @BindView(R.id.author) TextView author;
     @BindView(R.id.root) RelativeLayout root;
     @BindView(R.id.back) ImageView back;
+    @BindView(R.id.variant1Text1) TextView variant1Text1;
+    @BindView(R.id.variant1Text2) TextView variant1Text2;
+    @BindView(R.id.variant1) LinearLayout variant1;
+    @BindView(R.id.variant2Text1) TextView variant2Text1;
+    @BindView(R.id.variant2Text2) TextView variant2Text2;
+    @BindView(R.id.variant2) LinearLayout variant2;
+    @BindView(R.id.variant3Text1) TextView variant3Text1;
+    @BindView(R.id.variant3Text2) TextView variant3Text2;
+    @BindView(R.id.variant3) LinearLayout variant3;
+    @BindView(R.id.variant4Text1) TextView variant4Text1;
+    @BindView(R.id.variant4Text2) TextView variant4Text2;
+    @BindView(R.id.variant4) LinearLayout variant4;
     private Answer answer;
+    private VariantViewHolder v1;
+    private VariantViewHolder v2;
+    private VariantViewHolder v3;
+    private VariantViewHolder v4;
+    private HashMap<String, Contact> contacts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
         ButterKnife.bind(this);
+        v1 = new VariantViewHolder(variant1, variant1Text1, variant1Text2);
+        v2 = new VariantViewHolder(variant2, variant2Text1, variant2Text2);
+        v3 = new VariantViewHolder(variant3, variant3Text1, variant3Text2);
+        v4 = new VariantViewHolder(variant4, variant4Text1, variant4Text2);
 
         long id = getIntent().getLongExtra(EXTRA_ANSWER_ID, 0);
-        answer = data().answers.selectById(id);
-        if (answer == null) {
-            safeThrow(new IllegalArgumentException("id = " + id));
-            finish();
+
+        ThreadPool.DB.execute(() -> {
+            answer = data().answers.selectById(id);
+            contacts = data().contacts.select(answer).toMap(c -> c.serverId);
+            runOnUiThread(this::bindData);
+        });
+
+        answers.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            answers.post(() -> {
+                bindData();
+            });
+        });
+
+    }
+
+    private void bindData() {
+        if (answer == null || answers.getWidth() == 0) {
             return;
         }
 
@@ -75,19 +106,18 @@ public class AnswerActivity extends BaseActivity {
 
         message.setText(answer.questionText);
 
-        HashMap<String, Contact> contacts = data().contacts.select(answer).toMap(c -> c.serverId);
 
         Contact a = contacts.get(answer.variantA);
-        variant1.setText(a != null ? a.displayName : getString(R.string.hidden));
+        v1.bind(a);
 
         Contact b = contacts.get(answer.variantB);
-        variant2.setText(b != null ? b.displayName : getString(R.string.hidden));
+        v2.bind(b);
 
         Contact c = contacts.get(answer.variantC);
-        variant3.setText(c != null ? c.displayName : getString(R.string.hidden));
+        v3.bind(c);
 
         Contact d = contacts.get(answer.variantD);
-        variant4.setText(d != null ? d.displayName : getString(R.string.hidden));
+        v4.bind(d);
 
         if (answer.answer != Choice.A)
             variant1.setAlpha(.5f);
@@ -98,23 +128,6 @@ public class AnswerActivity extends BaseActivity {
         if (answer.answer != Choice.D)
             variant4.setAlpha(.5f);
 
-//        switch (answer.answer) {
-//            case A:
-//                variant1.setBackgroundResource(R.drawable.bg_white_button_selected);
-//                break;
-//            case B:
-//                variant2.setBackgroundResource(R.drawable.bg_white_button_selected);
-//                break;
-//            case C:
-//                variant3.setBackgroundResource(R.drawable.bg_white_button_selected);
-//                break;
-//            case D:
-//                variant4.setBackgroundResource(R.drawable.bg_white_button_selected);
-//                break;
-//            case E:
-//                safeThrow(new Exception("No answer: " + answer.serverId));
-//                break;
-//        }
     }
 
     @Override

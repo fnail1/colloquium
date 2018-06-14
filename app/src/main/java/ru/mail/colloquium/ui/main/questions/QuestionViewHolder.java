@@ -1,7 +1,5 @@
 package ru.mail.colloquium.ui.main.questions;
 
-import android.os.SystemClock;
-import android.support.annotation.ColorInt;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,13 +31,26 @@ public class QuestionViewHolder {
     private final QuestionAnsweredCallback callback;
     public final View root;
     @BindView(R.id.icon) ImageView icon;
-    @BindView(R.id.variant1) TextView variant1;
-    @BindView(R.id.variant2) TextView variant2;
-    @BindView(R.id.variant3) TextView variant3;
-    @BindView(R.id.variant4) TextView variant4;
+
     @BindView(R.id.answers) LinearLayout answers;
     @BindView(R.id.skip) TextView skip;
     @BindView(R.id.message) TextView message;
+    @BindView(R.id.variant1Text1) TextView variant1Text1;
+    @BindView(R.id.variant1Text2) TextView variant1Text2;
+    @BindView(R.id.variant1) LinearLayout variant1;
+    @BindView(R.id.variant2Text1) TextView variant2Text1;
+    @BindView(R.id.variant2Text2) TextView variant2Text2;
+    @BindView(R.id.variant2) LinearLayout variant2;
+    @BindView(R.id.variant3Text1) TextView variant3Text1;
+    @BindView(R.id.variant3Text2) TextView variant3Text2;
+    @BindView(R.id.variant3) LinearLayout variant3;
+    @BindView(R.id.variant4Text1) TextView variant4Text1;
+    @BindView(R.id.variant4Text2) TextView variant4Text2;
+    @BindView(R.id.variant4) LinearLayout variant4;
+    private final VariantViewHolder v1;
+    private final VariantViewHolder v2;
+    private final VariantViewHolder v3;
+    private final VariantViewHolder v4;
 
     /**
      * @param callback
@@ -49,6 +60,11 @@ public class QuestionViewHolder {
         this.callback = callback;
         this.root = root;
         ButterKnife.bind(this, root);
+        v1 = new VariantViewHolder(variant1, variant1Text1, variant1Text2);
+        v2 = new VariantViewHolder(variant2, variant2Text1, variant2Text2);
+        v3 = new VariantViewHolder(variant3, variant3Text1, variant3Text2);
+        v4 = new VariantViewHolder(variant4, variant4Text1, variant4Text2);
+//        R.layout.fr_question
     }
 
     public void bind(Question question) {
@@ -81,10 +97,10 @@ public class QuestionViewHolder {
                 data().questions.save(question);
             });
         }
-        variant1.setText(contact1.displayName);
-        variant2.setText(contact2.displayName);
-        variant3.setText(contact3.displayName);
-        variant4.setText(contact4.displayName);
+        v1.bind(contact1);
+        v2.bind(contact2);
+        v3.bind(contact3);
+        v4.bind(contact4);
     }
 
     @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})
