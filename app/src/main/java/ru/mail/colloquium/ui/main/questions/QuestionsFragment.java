@@ -64,7 +64,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             if (question == null)
                 appService().requestNextQuestion();
         } else {
-            foreground.bind(question);
+            foreground.root.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> foreground.bind(question));
             foreground.root.setVisibility(View.VISIBLE);
             progress.setVisibility(View.GONE);
             noQuestions.setVisibility(View.GONE);
@@ -121,7 +121,8 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
                 QuestionViewHolder t = foreground;
                 foreground = background;
                 background = t;
-                foreground.bind(question = q);
+                question = q;
+                foreground.root.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> foreground.bind(question));
                 animateSwap(background.root, foreground.root);
             }
         });
