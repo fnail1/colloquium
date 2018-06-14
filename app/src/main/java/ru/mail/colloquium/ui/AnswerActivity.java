@@ -51,7 +51,7 @@ public class AnswerActivity extends BaseActivity {
     private VariantViewHolder v2;
     private VariantViewHolder v3;
     private VariantViewHolder v4;
-    private HashMap<String, Contact> contacts;
+    private volatile HashMap<String, Contact> contacts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,15 +72,13 @@ public class AnswerActivity extends BaseActivity {
         });
 
         answers.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            answers.post(() -> {
-                bindData();
-            });
+            answers.post(this::bindData);
         });
 
     }
 
     private void bindData() {
-        if (answer == null || answers.getWidth() == 0) {
+        if (contacts == null || answers.getWidth() == 0) {
             return;
         }
 
