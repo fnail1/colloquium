@@ -24,6 +24,10 @@
 
     </style>
 
+    <style name="AnswersActivityTheme" parent="AppTheme">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
     <style name="MainActivityTheme" parent="AppTheme">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowBackground">@drawable/ic_launcher_background</item>

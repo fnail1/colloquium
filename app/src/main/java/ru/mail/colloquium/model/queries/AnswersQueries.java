@@ -25,6 +25,7 @@ public class AnswersQueries extends SQLiteCommands<Answer> {
 
     public CursorWrapper<Answer> select(int skip, int limit) {
         String sql = selectAll + "\n" +
+                "order by (flags & " + Answer.FLAG_VIEWED + ") asc, createdAt desc, serverId desc\n" +
                 "limit " + limit + " offset " + skip;
 
         return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Answer.class, null);

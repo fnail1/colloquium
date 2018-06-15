@@ -10,6 +10,7 @@ import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.model.entities.Question;
 import ru.mail.colloquium.model.types.Profile;
+import ru.mail.colloquium.utils.Utils;
 
 import static ru.mail.colloquium.App.dateTimeService;
 import static ru.mail.colloquium.App.prefs;
@@ -55,6 +56,7 @@ public class MergeHelper {
         dst.variantC = src.variantC;
         dst.variantD = src.variantD;
         dst.answer = src.selected_variant;
+        dst.answerName = src.selected_name;
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.flags.set(Answer.FLAG_VIEWED, src.is_viewed);
         dst.gender = src.sex;
@@ -82,6 +84,7 @@ public class MergeHelper {
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.updatedAt = dateTimeService().parseServerTime(src.updated_at);
         dst.phone = src.phone;
+        dst.serverId = Utils.md5(src.phone);
         dst.gender = src.sex;
         dst.age = src.education;
 

@@ -15,6 +15,7 @@ public class GsonAnswers {
         public String variantC;
         public String variantD;
         public Choice selected_variant;
+        public String selected_name;
         public boolean is_viewed;
         public Gender sex;
         public Age user_education;

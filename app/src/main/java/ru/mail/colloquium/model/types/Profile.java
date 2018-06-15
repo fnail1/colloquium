@@ -9,4 +9,5 @@ public class Profile implements Serializable {
     public long createdAt;
     public long updatedAt;
     public String phone;
+    public String serverId;
 }

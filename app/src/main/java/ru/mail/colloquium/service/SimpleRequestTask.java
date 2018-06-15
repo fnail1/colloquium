@@ -8,6 +8,8 @@ import retrofit2.Response;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.toolkit.http.ServerException;
 
+import static ru.mail.colloquium.App.dateTimeService;
+
 public abstract class SimpleRequestTask<TResponse> extends AbsRequestTask {
 
     protected SimpleRequestTask(String key) {
@@ -23,6 +25,7 @@ public abstract class SimpleRequestTask<TResponse> extends AbsRequestTask {
         TResponse body = response.body();
         if (body == null)
             throw new ServerException(200, key + ": body is null");
+        dateTimeService().adjustServerTimeOffset(response);
         processResponse(appData, body);
     }
 

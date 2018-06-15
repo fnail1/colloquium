@@ -23,6 +23,7 @@ public class Answer extends BaseRow {
     public String variantC;
     public String variantD;
     public Choice answer;
+    public String answerName;
     public String questionServerId;
     public String questionEmoji;
     public String questionText;

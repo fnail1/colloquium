@@ -60,7 +60,7 @@ public class DateTimeService {
 
     private final SimpleDateFormat dateLongFormat = new SimpleDateFormat("d MMMM", Locale.getDefault());
     private final SimpleDateFormat dateLongFormatWithYear = new SimpleDateFormat("d MMMM yyyy", Locale.getDefault());
-    private final SimpleDateFormat serverDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+    private final SimpleDateFormat serverDateTimeFormat;
     private final SimpleDateFormat httpDateTimeFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
     private final String f0;
     private final String f1;
@@ -96,6 +96,8 @@ public class DateTimeService {
                 onServerTimeOffsetChanged();
             }
         }, filter);
+        serverDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        serverDateTimeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
 

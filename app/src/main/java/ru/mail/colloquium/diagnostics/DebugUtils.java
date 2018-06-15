@@ -146,10 +146,10 @@ public class DebugUtils {
             if (dst == null)
                 return;
 
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
             Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", dst);
 
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
             sendIntent.setType("application/octet-stream");
             sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

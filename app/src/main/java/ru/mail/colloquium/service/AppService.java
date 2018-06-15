@@ -176,7 +176,25 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             String p3 = contacts.get(question.variant3).serverId;
             String p4 = contacts.get(question.variant4).serverId;
 
-            Response<GsonResponse> response = api().answer(question.serverId, question.answer, p1, p2, p3, p4).execute();
+            String name = null;
+            switch (question.answer) {
+                case A:
+                    name = contacts.get(question.variant1).displayName;
+                    break;
+                case B:
+                    name = contacts.get(question.variant2).displayName;
+                    break;
+                case C:
+                    name = contacts.get(question.variant3).displayName;
+                    break;
+                case D:
+                    name = contacts.get(question.variant4).displayName;
+                    break;
+                case E:
+                    break;
+            }
+
+            Response<GsonResponse> response = api().answer(question.serverId, question.answer, name, p1, p2, p3, p4).execute();
             switch (response.code()) {
                 case HttpURLConnection.HTTP_OK:
                     break;

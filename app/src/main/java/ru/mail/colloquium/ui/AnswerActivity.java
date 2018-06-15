@@ -2,7 +2,6 @@ package ru.mail.colloquium.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -104,28 +103,24 @@ public class AnswerActivity extends BaseActivity {
 
         message.setText(answer.questionText);
 
+        bindVariant(answer.variantA, Choice.A, variant1, v1);
+        bindVariant(answer.variantB, Choice.B, variant2, v2);
+        bindVariant(answer.variantC, Choice.C, variant3, v3);
+        bindVariant(answer.variantD, Choice.D, variant4, v4);
+    }
 
-        Contact a = contacts.get(answer.variantA);
-        v1.bind(a);
-
-        Contact b = contacts.get(answer.variantB);
-        v2.bind(b);
-
-        Contact c = contacts.get(answer.variantC);
-        v3.bind(c);
-
-        Contact d = contacts.get(answer.variantD);
-        v4.bind(d);
-
-        if (answer.answer != Choice.A)
-            variant1.setAlpha(.5f);
-        if (answer.answer != Choice.B)
-            variant2.setAlpha(.5f);
-        if (answer.answer != Choice.C)
-            variant3.setAlpha(.5f);
-        if (answer.answer != Choice.D)
-            variant4.setAlpha(.5f);
-
+    private void bindVariant(String contactServerId, Choice expected, LinearLayout viewRoot, VariantViewHolder viewText) {
+        Contact contact = contacts.get(contactServerId);
+        if (answer.answer != expected) {
+            viewRoot.setAlpha(.5f);
+            viewText.bind(contact);
+        } else {
+            if (answer.answerName != null) {
+                viewText.bind(answer.answerName);
+            } else {
+                viewText.bind(contact);
+            }
+        }
     }
 
     @Override

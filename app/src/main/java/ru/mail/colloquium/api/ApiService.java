@@ -136,6 +136,7 @@ public interface ApiService {
     Call<GsonResponse> answer(
             @Field("question_id") String questionId,
             @Field("selected_variant") Choice selectedVariant,
+            @Field("selected_name") String selectedName,
             @Field("variantA") String variantA,
             @Field("variantB") String variantB,
             @Field("variantC") String variantC,

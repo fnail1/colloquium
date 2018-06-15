@@ -2,6 +2,7 @@ package ru.mail.colloquium.ui.main;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.style.CharacterStyle;
 import android.view.View;
 
 import butterknife.BindView;
@@ -38,6 +41,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
     @BindView(R.id.pages) ViewPager pages;
     private TabsTheme tabsTheme;
     private int answersCounter = -1;
+    private int answersCounterColor = 0xffffffff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
                             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
                             decorView.setSystemUiVisibility(flags);
                         }
+                        answersCounterColor = 0xffff0000;
                         break;
                     case LIGHT:
                         colorTitle = Utils.getColor(MainActivity.this, R.color.colorTitle);
@@ -90,6 +95,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
                             flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
                             decorView.setSystemUiVisibility(flags);
                         }
+                        answersCounterColor = 0xffffffff;
                         break;
                     default:
                         safeThrow(new Exception("" + tabsTheme));
@@ -142,13 +148,26 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
 
         trace("%d", answersCounter);
 
+
         if (answersCounter == 0)
             return "Мои";
+
         if (answersCounter > 99)
-            text = "Мои <font color='red'><b>(99+)</b></font>";
+            text = "Мои (99+)";
         else
-            text = "Мои <font color='red'><b>(" + answersCounter + ")</b></font>";
-        return Html.fromHtml(text);
+            text = "Мои (" + answersCounter + ")";
+        SpannableStringBuilder ssb = new SpannableStringBuilder(text);
+        ssb.setSpan(new AnswersCounterSpan(), 4, text.length(), SpannableStringBuilder.SPAN_INCLUSIVE_EXCLUSIVE);
+        return ssb;
+    }
+
+    private class AnswersCounterSpan extends CharacterStyle {
+
+        @Override
+        public void updateDrawState(TextPaint tp) {
+            tp.setColor(answersCounterColor);
+            tp.setTypeface(Typeface.create(tp.getTypeface(), Typeface.BOLD));
+        }
     }
 
     @Override

@@ -11,15 +11,12 @@ import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.gson.Gson;
 
 import java.util.Map;
-
 
 import ru.mail.colloquium.service.notifications.NotificationJobService;
 
 import static ru.mail.colloquium.App.dispatcher;
-import static ru.mail.colloquium.App.gson;
 import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 import static ru.mail.colloquium.diagnostics.Logger.logFcm;
@@ -33,18 +30,22 @@ public class FcmMessagingService extends FirebaseMessagingService {
 
         Map<String, String> data = message.getData();
         logFcm("new message %s, %s, %s",
-                message.getTo(), message.getMessageType(), message.getData());
+                message.getTo(), message.getMessageType(), data);
 
-//        String uid = data.get("uid");
-//        String loggedUid = prefs().profile().phone;
-//        if (!TextUtils.equals(uid, loggedUid)) {
-//            logFcm("Message ignored: addressee is \'%s\', but logged user is \'%s\'", uid, loggedUid);
-//            return;
-//        }
+        String uid = data.get("user_phone");
+        String loggedUid = prefs().profile().serverId;
+        if (!TextUtils.equals(uid, loggedUid)) {
+            logFcm("Message ignored: addressee is \'%s\', but logged user is \'%s\'", uid, loggedUid);
+            return;
+        }
 
-        Gson gson = gson();
         try {
-            startNotificationJob(NotificationJobService.TYPE_SYNC_ANSWERS, null);
+            String type = data.get("type");
+            switch (type) {
+                case "new_likes":
+                    startNotificationJob(NotificationJobService.TYPE_SYNC_ANSWERS, null);
+                    break;
+            }
 
         } catch (Exception e) {
             safeThrow(e);
@@ -63,7 +64,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
                 .setService(NotificationJobService.class)
                 .setTag(tag)
                 .setLifetime(Lifetime.FOREVER)
-                .setTrigger(Trigger.executionWindow(0, 120))
+                .setTrigger(Trigger.NOW)
                 .setReplaceCurrent(true)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setExtras(extras)

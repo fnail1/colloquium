@@ -73,6 +73,13 @@ public class VariantViewHolder {
 
     }
 
+    public void bind(String name) {
+        text1.setText(name);
+        text1.setSingleLine(false);
+        text1.setMaxLines(2);
+        text2.setVisibility(View.GONE);
+    }
+
     private void append(StringBuilder sb, String s) {
         if (s == null)
             return;
