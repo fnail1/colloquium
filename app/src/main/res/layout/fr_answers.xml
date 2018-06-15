@@ -64,7 +64,7 @@
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="32dp"
             android:fontFamily="sans-serif"
-            android:text="Позвать друзей"
+            android:text="@string/contacts"
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:textStyle="bold"

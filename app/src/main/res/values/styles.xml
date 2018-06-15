@@ -150,4 +150,11 @@
         <item name="android:background">@drawable/bg_accent_button</item>
     </style>
 
+    <style name="FlatButtonLight" parent="SubtitleTextAppearance">
+        <item name="android:textColor">@color/flat_button_light_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">0px</item>
+        <item name="android:autoLink">all</item>
+    </style>
+
 </resources>

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v4.util.LongSparseArray;
 import android.text.TextUtils;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import ru.mail.colloquium.model.AppData;

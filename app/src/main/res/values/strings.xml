@@ -84,6 +84,7 @@
     <string name="gender_unknown">Не указан</string>
     <string name="search">Найти</string>
     <string name="hidden">Скрыто</string>
+    <string name="contacts">Позвать друзей</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>

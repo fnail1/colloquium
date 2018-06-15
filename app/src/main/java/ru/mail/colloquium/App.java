@@ -101,7 +101,7 @@ public class App extends Application {
         data = new AppData(this, preferences.getUserId());
         appStateObserver = new AppStateObserver(this, preferences);
         gson = new Gson();
-        appService = new AppService(appStateObserver);
+        appService = new AppService(this, appStateObserver);
         networkObserver = new NetworkObserver(this);
         screenMetrics = new ScreenMetrics(this);
         apiService = ApiService.Creator.newService(preferences.getApiSet(), this);
@@ -130,7 +130,7 @@ public class App extends Application {
         this.data = new AppData(this, profile.phone);
         ThreadPool.UI.postDelayed(old::close, 10 * 1000);
         appService.shutdown();
-        appService = new AppService(appStateObserver);
+        appService = new AppService(this, appStateObserver);
         if (this.data.questions.selectCurrent() == null) {
             appService.requestNextQuestion();
         }

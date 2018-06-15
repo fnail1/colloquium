@@ -13,7 +13,7 @@ public enum  ApiSet {
     }
 
     public String fixSslForSandbox(String src) {
-        if (fixSsl && src != null && fixSsl && src.startsWith("https://"))
+        if (fixSsl && src != null && src.startsWith("https://"))
             return "http://" + src.substring(8);
 
         return src;

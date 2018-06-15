@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +34,7 @@ import ru.mail.colloquium.model.types.Profile;
 import ru.mail.colloquium.service.fcm.FcmRegistrationService;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils;
+import ru.mail.colloquium.ui.ContactsActivity;
 import ru.mail.colloquium.ui.base.BaseFragment;
 import ru.mail.colloquium.ui.settings.SettingsActivity;
 
@@ -43,6 +45,7 @@ import static ru.mail.colloquium.App.prefs;
 public class ProfileFragment extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.info) TextView info;
+    @BindView(R.id.contacts) TextView contacts;
 
     @Nullable
     @Override
@@ -63,6 +66,8 @@ public class ProfileFragment extends BaseFragment {
                         "gender: " + profile.gender + "\n" +
                         "createdAt: " + new Date(profile.createdAt) + "\n" +
                         "updatedAt: " + new Date(profile.updatedAt) + "\n");
+
+        contacts.setPaintFlags(contacts.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override
@@ -71,9 +76,12 @@ public class ProfileFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.import_db, R.id.reset, R.id.copy_fcm, R.id.settings})
+    @OnClick({R.id.import_db, R.id.reset, R.id.copy_fcm, R.id.settings, R.id.contacts})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.contacts:
+                startActivity(new Intent(getActivity(), ContactsActivity.class));
+                break;
             case R.id.import_db:
                 DebugUtils.importFile(getActivity());
                 break;

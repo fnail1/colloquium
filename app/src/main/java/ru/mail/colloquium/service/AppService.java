@@ -1,5 +1,13 @@
 package ru.mail.colloquium.service;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.util.LongSparseArray;
 import android.text.TextUtils;
@@ -30,10 +38,15 @@ import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.dateTimeService;
 import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
+import static ru.mail.colloquium.diagnostics.Logger.trace;
 
 public class AppService implements AppStateObserver.AppStateEventHandler {
     public static final long MAX_SYNCHRONIZATION_LAG = 60 * 60 * 1000;
+    private final Context context;
     private final AppStateObserver appStateObserver;
+    private final ContentObserver contentObserver;
+
+    private long lastContactsSync;
 
     public final ObservableEvent<NewQuestionEventHandler, AppService, Question> newQuestionEvent = new ObservableEvent<NewQuestionEventHandler, AppService, Question>(this) {
         @Override
@@ -63,13 +76,31 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
-    public AppService(AppStateObserver appStateObserver) {
+    public AppService(Context context, AppStateObserver appStateObserver) {
+        this.context = context;
         this.appStateObserver = appStateObserver;
         appStateObserver.stateEvent.add(this);
+
+        contentObserver = new ContentObserver(new Handler()) {
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                trace();
+                super.onChange(selfChange, uri);
+                if (lastContactsSync > 0)
+                    lastContactsSync = 1;
+                onAppStateChanged();
+            }
+        };
+        context.getContentResolver().registerContentObserver(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, false, contentObserver);
     }
 
     public void shutdown() {
         appStateObserver.stateEvent.remove(this);
+        context.getContentResolver().unregisterContentObserver(contentObserver);
+    }
+
+    public long getLastContactsSync() {
+        return lastContactsSync;
     }
 
     @Override
@@ -80,13 +111,13 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         if (!appStateObserver.isForeground())
             return;
 
-        if (dateTimeService().getServerTime() - prefs().serviceState().lastSync <= MAX_SYNCHRONIZATION_LAG)
+        if (dateTimeService().getServerTime() - lastContactsSync <= MAX_SYNCHRONIZATION_LAG)
             return;
 
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(() -> {
             AddressBookSyncHelper.doSync(app());
             ServiceState serviceState = prefs().serviceState();
-            serviceState.lastSync = dateTimeService().getServerTime();
+            lastContactsSync = dateTimeService().getServerTime();
             prefs().save(serviceState);
             contactsSynchronizationEvent.fire(null);
         });

@@ -57,7 +57,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
         question = data().questions.selectCurrent();
 
-        if (question == null || prefs().serviceState().lastSync <= 0) {
+        if (question == null || (question.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
             page1.setVisibility(View.GONE);
             page2.setVisibility(View.GONE);
             progress.setVisibility(View.VISIBLE);
@@ -107,7 +107,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             return;
 
         Question q = data().questions.selectCurrent();
-        if (q == null || prefs().serviceState().lastSync <= 0)
+        if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0))
             return;
 
         activity.runOnUiThread(() -> {
