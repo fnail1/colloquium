@@ -46,7 +46,7 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder implements View.On
         }
 
         Resources resources = title.getResources();
-        title.setText(resources.getString(answer.gender.iconResId) + ", " + resources.getString(answer.age.nameResId));
+        title.setText(resources.getString(answer.gender.nameResId) + ", " + resources.getString(answer.age.nameResId));
 
 
         String timeText = formatTerm(answer.createdAt);

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f8f8f8"
-    android:paddingTop="24dp"
     tools:context=".ui.settings.SettingsActivity"
     >
 
@@ -18,12 +17,14 @@
         android:padding="8dp"
         android:src="@drawable/ic_arrow_back"
         android:tint="@color/mw_fade_black_80"
-        tools:ignore="RtlHardcoded"/>
+        tools:ignore="RtlHardcoded"
+        android:contentDescription="@string/icon"/>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:gravity="center_vertical"
         android:text="Настройки"
@@ -72,18 +73,31 @@
         android:textColor="#546d79"
         tools:ignore="RtlHardcoded"/>
 
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/logout"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Версия: 1.1 (1)"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        tools:ignore="RtlHardcoded"/>
+
     <View
         android:id="@+id/line1"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/logout"
+        android:layout_below="@id/version"
         android:background="#546d79"/>
 
     <TextView
         android:id="@+id/import_db"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/logout"
+        android:layout_below="@id/version"
         android:background="@drawable/ripple_rect_view_light"
         android:clickable="true"
         android:focusable="true"
@@ -94,6 +108,7 @@
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#546d79"
         tools:ignore="RtlHardcoded"/>
+
 
     <TextView
         android:id="@+id/copy_fcm"
