@@ -36,6 +36,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     private QuestionViewHolder background;
     private QuestionViewHolder foreground;
     private Question question;
+    private boolean requestSent;
 
     @Nullable
     @Override
@@ -49,26 +50,20 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        View.OnLayoutChangeListener onLayoutChangeListener = (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> onPageLayout();
+        page1.addOnLayoutChangeListener(onLayoutChangeListener);
+        page2.addOnLayoutChangeListener(onLayoutChangeListener);
         foreground = new QuestionViewHolder(page1, this);
         background = new QuestionViewHolder(page2, this);
 
         page1.setVisibility(View.GONE);
         page2.setVisibility(View.GONE);
 
-        question = data().questions.selectCurrent();
+        onNewQuestion(null);
+    }
 
-        if (question == null || (question.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
-            page1.setVisibility(View.GONE);
-            page2.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);
-            if (question == null)
-                appService().requestNextQuestion();
-        } else {
-            foreground.root.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> foreground.bind(question));
-            foreground.root.setVisibility(View.VISIBLE);
-            progress.setVisibility(View.GONE);
-            noQuestions.setVisibility(View.GONE);
-        }
+    private void onPageLayout() {
+        foreground.bind(question);
     }
 
     @Override
@@ -107,10 +102,22 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             return;
 
         Question q = data().questions.selectCurrent();
-        if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0))
+
+        if (q != null && q.equals(question))
             return;
 
         activity.runOnUiThread(() -> {
+            if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
+                page1.setVisibility(View.GONE);
+                page2.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+                if (q == null && !requestSent) {
+                    requestSent = true;
+                    appService().requestNextQuestion();
+                }
+                return;
+            }
+
             noQuestions.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
 
@@ -122,7 +129,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
                 foreground = background;
                 background = t;
                 question = q;
-                foreground.root.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> foreground.bind(question));
+                foreground.bind(question);
                 animateSwap(background.root, foreground.root);
             }
         });
@@ -156,7 +163,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     }
 
     @Override
-    public void onContactsSynchronizationComoplete() {
+    public void onContactsSynchronizationComplete() {
         onNewQuestion(null);
     }
 }

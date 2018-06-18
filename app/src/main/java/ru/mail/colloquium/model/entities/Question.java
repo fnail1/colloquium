@@ -1,5 +1,7 @@
 package ru.mail.colloquium.model.entities;
 
+import java.util.Objects;
+
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Choice;
 import ru.mail.colloquium.toolkit.Flags32;
@@ -37,4 +39,18 @@ public class Question extends BaseRow {
 
     public Choice answer;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Question question = (Question) o;
+        return Objects.equals(uniqueId, question.uniqueId);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), uniqueId);
+    }
 }

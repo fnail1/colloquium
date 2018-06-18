@@ -1,11 +1,14 @@
 package ru.mail.colloquium.service;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LongSparseArray;
 import android.text.TextUtils;
 
@@ -70,7 +73,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     public final ObservableEvent<ContactsSynchronizationEventHandler, AppService, Void> contactsSynchronizationEvent = new ObservableEvent<ContactsSynchronizationEventHandler, AppService, Void>(this) {
         @Override
         protected void notifyHandler(ContactsSynchronizationEventHandler handler, AppService sender, Void args) {
-            handler.onContactsSynchronizationComoplete();
+            handler.onContactsSynchronizationComplete();
         }
     };
 
@@ -89,7 +92,9 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                 onAppStateChanged();
             }
         };
-        context.getContentResolver().registerContentObserver(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, false, contentObserver);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            context.getContentResolver().registerContentObserver(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, false, contentObserver);
+        }
     }
 
     public void shutdown() {
@@ -314,6 +319,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     public interface ContactsSynchronizationEventHandler {
-        void onContactsSynchronizationComoplete();
+        void onContactsSynchronizationComplete();
     }
 }
