@@ -81,6 +81,21 @@
     <string name="age_year5">5 курс</string>
     <string name="age_year6">6 курс</string>
     <string name="age_superstar">Не известно</string>
+
+    <string name="age_profile_grade6">Класс: 6</string>
+    <string name="age_profile_grade7">Класс: 7</string>
+    <string name="age_profile_grade8">Класс: 8</string>
+    <string name="age_profile_grade9">Класс: 9</string>
+    <string name="age_profile_grade10">Класс: 10</string>
+    <string name="age_profile_grade11">Класс: 11</string>
+    <string name="age_profile_year1">Курс: 1</string>
+    <string name="age_profile_year2">Курс: 2</string>
+    <string name="age_profile_year3">Курс: 3</string>
+    <string name="age_profile_year4">Курс: 4</string>
+    <string name="age_profile_year5">Курс: 5</string>
+    <string name="age_profile_year6">Курс: 6</string>
+    <string name="age_profile_superstar">Не известно</string>
+
     <string name="gender_unknown">Не указан</string>
     <string name="search">Найти</string>
     <string name="hidden">Скрыто</string>

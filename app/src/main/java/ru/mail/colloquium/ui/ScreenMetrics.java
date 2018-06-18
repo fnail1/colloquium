@@ -15,6 +15,7 @@ public class ScreenMetrics {
     public final Size screen;
     public final Size avatarSize;
     public final Size notificationIcon;
+    public final Size icon;
     public final int indent;
 
     public ScreenMetrics(Context context) {
@@ -32,6 +33,9 @@ public class ScreenMetrics {
 
         int notificationIconSize = resources.getDimensionPixelSize(R.dimen.notification_image_size);
         notificationIcon = new Size(notificationIconSize, notificationIconSize);
+
+        int iconSize = resources.getDimensionPixelSize(R.dimen.icon_size);
+        icon = new Size(iconSize, iconSize);
     }
 
     public static boolean isPortrait() {

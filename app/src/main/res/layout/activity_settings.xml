@@ -44,13 +44,14 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@id/title"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
         android:drawableLeft="@drawable/ic_cellphone"
         android:drawablePadding="24dp"
         android:foreground="@drawable/ripple_rect_view_light"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
         android:text="Уведомления"
         android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
         tools:ignore="RtlHardcoded"/>
 
     <TextView
@@ -58,17 +59,56 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@id/notifications"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
         android:background="@drawable/ripple_rect_view_light"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_exit"
-        android:drawablePadding="24dp"
+        android:drawablePadding="14dp"
         android:focusable="true"
         android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
         android:text="Выход"
         android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="#ff0000"
+        android:textColor="#546d79"
         tools:ignore="RtlHardcoded"/>
 
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/logout"
+        android:background="#546d79"/>
+
+    <TextView
+        android:id="@+id/import_db"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/logout"
+        android:background="@drawable/ripple_rect_view_light"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Импорт БД"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        tools:ignore="RtlHardcoded"/>
+
+    <TextView
+        android:id="@+id/copy_fcm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/import_db"
+        android:background="@drawable/ripple_rect_view_light"
+        android:clickable="true"
+
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Скопировать FCM-токен"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        tools:ignore="RtlHardcoded"/>
 </RelativeLayout>

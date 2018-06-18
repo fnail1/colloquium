@@ -99,7 +99,7 @@ public class AnswerActivity extends BaseActivity {
                 break;
         }
 
-        author.setText(answer.gender.localName(this) + ", " + answer.age.localName(this));
+        author.setText(getString(answer.gender.nameResId) + ", " + getResources().getString(answer.age.nameResId));
 
         message.setText(answer.questionText);
 

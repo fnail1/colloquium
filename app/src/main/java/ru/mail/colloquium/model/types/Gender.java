@@ -1,27 +1,25 @@
 package ru.mail.colloquium.model.types;
 
-import android.content.Context;
-
 import com.google.gson.annotations.SerializedName;
 
 import ru.mail.colloquium.R;
 
 public enum Gender {
     @SerializedName("x")
-    CAMEL(R.string.gender_unknown),
+    CAMEL(R.string.gender_unknown, R.drawable.ic_camel, R.drawable.ic_camel_heart),
     @SerializedName("M")
-    MALE(R.string.male),
+    MALE(R.string.male, R.drawable.ic_male, R.drawable.ic_male_heart),
     @SerializedName("F")
-    FEMALE(R.string.female);
+    FEMALE(R.string.female, R.drawable.ic_female, R.drawable.ic_female_heart);
 
-    private final int resx;
+    public final int nameResId;
+    public final int iconResId;
+    public final int heartIconResId;
 
-    Gender(int resx) {
-        this.resx = resx;
-    }
-
-    public String localName(Context context) {
-        return context.getResources().getString(resx);
+    Gender(int nameResId, int iconResId, int heartIconResId) {
+        this.nameResId = nameResId;
+        this.iconResId = iconResId;
+        this.heartIconResId = heartIconResId;
     }
 
 

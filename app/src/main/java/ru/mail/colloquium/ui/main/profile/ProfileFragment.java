@@ -1,10 +1,9 @@
 package ru.mail.colloquium.ui.main.profile;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
+import android.content.pm.PackageInfo;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.HttpURLConnection;
-import java.util.Date;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,25 +24,31 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.mail.colloquium.BuildConfig;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.api.model.GsonResponse;
-import ru.mail.colloquium.diagnostics.DebugUtils;
 import ru.mail.colloquium.model.types.Profile;
-import ru.mail.colloquium.service.fcm.FcmRegistrationService;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils;
 import ru.mail.colloquium.ui.ContactsActivity;
 import ru.mail.colloquium.ui.base.BaseFragment;
 import ru.mail.colloquium.ui.settings.SettingsActivity;
+import ru.mail.colloquium.utils.GraphicUtils;
 
 import static ru.mail.colloquium.App.api;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.prefs;
+import static ru.mail.colloquium.App.screenMetrics;
+import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 
 public class ProfileFragment extends BaseFragment {
     Unbinder unbinder;
-    @BindView(R.id.info) TextView info;
     @BindView(R.id.contacts) TextView contacts;
+    @BindView(R.id.gender) TextView gender;
+    @BindView(R.id.age) TextView age;
+    @BindView(R.id.reset) TextView reset;
+    @BindView(R.id.phone) TextView phone;
+    @BindView(R.id.likes) TextView likes;
 
     @Nullable
     @Override
@@ -59,15 +62,20 @@ public class ProfileFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Profile profile = prefs().profile();
-        info.setText(
-                "phone: " + PhoneNumberUtils.formatPhone(profile.phone) + "\n" +
-                        "serverId: " + profile.serverId + "\n" +
-                        "age: " + profile.age + "\n" +
-                        "gender: " + profile.gender + "\n" +
-                        "createdAt: " + new Date(profile.createdAt) + "\n" +
-                        "updatedAt: " + new Date(profile.updatedAt) + "\n");
 
-        contacts.setPaintFlags(contacts.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        Drawable genderDrawable = GraphicUtils.getDrawable(getActivity(), profile.gender.iconResId, screenMetrics().icon.width, screenMetrics().icon.height);
+        gender.setCompoundDrawablesRelative(null, null, genderDrawable, null);
+        age.setText(profile.age.profileNameResId);
+        phone.setText(PhoneNumberUtils.formatPhone(profile.phone));
+        long likesCount = data().answers.count();
+        if (likesCount > 0) {
+            likes.setText(String.valueOf(likesCount));
+        } else {
+            ((View) likes.getParent()).setVisibility(View.GONE);
+        }
+        if (!BuildConfig.DEBUG) {
+            reset.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -76,63 +84,95 @@ public class ProfileFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.import_db, R.id.reset, R.id.copy_fcm, R.id.settings, R.id.contacts})
+    @OnClick({R.id.reset, R.id.settings, R.id.contacts, R.id.support, R.id.vk})
     public void onViewClicked(View view) {
+        FragmentActivity activity = getActivity();
+        if (activity == null)
+            return;
+
         switch (view.getId()) {
             case R.id.contacts:
-                startActivity(new Intent(getActivity(), ContactsActivity.class));
-                break;
-            case R.id.import_db:
-                DebugUtils.importFile(getActivity());
+                startActivity(new Intent(activity, ContactsActivity.class));
                 break;
 
             case R.id.reset:
-                api().resetAnswers().enqueue(new Callback<GsonResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<GsonResponse> call, @NonNull Response<GsonResponse> response) {
-                        if (response.code() == HttpURLConnection.HTTP_OK) {
-                            ThreadPool.DB.execute(() -> {
-                                data().questions.deleteAll();
-                                FragmentActivity a1 = getActivity();
-                                if (a1 == null)
-                                    return;
-                                a1.runOnUiThread(() -> {
-                                    showToast("Ответы удалены");
-                                });
-                            });
-                        } else {
-                            showToast("Что-то пошло не так");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<GsonResponse> call, @NonNull Throwable t) {
-                        showToast("Что-то пошло не так");
-                    }
-
-                    private void showToast(String s) {
-                        FragmentActivity activity = getActivity();
-                        if (activity == null)
-                            return;
-                        Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                resetAnswers();
                 break;
-
-            case R.id.copy_fcm:
-                ClipboardManager clipboardManager;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    clipboardManager = Objects.requireNonNull(getActivity()).getSystemService(ClipboardManager.class);
-                } else {
-                    clipboardManager = (ClipboardManager) Objects.requireNonNull(getActivity()).getSystemService(Context.CLIPBOARD_SERVICE);
-                }
-                ClipData data = ClipData.newPlainText("Colloquium FCM token", FcmRegistrationService.getFcmToken());
-                clipboardManager.setPrimaryClip(data);
-                break;
-
             case R.id.settings:
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(activity, SettingsActivity.class));
+                break;
+
+            case R.id.support:
+                sendEmail();
+                break;
+            case R.id.vk:
                 break;
         }
     }
+
+    private void resetAnswers() {
+        api().resetAnswers().enqueue(new Callback<GsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<GsonResponse> call, @NonNull Response<GsonResponse> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    ThreadPool.DB.execute(() -> {
+                        data().questions.deleteAll();
+                        FragmentActivity a1 = getActivity();
+                        if (a1 == null)
+                            return;
+                        a1.runOnUiThread(() -> {
+                            showToast("Ответы удалены");
+                        });
+                    });
+                } else {
+                    showToast("Что-то пошло не так");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GsonResponse> call, @NonNull Throwable t) {
+                showToast("Что-то пошло не так");
+            }
+
+            private void showToast(String s) {
+                FragmentActivity activity = getActivity();
+                if (activity == null)
+                    return;
+                Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendEmail() {
+        String email = "icqdev@mail.com";
+
+        String login = prefs().profile().phone;
+        String device = Build.MANUFACTURER + " " + Build.MODEL;
+
+        try {
+            PackageInfo pInfo;
+            pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+
+            String version = pInfo.packageName + " " + pInfo.versionName + "/" + pInfo.versionCode;
+            String template = "Здравствуйте!\n" +
+                    "Вопервых хочу вас поблагодарить за прекрасное приложение.\n" +
+                    "Пользователь " + login + "\n" +
+                    "Устройство " + device + "\n" +
+                    "Версия приложения " + version + "\n";
+
+
+            Intent send = new Intent(Intent.ACTION_SENDTO);
+            String uriText = "mailto:" + Uri.encode(email) +
+                    "?subject=" + Uri.encode("WTF, дорогая редакция") +
+                    "&body=" + Uri.encode(template);
+            Uri uri = Uri.parse(uriText);
+
+            send.setData(uri);
+            startActivity(Intent.createChooser(send, "Написать разработчику"));
+
+        } catch (Exception e) {
+            safeThrow(e);
+        }
+    }
+
 }

@@ -10,51 +10,151 @@
     >
 
     <TextView
-        android:id="@+id/info"
+        android:id="@+id/phone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
         android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="#ff000000"
-        tools:text="alksjdfhaskljdfh"/>
+        android:textColor="#9ab3c0"
+        tools:text="+7 XXX aaa bb cc"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding"
+            android:layout_marginStart="24dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="Пол: "
+            android:textAppearance="@style/SubtitleTextAppearance"
+            android:textColor="#9ab3c0"
+            tools:drawableEnd="@drawable/ic_male"
+            />
+
+        <TextView
+            android:id="@+id/age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/padding"
+            android:textAppearance="@style/SubtitleTextAppearance"
+            android:textColor="#9ab3c0"
+            tools:text="Класс: 14"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/indent"
+            android:layout_marginStart="24dp"
+            android:layout_weight="1"
+            android:text="Собрано лайков"
+            android:textAppearance="@style/SubtitleTextAppearance"
+            android:textColor="#546d79"
+            />
+
+        <TextView
+            android:id="@+id/likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/indent"
+            android:drawablePadding="@dimen/indent"
+            android:drawableStart="@drawable/ic_female_heart"
+            android:gravity="center_vertical"
+            android:text="33"
+            android:textAppearance="@style/SubtitleTextAppearance"
+            android:textColor="#546d79"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#9ab3c0"
+        />
 
     <TextView
         android:id="@+id/contacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="@dimen/indent"
-        android:layout_marginBottom="@dimen/indent"
-        style="@style/FlatButtonLight"
-
-        android:text="@string/contacts"/>
-
-    <Button
-        android:id="@+id/import_db"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="Import DB"/>
-
-    <Button
-        android:id="@+id/reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="Reset"/>
-
-    <Button
-        android:id="@+id/copy_fcm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="Copy FCM token"/>
-
-    <ImageView
-        android:id="@+id/settings"
-        android:layout_width="48dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:src="@drawable/ic_settings"/>
+        android:background="@drawable/ripple_rect_view_light"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="@string/contacts"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        />
+
+    <TextView
+        android:id="@+id/support"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ripple_rect_view_light"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Написать разработчику"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        />
+
+    <TextView
+        android:id="@+id/vk"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ripple_rect_view_light"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Группа в ВК"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        />
+
+    <TextView
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ripple_rect_view_light"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Настройки"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        />
+
+    <TextView
+        android:id="@+id/reset"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ripple_rect_view_light"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="Удалить ответы"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#546d79"
+        />
+
+
 </LinearLayout>

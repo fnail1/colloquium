@@ -94,7 +94,17 @@ public class GraphicUtils {
     }
 
     public static Drawable getDrawable(Context context, int resId) {
-        return AppCompatResources.getDrawable(context, resId);
+        Drawable drawable = AppCompatResources.getDrawable(context, resId);
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        drawable.setBounds(0, 0, width, height);
+        return drawable;
+    }
+
+    public static Drawable getDrawable(Context context, int resId, int width, int height) {
+        Drawable drawable = AppCompatResources.getDrawable(context, resId);
+        drawable.setBounds(0, 0, width, height);
+        return drawable;
     }
 
     public static int calcBitmapSampleSize(int srcWidth, int srcHeight, int dstWidth, int dstHeight) {

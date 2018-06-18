@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
@@ -42,31 +40,13 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder implements View.On
     public void bind(Answer answer) {
         this.answer = answer;
         if (!answer.flags.get(Answer.FLAG_VIEWED)) {
-            switch (answer.gender) {
-                case CAMEL:
-                    icon.setImageResource(R.drawable.ic_camel_heart);
-                    break;
-                case MALE:
-                    icon.setImageResource(R.drawable.ic_male_heart);
-                    break;
-                case FEMALE:
-                    icon.setImageResource(R.drawable.ic_female_heart);
-                    break;
-            }
+            icon.setImageResource(answer.gender.heartIconResId);
         } else {
             icon.setImageResource(R.drawable.ic_camel_heart);
         }
 
-        switch (answer.gender) {
-            case CAMEL:
-                break;
-            case MALE:
-                title.setText(title.getResources().getString(R.string.male) + ", " + answer.age.localName(title.getContext()));
-                break;
-            case FEMALE:
-                title.setText(title.getResources().getString(R.string.female) + ", " + answer.age.localName(title.getContext()));
-                break;
-        }
+        Resources resources = title.getResources();
+        title.setText(resources.getString(answer.gender.iconResId) + ", " + resources.getString(answer.age.nameResId));
 
 
         String timeText = formatTerm(answer.createdAt);
