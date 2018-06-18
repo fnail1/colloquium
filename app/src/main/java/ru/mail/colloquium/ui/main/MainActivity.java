@@ -16,10 +16,14 @@ import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 import android.view.View;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.mail.colloquium.R;
+import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.service.AppService;
+import ru.mail.colloquium.ui.AnswerActivity;
 import ru.mail.colloquium.ui.ReqCodes;
 import ru.mail.colloquium.ui.base.BaseActivity;
 import ru.mail.colloquium.ui.login.LoginActivity;
@@ -37,6 +41,7 @@ import static ru.mail.colloquium.diagnostics.Logger.trace;
 
 public class MainActivity extends BaseActivity implements AppService.AnswerUpdatedEventHandler {
 
+    public static final String ACTION_OPEN_ANSWER = "action_open_answer";
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pages) ViewPager pages;
     private TabsTheme tabsTheme;
@@ -118,6 +123,26 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
         });
         tabs.setupWithViewPager(pages);
         pages.setCurrentItem(1);
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        String action = intent.getAction();
+        if (action == null)
+            return;
+        switch (action) {
+            case ACTION_OPEN_ANSWER:
+                pages.setCurrentItem(0);
+                startActivity(new Intent(this, AnswerActivity.class).putExtras(intent));
+                break;
+        }
     }
 
     @Override
@@ -171,7 +196,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
     }
 
     @Override
-    public void onAnswerUpdated() {
+    public void onAnswerUpdated(List<Answer> args) {
         runOnUiThread(() -> {
             answersCounter = data().answers.countUnread();
             trace("" + answersCounter);

@@ -5,14 +5,6 @@ import android.os.Bundle;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
-import retrofit2.Call;
-import ru.mail.colloquium.api.model.GsonAnswers;
-import ru.mail.colloquium.model.AppData;
-import ru.mail.colloquium.service.MergeHelper;
-import ru.mail.colloquium.service.SimpleRequestTask;
-import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
-
-import static ru.mail.colloquium.App.api;
 import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 import static ru.mail.colloquium.diagnostics.Logger.trace;
@@ -46,25 +38,7 @@ public class NotificationJobService extends JobService {
     }
 
     private void onSyncAnswers(JobParameters params) {
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask<GsonAnswers>("requestAnswers") {
-
-            @Override
-            protected Call<GsonAnswers> getRequest() {
-                return api().getAnswers();
-            }
-
-            @Override
-            protected void processResponse(AppData appData, GsonAnswers body) {
-                MergeHelper.merge(appData, body.answers);
-            }
-
-            @Override
-            protected void onFinish() {
-                appService().answerUpdatedEvent.fire(null);
-                jobFinished(params, false);
-            }
-
-        });
+        appService().requestAnswers(() -> jobFinished(params, false));
     }
 
 

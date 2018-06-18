@@ -1,6 +1,7 @@
 package ru.mail.colloquium.service;
 
 import java.security.interfaces.DSAKey;
+import java.util.List;
 import java.util.Map;
 
 import ru.mail.colloquium.api.model.GsonAnswers;
@@ -65,7 +66,7 @@ public class MergeHelper {
         merge(dst, src.question);
     }
 
-    public static void merge(AppData appData, GsonAnswers.GsonAnswer[] src) {
+    public static void merge(AppData appData, GsonAnswers.GsonAnswer[] src, List<Answer> outNew) {
         Map<String, Answer> answers = appData.answers.select(src).toMap(a -> a.serverId);
         try (AppData.Transaction tx = appData.beginTransaction()) {
             for (GsonAnswers.GsonAnswer gsonAnswer : src) {
@@ -73,6 +74,8 @@ public class MergeHelper {
                 if (answer == null) {
                     answer = new Answer();
                     merge(appData, answer, gsonAnswer);
+                    if (outNew != null)
+                        outNew.add(answer);
                 }
             }
 

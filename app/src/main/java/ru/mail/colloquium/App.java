@@ -19,6 +19,7 @@ import ru.mail.colloquium.service.AbsRequestTask;
 import ru.mail.colloquium.service.AppService;
 import ru.mail.colloquium.service.AppStateObserver;
 import ru.mail.colloquium.service.fcm.FcmRegistrationService;
+import ru.mail.colloquium.service.notifications.NotificationsHelper;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.http.ServerException;
 import ru.mail.colloquium.toolkit.network.NetworkObserver;
@@ -39,6 +40,7 @@ public class App extends Application {
     private DateTimeService dateTimeService;
     private PhotoManager photoManager;
     private FirebaseJobDispatcher jobDispatcher;
+    private NotificationsHelper notificationsHelper;
 
 
     public static AppData data() {
@@ -89,6 +91,10 @@ public class App extends Application {
         return instance.jobDispatcher;
     }
 
+    public static NotificationsHelper notifications() {
+        return instance.notificationsHelper;
+    }
+
     public static App app() {
         return instance;
     }
@@ -108,6 +114,7 @@ public class App extends Application {
         dateTimeService = new DateTimeService(this, preferences);
         photoManager = new PhotoManager(this, appStateObserver);
         jobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        notificationsHelper = new NotificationsHelper(appService);
 
         instance = this;
 
@@ -131,6 +138,8 @@ public class App extends Application {
         ThreadPool.UI.postDelayed(old::close, 10 * 1000);
         appService.shutdown();
         appService = new AppService(this, appStateObserver);
+        notificationsHelper = new NotificationsHelper(appService);
+
         if (this.data.questions.selectCurrent() == null) {
             appService.requestNextQuestion();
         }

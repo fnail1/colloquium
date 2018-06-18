@@ -14,6 +14,7 @@ import android.text.TextUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,6 +37,7 @@ import static ru.mail.colloquium.App.api;
 import static ru.mail.colloquium.App.app;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.dateTimeService;
+import static ru.mail.colloquium.App.notifications;
 import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 import static ru.mail.colloquium.diagnostics.Logger.trace;
@@ -63,10 +65,10 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
-    public final ObservableEvent<AnswerUpdatedEventHandler, AppService, Void> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, Void>(this) {
+    public final ObservableEvent<AnswerUpdatedEventHandler, AppService, List<Answer>> answerUpdatedEvent = new ObservableEvent<AnswerUpdatedEventHandler, AppService, List<Answer>>(this) {
         @Override
-        protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, Void args) {
-            handler.onAnswerUpdated();
+        protected void notifyHandler(AnswerUpdatedEventHandler handler, AppService sender, List<Answer> args) {
+            handler.onAnswerUpdated(args);
         }
     };
 
@@ -161,7 +163,14 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     public void requestAnswers() {
+        requestAnswers(null);
+    }
+
+    public void requestAnswers(Runnable callback) {
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask<GsonAnswers>("requestAnswers") {
+            ArrayList<Answer> newAnswers = new ArrayList<>();
+
+
             @Override
             protected Call<GsonAnswers> getRequest() {
                 return api().getAnswers();
@@ -169,12 +178,17 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void processResponse(AppData appData, GsonAnswers body) {
-                MergeHelper.merge(appData, body.answers);
+                MergeHelper.merge(appData, body.answers, newAnswers);
             }
 
             @Override
             protected void onFinish() {
-                answerUpdatedEvent.fire(null);
+                if (!newAnswers.isEmpty()) {
+                    answerUpdatedEvent.fire(newAnswers);
+                }
+
+                if (callback != null)
+                    callback.run();
             }
 
         });
@@ -315,7 +329,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     public interface AnswerUpdatedEventHandler {
-        void onAnswerUpdated();
+        void onAnswerUpdated(List<Answer> args);
     }
 
     public interface ContactsSynchronizationEventHandler {

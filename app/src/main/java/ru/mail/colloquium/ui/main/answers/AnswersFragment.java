@@ -76,7 +76,7 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
     }
 
     @Override
-    public void onAnswerUpdated() {
+    public void onAnswerUpdated(List<Answer> args) {
         FragmentActivity activity = getActivity();
         if (activity == null)
             return;
