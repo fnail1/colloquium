@@ -7,58 +7,26 @@
                 tools:context=".ui.login.LoginActivity"
     >
 
-    <ImageView
-        android:id="@+id/icon1"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_alignTop="@id/icon2"
-        android:layout_margin="4dp"
-        android:layout_toStartOf="@id/icon2"
-        android:src="@drawable/ic_login_emodji_1"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/subtitle"
+        android:layout_alignParentTop="true">
 
-    <ImageView
-        android:id="@+id/icon2"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="150dp"
-        android:src="@drawable/ic_login_emodji_2"/>
-
-
-    <ImageView
-        android:id="@+id/icon3"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_alignTop="@id/icon2"
-        android:layout_margin="4dp"
-        android:layout_toEndOf="@id/icon2"
-        android:src="@drawable/ic_login_emodji_3"/>
-
-
-    <ImageView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/icon2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
-        android:gravity="center_horizontal"
-        android:src="@drawable/logo"
-        android:contentDescription="@string/app_name"
-        android:textColor="#2767a9"
-        android:textSize="48sp"
-        />
+        <ImageView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/welcome"
+            android:layout_gravity="center"
+            android:contentDescription="@string/icon"/>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
+        android:layout_above="@id/subtitle2"
         android:layout_centerHorizontal="true"
         android:text="Узнай, кому нравишься"
         android:textAppearance="@style/SubtitleTextAppearance"
@@ -66,16 +34,18 @@
         />
 
     <TextView
+        android:id="@+id/subtitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/subtitle"
+        android:layout_above="@id/button"
+        android:layout_marginBottom="56dp"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="@dimen/indent"
         android:gravity="center_horizontal"
         android:text="Отвечай анонимно на вопросы про друзей. Они узнают, что ты думаешь о них, но не будут знать, кто это!"
-        android:textColor="#ffffff"
         android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="#ffffff"
         />
 
     <TextView

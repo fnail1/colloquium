@@ -6,6 +6,6 @@ public class Configuration implements Serializable {
     public final Notifications notifications = new Notifications();
 
     public static class Notifications {
-        public boolean answer;
+        public boolean answer = true;
     }
 }

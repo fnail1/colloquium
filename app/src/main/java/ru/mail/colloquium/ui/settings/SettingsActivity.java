@@ -40,6 +40,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         notifications.setOnCheckedChangeListener(this);
+        notifications.setChecked(prefs().config().notifications.answer);
 
         if (!BuildConfig.DEBUG) {
             line1.setVisibility(View.GONE);
