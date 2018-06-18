@@ -76,7 +76,7 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder implements View.On
     private String formatTerm(long timestamp) {
         long t = dateTimeService().getServerTime() - timestamp;
         if (t < 60 * 1000)
-            return "";
+            return "Только что";
         if (t < 60 * 60 * 1000) {
             t /= 60 * 1000;
             return t + "м";

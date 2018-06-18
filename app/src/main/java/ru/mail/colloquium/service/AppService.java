@@ -1,9 +1,6 @@
 package ru.mail.colloquium.service;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
@@ -40,6 +37,7 @@ import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 import static ru.mail.colloquium.diagnostics.Logger.trace;
 
+@SuppressWarnings("WeakerAccess")
 public class AppService implements AppStateObserver.AppStateEventHandler {
     public static final long MAX_SYNCHRONIZATION_LAG = 60 * 60 * 1000;
     private final Context context;
