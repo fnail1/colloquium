@@ -63,7 +63,25 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
         PendingIntent cmd = PendingIntent.getActivity(app(), actionRequestCode.incrementAndGet(), click, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(cmd);
 
-        nm.notify(prefs().uniqueId(), builder.build());
+        nm.notify(getNotificationId(answer), builder.build());
+    }
+
+    private int getNotificationId(Answer answer) {
+        return (int) (answer._id & 0xffff);
+    }
+
+    @Override
+    public void onAnswerUpdated(List<Answer> args) {
+        if (args == null)
+            return;
+
+        for (Answer answer : args) {
+            if (!answer.flags.get(Answer.FLAG_VIEWED))
+                showNotificationSingleLike(answer);
+            else
+                getNotificationManager().cancel(getNotificationId(answer));
+        }
+
     }
 
     private NotificationManager getNotificationManager() {
@@ -79,16 +97,5 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
             }
         }
         return notificationManager;
-    }
-
-    @Override
-    public void onAnswerUpdated(List<Answer> args) {
-        if (args == null)
-            return;
-
-        for (Answer answer : args) {
-            showNotificationSingleLike(answer);
-        }
-
     }
 }

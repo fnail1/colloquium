@@ -158,6 +158,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
     protected void onResume() {
         super.onResume();
         appService().answerUpdatedEvent.add(this);
+        onAnswerUpdated(null);
     }
 
     @Override

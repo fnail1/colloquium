@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -283,7 +284,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void onFinish() {
-                answerUpdatedEvent.fire(null);
+                answerUpdatedEvent.fire(Collections.singletonList(answer));
             }
 
         });
