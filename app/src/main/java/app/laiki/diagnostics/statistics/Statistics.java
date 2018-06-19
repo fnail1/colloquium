@@ -16,7 +16,7 @@ public class Statistics {
     public Statistics(Context context) {
         new FlurryAgent.Builder()
                 .withLogEnabled(true)
-                .build(context, "VGGVX6QH4MD3MJX4WW32");
+                .build(context, "SR7M5GNN8BVW5DYTJZ2N");
     }
 
     public LoginWorkflow login() {
