@@ -50,6 +50,12 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         super.onCreate(savedInstanceState);
         if (!prefs().hasAccount()) {
             startActivity(new Intent(this, LoginActivity.class));
