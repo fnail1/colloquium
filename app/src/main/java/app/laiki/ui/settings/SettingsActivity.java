@@ -58,7 +58,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
             safeThrow(e);
         }
 
-        safeThrow(new Exception("test"));
+//        safeThrow(new Exception("test"));
     }
 
 

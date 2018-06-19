@@ -51,14 +51,14 @@
 -dontwarn afu.org.checkerframework.**
 -dontwarn org.checkerframework.**
 
--keepattributes ru.mail.ganesha.toolkit.data.DbTable
--keepattributes ru.mail.ganesha.toolkit.data.DbColumn
+-keepattributes app.laiki.toolkit.data.DbTable
+-keepattributes app.laiki.toolkit.data.DbColumn
 
--keepnames @ru.mail.ganesha.toolkit.data.DbTable class *
--keepnames class ru.mail.ganesha.api.model.** {*;}
--keepnames class ru.mail.ganesha.toolkit.data.** {*;}
--keepnames class ru.mail.ganesha.model.entities.** {*;}
--keepnames class ru.mail.ganesha.model.types.** {*;}
+-keepnames @app.laiki.toolkit.data.DbTable class *
+-keepnames class app.laiki.api.model.** {*;}
+-keepnames class app.laiki.toolkit.data.** {*;}
+-keepnames class app.laiki.model.entities.** {*;}
+-keepnames class app.laiki.model.types.** {*;}
 
 
 -dontwarn com.android.installreferrer
