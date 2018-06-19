@@ -106,6 +106,7 @@ public class ProfileFragment extends BaseFragment {
                 sendEmail();
                 break;
             case R.id.vk:
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://vk.com/public167808448")));
                 break;
         }
     }
@@ -144,7 +145,7 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void sendEmail() {
-        String email = "icqdev@mail.com";
+        String email = "laiki.app@gmail.com";
 
         String login = prefs().profile().phone;
         String device = Build.MANUFACTURER + " " + Build.MODEL;

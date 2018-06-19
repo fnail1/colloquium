@@ -6,24 +6,15 @@ import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.google.gson.Gson;
 
-import java.io.IOException;
-
 import app.laiki.api.ApiService;
-import app.laiki.api.model.GsonProfileResponse;
 import app.laiki.diagnostics.DebugUtils;
-import app.laiki.diagnostics.Logger;
 import app.laiki.diagnostics.statistics.Statistics;
 import app.laiki.model.AppData;
-import app.laiki.model.types.Age;
-import app.laiki.model.types.Gender;
 import app.laiki.model.types.Profile;
-import app.laiki.service.AbsRequestTask;
 import app.laiki.service.AppService;
 import app.laiki.service.AppStateObserver;
-import app.laiki.service.fcm.FcmRegistrationService;
 import app.laiki.service.notifications.NotificationsHelper;
 import app.laiki.toolkit.concurrent.ThreadPool;
-import app.laiki.toolkit.http.ServerException;
 import app.laiki.toolkit.network.NetworkObserver;
 import app.laiki.ui.ScreenMetrics;
 import app.laiki.utils.DateTimeService;
