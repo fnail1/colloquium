@@ -8,6 +8,54 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:584899650138:android:d7cb5226ba8c4382",
+        "android_client_info": {
+          "package_name": "app.laiki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584899650138-c1u8a7u74efm0ng1lilqqpflj5ciu7e4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.laiki",
+            "certificate_hash": "38af2ba95a5f05c3843ba8f55d069cef72af3faf"
+          }
+        },
+        {
+          "client_id": "584899650138-7jbhc6qdgbgrmhq5ifm1gih1k55ff7v7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "584899650138-7jbhc6qdgbgrmhq5ifm1gih1k55ff7v7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP1q9gv7XJmJ8f8SlHCea_VNtCZy7dmKM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584899650138-7jbhc6qdgbgrmhq5ifm1gih1k55ff7v7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:584899650138:android:de2783c7a0f02e17",
         "android_client_info": {
           "package_name": "ru.mail.colloquium"

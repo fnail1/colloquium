@@ -9,17 +9,37 @@ android {
     }
 
     defaultConfig {
-        applicationId "ru.mail.colloquium"
+        applicationId "app.laiki"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword 'pawvh7cd'
+            storeFile file('../keys/laiki-sign-key')
+            storePassword 'pawvh7cd'
+        }
+
+        debug {
+            keyAlias 'key0'
+            keyPassword 'pawvh7cd'
+            storeFile file('../keys/laiki-sign-key')
+            storePassword 'pawvh7cd'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
     buildToolsVersion '27.0.3'
@@ -30,21 +50,21 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:design:27.1.1'
-
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    //    implementation 'com.google.firebase:firebase-crash:16.0.1'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     implementation 'com.google.api-client:google-api-client:1.23.0'
-
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
-
     implementation 'com.flurry.android:analytics:11.0.0@aar'
-
+    //    implementation('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
+    //        transitive = true
+    //    }
 }
 
 apply plugin: 'com.google.gms.google-services'

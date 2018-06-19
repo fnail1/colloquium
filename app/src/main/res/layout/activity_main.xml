@@ -10,7 +10,7 @@
     <!--android:theme="@style/AppTheme.TransparentStatus"-->
 
 
-    <ru.mail.colloquium.ui.views.MyViewPager
+    <app.laiki.ui.views.MyViewPager
         android:id="@+id/pages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
