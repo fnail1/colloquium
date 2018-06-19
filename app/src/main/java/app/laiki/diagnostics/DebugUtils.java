@@ -10,6 +10,10 @@ import android.os.Environment;
 import android.support.v4.content.FileProvider;
 
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
+import com.crashlytics.android.core.CrashlyticsListener;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,11 +22,13 @@ import java.lang.reflect.Method;
 import app.laiki.BuildConfig;
 import app.laiki.R;
 import app.laiki.model.AppData;
+import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.toolkit.data.SQLiteCommands;
 import app.laiki.toolkit.data.SQLiteStatementSimpleBuilder;
 import app.laiki.toolkit.io.FileUtils;
 import app.laiki.ui.ReqCodes;
 import app.laiki.ui.base.BaseActivity;
+import io.fabric.sdk.android.Fabric;
 
 import static app.laiki.App.data;
 import static app.laiki.diagnostics.Logger.logDb;
@@ -30,18 +36,19 @@ import static app.laiki.diagnostics.Logger.logV;
 
 public class DebugUtils {
     public static void init(Context context) {
-//        Crashlytics crashlytics = new Crashlytics.Builder()
-//                .core(new CrashlyticsCore.Builder().listener(new MyCrashlyticsListener()).build())
-//                .build();
-//
-//        Fabric fabric = new Fabric.Builder(context)
-//                .kits(crashlytics)
-//                .debuggable(true)
-//                .build();
-//
-//        Fabric.with(fabric);
-//        Crashlytics.setBool("Release", !BuildConfig.DEBUG);
-//        Crashlytics.setBool("SlowDevice", ThreadPool.isSlowDevice());
+        Crashlytics crashlytics = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().listener(new MyCrashlyticsListener()).build())
+                .build();
+
+        Fabric fabric = new Fabric.Builder(context)
+                .kits(crashlytics)
+                .debuggable(true)
+                .build();
+
+        Fabric.with(fabric);
+        Crashlytics.setBool("Release", !BuildConfig.DEBUG);
+        Crashlytics.setBool("SlowDevice", ThreadPool.isSlowDevice());
+
     }
 
     public static void safeThrow(Exception e, boolean throwIdDebug) {
@@ -63,7 +70,7 @@ public class DebugUtils {
             e.printStackTrace();
         }
 //        FlurryAgent.onError();
-//        Crashlytics.logException(e);
+        Crashlytics.logException(e);
     }
 
     public static void testAppData() {
@@ -177,12 +184,12 @@ public class DebugUtils {
         return dst;
     }
 
-//    private static class MyCrashlyticsListener implements CrashlyticsListener {
-//        @Override
-//        public void crashlyticsDidDetectCrashDuringPreviousExecution() {
-//            Logger.trace();
-//        }
-//    }
+    private static class MyCrashlyticsListener implements CrashlyticsListener {
+        @Override
+        public void crashlyticsDidDetectCrashDuringPreviousExecution() {
+            Logger.trace();
+        }
+    }
 
 
 }
