@@ -39,7 +39,7 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void bind(Answer answer) {
         this.answer = answer;
-        if (!answer.flags.get(Answer.FLAG_VIEWED)) {
+        if (!answer.flags.get(Answer.FLAG_READ)) {
             icon.setImageResource(answer.gender.heartIconResId);
         } else {
             icon.setImageResource(R.drawable.ic_camel_heart);

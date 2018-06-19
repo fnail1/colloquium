@@ -24,6 +24,7 @@ import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.App.screenMetrics;
+import static ru.mail.colloquium.App.statistics;
 
 public class QuestionsFragment extends BaseFragment implements AppService.NewQuestionEventHandler, QuestionViewHolder.QuestionAnsweredCallback, AppService.AnswerSentEventHandler, AppService.ContactsSynchronizationEventHandler {
     public static final String STATE_QUESTION_ID = "question_id";
@@ -137,6 +138,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
     @Override
     public void onQuestionAnswered(Choice a) {
+        statistics().questions().answer(a);
         appService().answer(question, a);
     }
 

@@ -1,6 +1,7 @@
 package ru.mail.colloquium.ui.login;
 
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -19,16 +20,20 @@ import java.net.HttpURLConnection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import ru.mail.colloquium.R;
 import ru.mail.colloquium.api.model.GsonAuth;
 import ru.mail.colloquium.api.model.GsonProfileResponse;
+import ru.mail.colloquium.api.model.GsonResponse;
 import ru.mail.colloquium.toolkit.concurrent.ThreadPool;
 import ru.mail.colloquium.toolkit.http.ServerException;
 import ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils;
 import ru.mail.colloquium.utils.Utils;
 
 import static ru.mail.colloquium.App.api;
+import static ru.mail.colloquium.App.statistics;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 
 public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHolder, TextView.OnEditorActionListener {
@@ -111,7 +116,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
                 onConfirmCode();
                 break;
             case R.id.code_repeat:
-
+                onRepeateCode();
                 break;
             case R.id.back:
                 activity.onBack();
@@ -119,26 +124,55 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
         }
     }
 
+    private void onRepeateCode() {
+        setViewMode(ViewMode.CHECK_CODE);
+
+        api().login(phone).enqueue(new Callback<GsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<GsonResponse> call, @NonNull Response<GsonResponse> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK)
+                    onShow();
+                else
+                    onError();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GsonResponse> call, @NonNull Throwable t) {
+                onError();
+            }
+
+            private void onError() {
+                LoginActivity activity = (LoginActivity) Utils.getActivity(root);
+                if (activity == null)
+                    return;
+
+                setViewMode(ViewMode.WAIT_CODE_2);
+                Toast.makeText(activity, "Не узалось отправить запрос", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void onConfirmCode() {
+        statistics().login().auth();
         setViewMode(ViewMode.CHECK_CODE);
 
         String code = codeEdit.getText().toString();
 //        startTs = SystemClock.elapsedRealtime();
 
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.HIGH).execute(() -> {
-            GsonAuth authBbody = null;
-            GsonProfileResponse.GsonUser profileBody = null;
+            GsonAuth authBody;
+            GsonProfileResponse.GsonUser profileBody;
             try {
                 Response<GsonAuth> authResponse = api().auth(phone, code).execute();
                 if (authResponse.code() != HttpURLConnection.HTTP_OK) {
                     throw new ServerException(authResponse);
                 }
-                authBbody = authResponse.body();
-                if (authBbody == null) {
-                    throw new ServerException(200, "authBbody is null");
+                authBody = authResponse.body();
+                if (authBody == null) {
+                    throw new ServerException(200, "authBody is null");
                 }
 
-                Response<GsonProfileResponse.GsonUser> profileResponse = api().getProfile("Bearer " + authBbody.token).execute();
+                Response<GsonProfileResponse.GsonUser> profileResponse = api().getProfile("Bearer " + authBody.token).execute();
                 if (profileResponse.code() != HttpURLConnection.HTTP_OK) {
                     throw new ServerException(authResponse);
                 }
@@ -147,7 +181,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
                 if (profileBody == null) {
                     throw new ServerException(200, "profileBody is null");
                 }
-                onSuccsess(authBbody, profileBody);
+                onSuccsess(authBody, profileBody);
                 return;
             } catch (IOException e) {
                 e.printStackTrace();

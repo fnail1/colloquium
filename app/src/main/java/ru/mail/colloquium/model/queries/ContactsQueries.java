@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.Random;
 
+import ru.mail.colloquium.BuildConfig;
 import ru.mail.colloquium.model.entities.Answer;
 import ru.mail.colloquium.model.entities.Contact;
 import ru.mail.colloquium.toolkit.data.CursorWrapper;
@@ -29,9 +30,11 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
         int a = random.nextInt() & m;
         int k = random.nextInt() & m;
         String sql = selectAll + "\n" +
-                "order by (phone like '7999111223%') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n" +
+                (BuildConfig.DEBUG
+                        ? ("order by (phone like '7999111223%') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n")
 //                "order by length(displayName) desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n" +
 //                "order by (" + a + " + _id * " + k + ") & " + m + "\n" +
+                        : ("order by (" + a + " + _id * " + k + ") & " + m + "\n")) +
                 "limit " + count + " offset 0";
 
         return new ContactsCursor(db.rawQuery(sql, null));

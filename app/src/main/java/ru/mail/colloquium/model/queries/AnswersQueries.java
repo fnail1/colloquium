@@ -25,13 +25,13 @@ public class AnswersQueries extends SQLiteCommands<Answer> {
 
     public CursorWrapper<Answer> select(int skip, int limit) {
         String sql = selectAll + "\n" +
-                "order by (flags & " + Answer.FLAG_VIEWED + ") asc, createdAt desc, serverId desc\n" +
+                "order by (flags & " + Answer.FLAG_READ + ") asc, createdAt desc, serverId desc\n" +
                 "limit " + limit + " offset " + skip;
 
         return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Answer.class, null);
     }
 
     public int countUnread() {
-        return DbUtils.count(db, "select count(*) from Answers where flags & " + Answer.FLAG_VIEWED + " = 0", (String[]) null);
+        return DbUtils.count(db, "select count(*) from Answers where flags & " + Answer.FLAG_READ + " = 0", (String[]) null);
     }
 }

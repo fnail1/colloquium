@@ -10,7 +10,7 @@ import ru.mail.colloquium.toolkit.data.DbTable;
 
 @DbTable(name = AppData.TABLE_ANSWERS)
 public class Answer extends BaseRow {
-    public static final int FLAG_VIEWED = 1;
+    public static final int FLAG_READ = 1;
     public static final int FLAG_SENT = 2;
 
     public String serverId;

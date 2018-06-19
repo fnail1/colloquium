@@ -24,6 +24,7 @@ import ru.mail.colloquium.ui.base.BaseActivity;
 import ru.mail.colloquium.ui.main.MainActivity;
 
 import static ru.mail.colloquium.App.app;
+import static ru.mail.colloquium.App.statistics;
 
 public class LoginActivity extends BaseActivity {
 
@@ -59,6 +60,9 @@ public class LoginActivity extends BaseActivity {
         background = page2;
         if (savedInstanceState != null)
             currentPage = savedInstanceState.getInt(STATE_PAGE);
+        else
+            statistics().login().start();
+
         inflatePage(foreground, currentPage);
     }
 

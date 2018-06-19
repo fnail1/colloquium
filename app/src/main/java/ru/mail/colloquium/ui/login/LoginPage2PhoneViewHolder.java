@@ -28,6 +28,7 @@ import ru.mail.colloquium.utils.PhoneEditListener;
 import ru.mail.colloquium.utils.Utils;
 
 import static ru.mail.colloquium.App.api;
+import static ru.mail.colloquium.App.statistics;
 import static ru.mail.colloquium.toolkit.collections.Query.query;
 import static ru.mail.colloquium.toolkit.phonenumbers.PhoneNumberUtils.digitsOnly;
 
@@ -62,11 +63,17 @@ public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHol
         Utils.hideKeyboard(phoneEdit);
         phoneEdit.clearFocus();
 
+        LoginActivity activity = (LoginActivity) Utils.getActivity(root);
+        if (activity == null)
+            return;
+
         String phone = "7" + digitsOnly(phoneEdit.getText().toString());
 //        phoneContainer.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
         int buttonVisibility = button.getVisibility();
         button.setVisibility(View.INVISIBLE);
+
+        statistics().login().login();
 
         api().login(phone).enqueue(new Callback<GsonResponse>() {
             @Override

@@ -1,11 +1,8 @@
-package ru.mail.colloquium.diagnostics;
+package ru.mail.colloquium.diagnostics.statistics;
 
 import android.support.annotation.NonNull;
 
 import java.util.Arrays;
-
-import ru.mail.colloquium.diagnostics.statistics.StatParam;
-import ru.mail.colloquium.diagnostics.statistics.StatisticsScreen;
 
 public class StatContext {
     private final Object screen;

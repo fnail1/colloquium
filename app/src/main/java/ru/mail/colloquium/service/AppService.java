@@ -38,7 +38,6 @@ import static ru.mail.colloquium.App.api;
 import static ru.mail.colloquium.App.app;
 import static ru.mail.colloquium.App.data;
 import static ru.mail.colloquium.App.dateTimeService;
-import static ru.mail.colloquium.App.notifications;
 import static ru.mail.colloquium.App.prefs;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 import static ru.mail.colloquium.diagnostics.Logger.trace;
@@ -259,12 +258,12 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     }
 
-    public void answerViewed(Answer answer) {
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask("answerViewed" + answer.serverId) {
+    public void answerRead(Answer answer) {
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask("answerRead" + answer.serverId) {
 
             @Override
             protected void performRequest(AppData appData) throws IOException, ServerException {
-                if (!answer.flags.getAndSet(Answer.FLAG_VIEWED, true)) {
+                if (!answer.flags.getAndSet(Answer.FLAG_READ, true)) {
                     appData.answers.save(answer);
                 }
                 super.performRequest(appData);

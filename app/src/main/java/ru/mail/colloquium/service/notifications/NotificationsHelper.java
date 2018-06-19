@@ -22,7 +22,6 @@ import ru.mail.colloquium.ui.main.MainActivity;
 import ru.mail.colloquium.utils.GraphicUtils;
 
 import static ru.mail.colloquium.App.app;
-import static ru.mail.colloquium.App.prefs;
 
 public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler {
 
@@ -76,7 +75,7 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
             return;
 
         for (Answer answer : args) {
-            if (!answer.flags.get(Answer.FLAG_VIEWED))
+            if (!answer.flags.get(Answer.FLAG_READ))
                 showNotificationSingleLike(answer);
             else
                 getNotificationManager().cancel(getNotificationId(answer));

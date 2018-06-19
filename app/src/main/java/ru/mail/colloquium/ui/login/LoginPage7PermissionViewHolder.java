@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.mail.colloquium.R;
+import ru.mail.colloquium.diagnostics.statistics.Statistics;
 import ru.mail.colloquium.ui.ReqCodes;
 import ru.mail.colloquium.utils.Utils;
+
+import static ru.mail.colloquium.App.statistics;
 
 public class LoginPage7PermissionViewHolder implements LoginActivity.LoginPageViewHolder {
 
@@ -30,6 +33,7 @@ public class LoginPage7PermissionViewHolder implements LoginActivity.LoginPageVi
         LoginActivity activity = (LoginActivity) Utils.getActivity(root);
         if (activity == null)
             return;
+        statistics().login().permission();
         switch (view.getId()) {
             case R.id.contacts:
                 if (activity.requestPermissions(ReqCodes.CONTACTS_PERMISSIONS, R.string.contacts_permission_explanation, Manifest.permission.READ_CONTACTS)) {

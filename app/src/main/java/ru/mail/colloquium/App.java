@@ -11,6 +11,7 @@ import java.io.IOException;
 import ru.mail.colloquium.api.ApiService;
 import ru.mail.colloquium.api.model.GsonProfileResponse;
 import ru.mail.colloquium.diagnostics.Logger;
+import ru.mail.colloquium.diagnostics.statistics.Statistics;
 import ru.mail.colloquium.model.AppData;
 import ru.mail.colloquium.model.types.Age;
 import ru.mail.colloquium.model.types.Gender;
@@ -41,6 +42,7 @@ public class App extends Application {
     private PhotoManager photoManager;
     private FirebaseJobDispatcher jobDispatcher;
     private NotificationsHelper notificationsHelper;
+    private Statistics statistics;
 
 
     public static AppData data() {
@@ -95,6 +97,10 @@ public class App extends Application {
         return instance.notificationsHelper;
     }
 
+    public static Statistics statistics() {
+        return instance.statistics;
+    }
+
     public static App app() {
         return instance;
     }
@@ -103,6 +109,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        statistics = new Statistics(this);
         preferences = new Preferences(this);
         data = new AppData(this, preferences.getUserId());
         appStateObserver = new AppStateObserver(this, preferences);

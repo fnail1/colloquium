@@ -1,6 +1,5 @@
 package ru.mail.colloquium.service;
 
-import java.security.interfaces.DSAKey;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import ru.mail.colloquium.utils.Utils;
 
 import static ru.mail.colloquium.App.dateTimeService;
 import static ru.mail.colloquium.App.prefs;
+import static ru.mail.colloquium.App.statistics;
 
 public class MergeHelper {
 
@@ -59,7 +59,7 @@ public class MergeHelper {
         dst.answer = src.selected_variant;
         dst.answerName = src.selected_name;
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
-        dst.flags.set(Answer.FLAG_VIEWED, src.is_viewed);
+        dst.flags.set(Answer.FLAG_READ, src.is_viewed);
         dst.gender = src.sex;
         dst.age = src.user_education;
 
@@ -76,6 +76,7 @@ public class MergeHelper {
                     merge(appData, answer, gsonAnswer);
                     if (outNew != null)
                         outNew.add(answer);
+                    statistics().answers().recieved();
                 }
             }
 

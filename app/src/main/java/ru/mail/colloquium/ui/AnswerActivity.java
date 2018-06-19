@@ -22,6 +22,7 @@ import ru.mail.colloquium.ui.main.questions.VariantViewHolder;
 
 import static ru.mail.colloquium.App.appService;
 import static ru.mail.colloquium.App.data;
+import static ru.mail.colloquium.App.statistics;
 import static ru.mail.colloquium.diagnostics.DebugUtils.safeThrow;
 
 public class AnswerActivity extends BaseActivity {
@@ -126,7 +127,8 @@ public class AnswerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        appService().answerViewed(answer);
+        statistics().answers().read();
+        appService().answerRead(answer);
     }
 
     @OnClick(R.id.back)
