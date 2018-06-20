@@ -57,6 +57,7 @@ public class LoginPage1IntroViewHolder implements LoginActivity.LoginPageViewHol
                 activity.startActivity(intent);
             }
         };
+
         message.setSpan(licence, t1.length(), t1.length() + t2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 

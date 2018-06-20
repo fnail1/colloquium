@@ -72,6 +72,9 @@
         android:layout_marginEnd="24dp"
         android:gravity="center_horizontal"
         android:textAppearance="@style/SubtitleTextAppearance"
+        android:textSize="12sp"
+        android:alpha=".7"
+        android:textColorLink="#ffffff"
         android:text="Продолжая, вы соглашаетсясь с политикой конфиденциальности"/>
 
 
