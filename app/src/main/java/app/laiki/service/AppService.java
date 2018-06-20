@@ -359,9 +359,11 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                 GsonResponse body = response.body();
                 if (body != null && body.success) {
                     contact.inviteSent = true;
-                    appData.contacts.save(contact);
+                    ThreadPool.DB.execute(() -> {
+                        appData.contacts.save(contact);
+                        onFinish();
+                    });
                 }
-                onFinish();
             }
 
             @Override
