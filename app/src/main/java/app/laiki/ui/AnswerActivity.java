@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import app.laiki.R;
 import app.laiki.model.entities.Answer;
 import app.laiki.model.entities.Contact;
@@ -19,11 +16,13 @@ import app.laiki.model.types.Choice;
 import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.questions.VariantViewHolder;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
 import static app.laiki.App.statistics;
-import static app.laiki.diagnostics.DebugUtils.safeThrow;
 
 public class AnswerActivity extends BaseActivity {
     public static final String EXTRA_ANSWER_ID = "answer_id";
@@ -46,6 +45,7 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.variant4Text1) TextView variant4Text1;
     @BindView(R.id.variant4Text2) TextView variant4Text2;
     @BindView(R.id.variant4) LinearLayout variant4;
+    @BindView(R.id.copyright) TextView copyright;
     private Answer answer;
     private VariantViewHolder v1;
     private VariantViewHolder v2;
@@ -87,16 +87,19 @@ public class AnswerActivity extends BaseActivity {
                 root.setBackgroundColor(0xffF5F5F5);
                 getWindow().setStatusBarColor(0xffF5F5F5);
                 icon.setImageResource(R.drawable.ic_camel);
+                copyright.setText("Лайки ❤️ laiki.app");
                 break;
             case MALE:
                 root.setBackgroundColor(0xff2767A9);
                 getWindow().setStatusBarColor(0xff2767A9);
                 icon.setImageResource(R.drawable.ic_male);
+                copyright.setText("Лайки ❤️ laiki.app");
                 break;
             case FEMALE:
                 root.setBackgroundColor(0xffED1C45);
                 getWindow().setStatusBarColor(0xffED1C45);
                 icon.setImageResource(R.drawable.ic_female);
+                copyright.setText("Лайки \uD83D\uDC99️ laiki.app");
                 break;
         }
 
