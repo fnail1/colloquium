@@ -82,6 +82,9 @@ public class AnswerActivity extends BaseActivity {
             return;
         }
 
+        statistics().answers().read();
+        appService().answerRead(answer);
+
         switch (answer.gender) {
             case CAMEL:
                 root.setBackgroundColor(0xffF5F5F5);
@@ -127,12 +130,6 @@ public class AnswerActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        statistics().answers().read();
-        appService().answerRead(answer);
-    }
 
     @OnClick(R.id.back)
     public void onViewClicked() {
