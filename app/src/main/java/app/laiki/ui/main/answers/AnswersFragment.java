@@ -64,9 +64,7 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
         appService().answerUpdatedEvent.add(this);
         appService().requestAnswers();
 
-        MyAdapter adapter = (MyAdapter) list.getAdapter();
-        adapter.init();
-        adapter.notifyDataSetChanged();
+        onAnswerUpdated(null);
     }
 
     @Override
