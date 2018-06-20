@@ -22,6 +22,7 @@ import app.laiki.ui.main.MainActivity;
 import app.laiki.utils.GraphicUtils;
 
 import static app.laiki.App.app;
+import static app.laiki.App.prefs;
 
 public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler {
 
@@ -68,6 +69,9 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
     @Override
     public void onAnswerUpdated(List<Answer> args) {
         if (args == null)
+            return;
+
+        if (!prefs().serviceState().answersInitialSyncComplete)
             return;
 
         for (Answer answer : args) {

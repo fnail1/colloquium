@@ -178,6 +178,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     public void requestAnswers(Runnable callback) {
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask<GsonAnswers>("requestAnswers") {
+            public boolean success;
             ArrayList<Answer> newAnswers = new ArrayList<>();
 
 
@@ -189,6 +190,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             @Override
             protected void processResponse(AppData appData, GsonAnswers body) {
                 MergeHelper.merge(appData, body.answers, newAnswers);
+                success = true;
             }
 
             @Override
@@ -199,6 +201,14 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
                 if (callback != null)
                     callback.run();
+
+                if (success) {
+                    ServiceState serviceState = prefs().serviceState();
+                    if (!serviceState.answersInitialSyncComplete) {
+                        serviceState.answersInitialSyncComplete = true;
+                        prefs().save(serviceState);
+                    }
+                }
             }
 
         });
