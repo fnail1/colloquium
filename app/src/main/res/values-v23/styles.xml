@@ -7,7 +7,8 @@
         <item name="colorPrimary">@color/colorBackground</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorPrimary">#546d79</item>
+        <item name="android:textColor">#546d79</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!--<item name="android:windowBackground">@color/colorBackground</item>-->
@@ -26,6 +27,8 @@
 
     <style name="AnswersActivityTheme" parent="AppTheme">
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
     </style>
 
     <style name="MainActivityTheme" parent="AppTheme">

@@ -3,7 +3,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true">
+                android:fitsSystemWindows="true"
+                android:theme="@style/AppThemeDark">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -70,17 +71,15 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="@dimen/indent"
-                android:orientation="vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/variant1Text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Имя"/>
 
                 <TextView
@@ -88,9 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Фамилия"/>
             </LinearLayout>
 
@@ -104,17 +101,15 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="@dimen/indent"
-                android:orientation="vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/variant2Text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Иннокентий Изольдович"/>
 
                 <TextView
@@ -122,9 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Кац"
                     tools:visibility="visible"/>
             </LinearLayout>
@@ -146,17 +139,15 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="@dimen/indent"
-                android:orientation="vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/variant3Text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Ухтыждлинноеимякакое"/>
 
                 <TextView
@@ -164,9 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Ухтыждлиннаяфамилия"/>
             </LinearLayout>
 
@@ -180,17 +169,15 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="@dimen/indent"
-                android:orientation="vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/variant4Text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text="В одну строку"/>
 
                 <TextView
@@ -198,9 +185,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textAppearance="@style/SubtitleTextAppearance"
-                    android:textColor="#ff000000"
-                    android:textStyle="bold"
+                    style="@style/WhiteButtonTextAppearance"
                     tools:text=""
                     tools:visibility="gone"/>
             </LinearLayout>

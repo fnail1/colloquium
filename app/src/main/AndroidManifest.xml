@@ -33,7 +33,7 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Fullscreen"
+            android:theme="@style/LoginActivityTheme"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity

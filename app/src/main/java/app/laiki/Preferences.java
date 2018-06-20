@@ -114,7 +114,7 @@ public class Preferences {
         return apiSet;
     }
 
-    void setApiBaseUrl(ApiSet apiSet) {
+    public void setApiSet(ApiSet apiSet) {
         common.edit().putString(API_BASE_URL, apiSet.name()).apply();
         this.apiSet = null;
     }

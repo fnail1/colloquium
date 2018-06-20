@@ -53,7 +53,9 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
                     }).commit();
         }
         name.setText(contact.displayName);
-        invite.setVisibility(contact.inviteSent ? View.GONE : View.VISIBLE);
+
+        invite.setEnabled(!contact.inviteSent);
+        invite.setText(contact.inviteSent ? "Отправили" : "Отправить");
     }
 
     @OnClick(R.id.invite)

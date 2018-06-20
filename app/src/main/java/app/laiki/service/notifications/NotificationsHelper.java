@@ -39,12 +39,8 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
         NotificationManager nm = getNotificationManager();
         Bitmap bitmap = GraphicUtils.getResourceBitmap(app(), answer.gender.heartIconResId);
 
-        String title = answer.gender == Gender.FEMALE
-                ? "Вас выбрала"
-                : "Вас выбрал";
-
-        String content = app().getString(answer.gender.nameResId) + ", " +
-                app().getString(answer.age.nameResId);
+        String title = "\uD83D\uDE09 Новое мнение о тебе\n";
+        String content = "Смотри скорее, что о тебе думают...";
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(app(), INCOMING_LIKES_CHANNEL)
                 .setLargeIcon(bitmap)

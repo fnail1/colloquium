@@ -9,23 +9,28 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import app.laiki.BuildConfig;
 import app.laiki.Configuration;
 import app.laiki.R;
+import app.laiki.api.ApiSet;
 import app.laiki.diagnostics.DebugUtils;
 import app.laiki.service.fcm.FcmRegistrationService;
 import app.laiki.ui.base.BaseActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static app.laiki.App.app;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
+import static app.laiki.toolkit.collections.Query.query;
 
 public class SettingsActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
     @BindView(R.id.notifications) Switch notifications;
@@ -33,6 +38,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
     @BindView(R.id.import_db) TextView importDb;
     @BindView(R.id.copy_fcm) TextView copyFcm;
     @BindView(R.id.version) TextView version;
+    @BindView(R.id.api) Spinner api;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +52,24 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
             line1.setVisibility(View.GONE);
             importDb.setVisibility(View.GONE);
             copyFcm.setVisibility(View.GONE);
+            api.setVisibility(View.GONE);
+        } else {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_spinner_item, query(ApiSet.values()).select(Enum::name).toList());
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            api.setAdapter(adapter);
+            api.setSelection(prefs().getApiSet().ordinal());
+            api.setPrompt(prefs().getApiSet().name());
+            api.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    app().setApiSet(ApiSet.values()[position]);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
 
         try {

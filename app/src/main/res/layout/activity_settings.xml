@@ -29,7 +29,6 @@
         android:gravity="center_vertical"
         android:text="Настройки"
         android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="#546d79"
         android:textStyle="bold"
         />
 
@@ -93,11 +92,17 @@
         android:layout_below="@id/version"
         android:background="#546d79"/>
 
+    <Spinner
+        android:id="@+id/api"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/version"/>
+
     <TextView
         android:id="@+id/import_db"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/version"
+        android:layout_below="@id/api"
         android:background="@drawable/ripple_rect_view_light"
         android:clickable="true"
         android:focusable="true"

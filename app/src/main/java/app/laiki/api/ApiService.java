@@ -163,7 +163,7 @@ public interface ApiService {
     @GET("view/{answer_id}")
     Call<GsonResponse> viewAnswer(@Path("answer_id") String answerId);
 
-    @GET("/")
+    @GET("user")
     Call<Void> ping();
 
     @GET("user")

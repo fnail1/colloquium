@@ -7,6 +7,7 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.google.gson.Gson;
 
 import app.laiki.api.ApiService;
+import app.laiki.api.ApiSet;
 import app.laiki.diagnostics.DebugUtils;
 import app.laiki.diagnostics.statistics.Statistics;
 import app.laiki.model.AppData;
@@ -151,5 +152,10 @@ public class App extends Application {
         preferences.onLogout();
         data.close();
         System.exit(0);
+    }
+
+    public void setApiSet(ApiSet apiSet) {
+        preferences.setApiSet(apiSet);
+        apiService = ApiService.Creator.newService(apiSet, this);
     }
 }
