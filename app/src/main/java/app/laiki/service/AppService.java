@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Observable;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import app.laiki.api.model.GsonAnswers;
 import app.laiki.api.model.GsonQuestionResponse;
@@ -135,6 +136,14 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             lastContactsSync = dateTimeService().getServerTime();
             prefs().save(serviceState);
             contactsSynchronizationEvent.fire(null);
+
+            try {
+                syncAnsweredQuestionsSync(data());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServerException e) {
+                safeThrow(e);
+            }
         });
     }
 
@@ -343,21 +352,23 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     public void sendInvite(Contact contact) {
         sentInvites.put(contact._id, contact);
 
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(new SimpleRequestTask<GsonResponse>("invite-" + contact.serverId) {
+        AppData appData = data();
+        api().invite(contact.phone).enqueue(new Callback<GsonResponse>() {
             @Override
-            protected Call<GsonResponse> getRequest() {
-                return api().invite(contact.phone);
-            }
-
-            @Override
-            protected void processResponse(AppData appData, GsonResponse body) {
-                if (body.success) {
+            public void onResponse(Call<GsonResponse> call, Response<GsonResponse> response) {
+                GsonResponse body = response.body();
+                if (body != null && body.success) {
                     contact.inviteSent = true;
                     appData.contacts.save(contact);
                 }
+                onFinish();
             }
 
             @Override
+            public void onFailure(Call<GsonResponse> call, Throwable t) {
+                onFinish();
+            }
+
             protected void onFinish() {
                 sentInvites.remove(contact._id);
                 inviteSentEvent.fire(contact);

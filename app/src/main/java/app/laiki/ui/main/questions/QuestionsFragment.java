@@ -31,9 +31,8 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
     @BindView(R.id.page1) View page1;
     @BindView(R.id.page2) View page2;
-    @BindView(R.id.progress) ProgressBar progress;
+    @BindView(R.id.progress) View progress;
     Unbinder unbinder;
-    @BindView(R.id.no_questions) TextView noQuestions;
     private QuestionViewHolder background;
     private QuestionViewHolder foreground;
     private Question question;
@@ -119,17 +118,19 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
                 return;
             }
 
-            noQuestions.setVisibility(View.GONE);
             progress.setVisibility(View.GONE);
 
-            if (question == null) {
+            requestSent = false;
+            boolean animate = question != null;
+            question = q;
+
+            if (!animate) {
                 foreground.root.setVisibility(View.VISIBLE);
                 foreground.bind(question = q);
             } else {
                 QuestionViewHolder t = foreground;
                 foreground = background;
                 background = t;
-                question = q;
                 foreground.bind(question);
                 animateSwap(background.root, foreground.root);
             }
