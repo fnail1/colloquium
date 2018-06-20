@@ -11,13 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import app.laiki.model.entities.Contact;
+import app.laiki.service.AppService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import app.laiki.R;
 import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.contacts.ContactsAdapter;
 
-public class ContactsActivity extends BaseActivity {
+import static app.laiki.App.appService;
+
+public class ContactsActivity extends BaseActivity implements AppService.InviteSentEventHandler {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
@@ -32,6 +36,19 @@ public class ContactsActivity extends BaseActivity {
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(new ContactsAdapter());
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appService().inviteSentEvent.add(this);
+        list.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        appService().inviteSentEvent.remove(this);
+        super.onPause();
     }
 
     @Override
@@ -69,5 +86,10 @@ public class ContactsActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onInviteSent(Contact args) {
+        runOnUiThread(() -> list.getAdapter().notifyDataSetChanged());
     }
 }

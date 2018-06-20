@@ -172,6 +172,9 @@ public interface ApiService {
     @GET("user")
     Call<GsonProfileResponse.GsonUser> getProfile();
 
+    @GET("/api/invite/{phone}")
+    Call<GsonResponse> invite(@Path("phone") String phone);
+
     @GET("answer/reset")
     Call<GsonResponse> resetAnswers();
 

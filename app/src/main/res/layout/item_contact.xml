@@ -14,8 +14,8 @@
         android:id="@+id/avatar"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginStart="@dimen/indent"
         android:layout_marginEnd="@dimen/indent"
+        android:layout_marginStart="@dimen/indent"
         android:layout_weight="0"
         android:scaleType="centerInside"
         tools:src="@drawable/ic_address_book"
@@ -25,8 +25,8 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/indent"
         android:layout_marginEnd="@dimen/indent"
+        android:layout_marginStart="@dimen/indent"
         android:layout_weight="1"
         android:ellipsize="end"
         android:singleLine="true"
@@ -37,15 +37,22 @@
 
     <TextView
         android:id="@+id/invite"
+        style="@style/InviteButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/indent"
         android:layout_marginEnd="@dimen/indent"
+        android:layout_marginStart="@dimen/indent"
         android:layout_weight="0"
         android:fontFamily="sans-serif-medium"
         android:text="Позвать"
         android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="#03c383"
         />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:theme="@style/InviteButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"/>
 
 </LinearLayout>

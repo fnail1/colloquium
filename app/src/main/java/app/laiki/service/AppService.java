@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -78,6 +79,15 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             handler.onContactsSynchronizationComplete();
         }
     };
+
+    public final ObservableEvent<InviteSentEventHandler, AppService, Contact> inviteSentEvent = new ObservableEvent<InviteSentEventHandler, AppService, Contact>(this) {
+        @Override
+        protected void notifyHandler(InviteSentEventHandler handler, AppService sender, Contact args) {
+            handler.onInviteSent(args);
+        }
+    };
+
+    public final LongSparseArray<Contact> sentInvites = new LongSparseArray<>();
 
     public AppService(Context context, AppStateObserver appStateObserver) {
         this.context = context;
@@ -320,6 +330,31 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         });
     }
 
+    public void sendInvite(Contact contact) {
+        sentInvites.put(contact._id, contact);
+
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(new SimpleRequestTask<GsonResponse>("invite-" + contact.serverId) {
+            @Override
+            protected Call<GsonResponse> getRequest() {
+                return api().invite(contact.phone);
+            }
+
+            @Override
+            protected void processResponse(AppData appData, GsonResponse body) {
+                if (body.success) {
+                    contact.inviteSent = true;
+                    appData.contacts.save(contact);
+                }
+            }
+
+            @Override
+            protected void onFinish() {
+                sentInvites.remove(contact._id);
+                inviteSentEvent.fire(contact);
+            }
+        });
+    }
+
     public interface NewQuestionEventHandler {
         void onNewQuestion(Question args);
     }
@@ -334,5 +369,9 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     public interface ContactsSynchronizationEventHandler {
         void onContactsSynchronizationComplete();
+    }
+
+    public interface InviteSentEventHandler {
+        void onInviteSent(Contact args);
     }
 }
