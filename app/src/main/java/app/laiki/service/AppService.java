@@ -17,7 +17,6 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -139,6 +138,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             try {
                 syncAnsweredQuestionsSync(data());
+                syncReadAnswersSync(data());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
@@ -287,7 +287,28 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     }
 
+    private void syncReadAnswersSync(AppData appData) throws IOException {
+        for (Answer answer : appData.answers.selectToSync()) {
+            Response<GsonResponse> response = api().viewAnswer(answer.serverId).execute();
+            if (response.code() != HttpURLConnection.HTTP_OK) {
+                safeThrow(new ServerException(response));
+                return;
+            }
+            GsonResponse body = response.body();
+            if (body == null || !body.success) {
+                safeThrow(new Exception("" + body));
+                return;
+            }
+            answer.flags.set(Answer.FLAG_SENT, true);
+            appData.answers.save(answer);
+        }
+    }
+
+
     public void answerRead(Answer answer) {
+        if (answer.flags.get(Answer.FLAG_SENT))
+            return;
+
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new SimpleRequestTask("answerRead" + answer.serverId) {
 
             @Override

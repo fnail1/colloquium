@@ -34,4 +34,11 @@ public class AnswersQueries extends SQLiteCommands<Answer> {
     public int countUnread() {
         return DbUtils.count(db, "select count(*) from Answers where flags & " + Answer.FLAG_READ + " = 0", (String[]) null);
     }
+
+    public CursorWrapper<Answer> selectToSync() {
+        String sql = selectAll + "\n" +
+                "where (flags & " + (Answer.FLAG_READ | Answer.FLAG_SENT) + ") = " + Answer.FLAG_READ + "\n";
+
+        return new SimpleCursorWrapper<>(db.rawQuery(sql, null), Answer.class, null);
+    }
 }
