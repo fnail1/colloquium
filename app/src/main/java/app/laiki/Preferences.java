@@ -106,8 +106,8 @@ public class Preferences {
     }
 
     public ApiSet getApiSet() {
-        ApiSet defaultSet = BuildConfig.DEBUG ? ApiSet.TEST : ApiSet.PROD;
-//        ApiSet defaultSet = ApiSet.PROD;
+//        ApiSet defaultSet = BuildConfig.DEBUG ? ApiSet.TEST : ApiSet.PROD;
+        ApiSet defaultSet = ApiSet.PROD;
         if (apiSet == null) {
             apiSet = ApiSet.valueOf(common.getString(API_BASE_URL, defaultSet.name()));
         }

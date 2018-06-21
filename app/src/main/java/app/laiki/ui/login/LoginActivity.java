@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import app.laiki.R;
 import app.laiki.api.model.GsonProfileResponse;
 import app.laiki.model.types.Age;
@@ -22,11 +20,17 @@ import app.laiki.service.MergeHelper;
 import app.laiki.ui.ReqCodes;
 import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.MainActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static app.laiki.App.app;
 import static app.laiki.App.statistics;
 
 public class LoginActivity extends BaseActivity {
+
+    private static final String STATE_PAGE = "page";
+    public static final String STATE_PHONE = "phone";
+    public static final String STATE_ACCESS_TOKEN = "access_token";
 
     private static long startTime = SystemClock.elapsedRealtime() >> 3;
     private static int[] PAGES = {
@@ -39,7 +43,6 @@ public class LoginActivity extends BaseActivity {
             R.layout.fr_login_7_permission
     };
 
-    private static final String STATE_PAGE = "page";
     private String phone;
     String accessToken;
     Profile profile = new Profile();
@@ -58,10 +61,13 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         foreground = page1;
         background = page2;
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             currentPage = savedInstanceState.getInt(STATE_PAGE);
-        else
+            phone = savedInstanceState.getString(STATE_PHONE);
+            accessToken = savedInstanceState.getString(STATE_ACCESS_TOKEN);
+        } else {
             statistics().login().start();
+        }
 
         inflatePage(foreground, currentPage);
     }
@@ -70,6 +76,8 @@ public class LoginActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_PAGE, currentPage);
+        outState.putString(STATE_PHONE, phone);
+        outState.putString(STATE_ACCESS_TOKEN, accessToken);
     }
 
     @Override

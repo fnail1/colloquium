@@ -208,6 +208,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
         activity.runOnUiThread(() -> {
             setViewMode(ViewMode.WAIT_CODE_2);
             codeError.setVisibility(View.VISIBLE);
+            codeExplanation.setVisibility(View.GONE);
             codeEdit.setBackgroundColor(0xffffb68d);
             codeExplanation.setVisibility(View.INVISIBLE);
         });
