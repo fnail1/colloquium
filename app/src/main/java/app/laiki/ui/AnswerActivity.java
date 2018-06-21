@@ -72,7 +72,9 @@ public class AnswerActivity extends BaseActivity {
         });
 
         answers.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            answers.post(this::bindData);
+            if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom) {
+                answers.post(this::bindData);
+            }
         });
 
     }

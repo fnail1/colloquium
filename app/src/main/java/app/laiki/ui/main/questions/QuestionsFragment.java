@@ -50,7 +50,11 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        View.OnLayoutChangeListener onLayoutChangeListener = (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> onPageLayout();
+        View.OnLayoutChangeListener onLayoutChangeListener = (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom) {
+                onPageLayout();
+            }
+        };
         page1.addOnLayoutChangeListener(onLayoutChangeListener);
         page2.addOnLayoutChangeListener(onLayoutChangeListener);
         foreground = new QuestionViewHolder(page1, this);
