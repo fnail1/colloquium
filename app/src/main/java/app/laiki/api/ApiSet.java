@@ -1,7 +1,7 @@
 package app.laiki.api;
 
 public enum  ApiSet {
-    TEST("http://laiki.app", "http://laiki.app/api/", true),
+    TEST("http://laiki.app", "http://testpoint.laiki.app/api/", true),
     PROD("https://laiki.app", "https://laiki.app/api/", false);
 
     public final String webUrl;
