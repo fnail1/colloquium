@@ -68,8 +68,12 @@ public class VariantViewHolder {
         sb.delete(sb.length() - 1, sb.length());
         text1.setText(sb);
 
-        text2.setVisibility(View.VISIBLE);
-        text2.setText(contact.middleName);
+        if (contact.middleName != null) {
+            text2.setVisibility(View.VISIBLE);
+            text2.setText(contact.middleName);
+        } else {
+            text2.setVisibility(View.GONE);
+        }
 
     }
 

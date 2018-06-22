@@ -105,7 +105,7 @@ public class ContactNameView extends View {
         if (maxWidth == 0)
             return;
 
-        if(contact == null)
+        if (contact == null)
             return;
 
         MeasureResult m = new MeasureResult();
@@ -144,15 +144,14 @@ public class ContactNameView extends View {
             }
             line2X = (maxWidth - m.textSize) / 2;
         } else {
-            if (TextUtils.isEmpty(contact.firstName)) {
-                if (TextUtils.isEmpty(contact.lastName)) {
-                    line1 = contact.displayName;
-                } else {
-                    line1 = contact.lastName;
-                }
-            } else {
+            if (!TextUtils.isEmpty(contact.firstName))
                 line1 = contact.firstName;
-            }
+            else if (!TextUtils.isEmpty(contact.lastName))
+                line1 = contact.lastName;
+            else
+                line1 = contact.displayName;
+
+
             line2 = null;
             while (true) {
                 selectMaxTextWidth(paint1, line1, maxWidth, FONT_SIZE_MIN, maxFontSize, m);
