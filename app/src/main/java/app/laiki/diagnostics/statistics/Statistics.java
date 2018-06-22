@@ -39,6 +39,10 @@ public class Statistics {
         return answers;
     }
 
+    public ContactsStatistics contacts() {
+        return new ContactsStatistics();
+    }
+
     public class LoginWorkflow {
         public void start() {
             FlurryAgent.logEvent("Login.Start");
@@ -72,6 +76,12 @@ public class Statistics {
 
         public void read() {
             FlurryAgent.logEvent("Answer.Read");
+        }
+    }
+
+    public class ContactsStatistics {
+        public void invite() {
+            FlurryAgent.logEvent("Contacts.InviteSent");
         }
     }
 }

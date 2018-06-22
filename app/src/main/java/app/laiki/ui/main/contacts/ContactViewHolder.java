@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import app.laiki.R;
 import app.laiki.model.entities.Contact;
-import app.laiki.toolkit.concurrent.ThreadPool;
-import app.laiki.ui.views.IViewHolder;
 import app.laiki.utils.AntiDoubleClickLock;
 import app.laiki.utils.AvatarBuilder;
 import app.laiki.utils.photomanager.PhotoRequest;
@@ -21,8 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static app.laiki.App.appService;
-import static app.laiki.App.data;
 import static app.laiki.App.photos;
+import static app.laiki.App.statistics;
 
 public class ContactViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.avatar) ImageView avatar;
@@ -75,7 +73,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
     public void onViewClicked() {
         if (!AntiDoubleClickLock.onClick(this, R.id.invite))
             return;
-
+        statistics().contacts().invite();
         appService().sendInvite(contact);
 
         bind(contact);
