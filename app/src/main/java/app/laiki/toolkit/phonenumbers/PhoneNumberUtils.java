@@ -13,7 +13,7 @@ import java.util.Locale;
 
 public class PhoneNumberUtils {
     public static String normalizePhoneNumber(String number) {
-        if (number == null)
+        if (number == null || number.length() < 11)
             return null;
         int length = number.length();
         int i = 0;
@@ -46,7 +46,7 @@ public class PhoneNumberUtils {
                 return null;
         }
 
-        return sb.length() >= 5 ? sb.toString() : null;
+        return sb.length() >= 11 ? sb.toString() : null;
     }
 
     public static String formatPhone(String numberToParse) {
