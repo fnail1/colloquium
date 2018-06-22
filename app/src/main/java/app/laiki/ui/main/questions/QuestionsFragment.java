@@ -228,7 +228,12 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
     @Override
     public void onAnswerSent(Question args) {
-        progress.setVisibility(View.GONE);
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> {
+                progress.setVisibility(View.GONE);
+            });
+        }
         appService().requestNextQuestion();
     }
 
