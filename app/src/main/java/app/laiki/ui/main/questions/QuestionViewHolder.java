@@ -5,10 +5,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.Collections;
-import java.util.List;
-
-import app.laiki.toolkit.collections.Query;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -16,9 +12,7 @@ import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
-import app.laiki.toolkit.concurrent.ThreadPool;
 
-import static app.laiki.App.data;
 import static app.laiki.App.photos;
 
 public class QuestionViewHolder {
@@ -52,6 +46,11 @@ public class QuestionViewHolder {
     private final VariantViewHolder v2;
     private final VariantViewHolder v3;
     private final VariantViewHolder v4;
+    private Question question;
+    private Contact contact1;
+    private Contact contact2;
+    private Contact contact3;
+    private Contact contact4;
 
     /**
      * @param callback
@@ -68,7 +67,12 @@ public class QuestionViewHolder {
 //        R.layout.fr_question
     }
 
-    public void bind(Question question) {
+    public void bind(Question question, Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
+        this.question = question;
+        this.contact1 = contact1;
+        this.contact2 = contact2;
+        this.contact3 = contact3;
+        this.contact4 = contact4;
         root.setBackgroundColor(COLORS[(question.uniqueId.hashCode() & 0xffff) % COLORS.length]);
         photos().attach(icon, question.emojiUrl)
                 .size(
@@ -76,35 +80,17 @@ public class QuestionViewHolder {
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size))
                 .commit();
         message.setText(question.question);
-        List<Contact> contacts;
-        if (question.variant1 <= 0) {
-            contacts = data().contacts.selectRandom(4).toList();
-        } else {
-            contacts = data().contacts.selectById(question.variant1, question.variant2, question.variant3, question.variant4).toList();
-        }
 
-        if (contacts.isEmpty())
-            return;
-
-        Collections.sort(contacts, (c1, c2) -> c1.displayNameOrder.compareTo(c2.displayNameOrder));
-        Contact contact1 = contacts.get(0);
-        Contact contact2 = contacts.get(1 % contacts.size());
-        Contact contact3 = contacts.get(2 % contacts.size());
-        Contact contact4 = contacts.get(3 % contacts.size());
-
-        if (question.variant1 == 0) {
-            question.variant1 = contact1._id;
-            question.variant2 = contact2._id;
-            question.variant3 = contact3._id;
-            question.variant4 = contact4._id;
-            ThreadPool.DB.execute(() -> {
-                data().questions.save(question);
-            });
-        }
         v1.bind(contact1);
         v2.bind(contact2);
         v3.bind(contact3);
         v4.bind(contact4);
+    }
+
+    public void rebind() {
+        if (question == null)
+            return;
+        bind(question, contact1, contact2, contact3, contact4);
     }
 
     @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})
