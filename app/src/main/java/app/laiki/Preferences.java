@@ -4,18 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
 
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import app.laiki.api.ApiSet;
 import app.laiki.model.AppData;
-import app.laiki.service.ServiceState;
 import app.laiki.model.types.Profile;
+import app.laiki.service.ServiceState;
 
-import static android.text.TextUtils.isEmpty;
-import static app.laiki.App.appState;
 import static app.laiki.App.gson;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
 
@@ -56,7 +52,7 @@ public class Preferences {
 
         String userId = common.getString(USER_ID, null);
         personal = context.getSharedPreferences(AppData.normalizeDbName(userId), Context.MODE_PRIVATE);
-        onOpen(context);
+        onOpen();
     }
 
     Preferences(App context, String userId) {
@@ -67,14 +63,15 @@ public class Preferences {
         uniqueIdCurrentValue = new AtomicInteger(uniqueIdStoredValue + 100);
 
         personal = context.getSharedPreferences(AppData.normalizeDbName(userId), Context.MODE_PRIVATE);
-        onOpen(context);
+        onOpen();
     }
 
+    @SuppressWarnings("unused")
     public boolean clear() {
         return common.edit().clear().commit() && personal.edit().clear().commit();
     }
 
-    private void onOpen(Context context) {
+    private void onOpen() {
         oldVersion = common.getInt(VERSION, 1);
 
         if (oldVersion != BuildConfig.VERSION_CODE) {
@@ -87,10 +84,12 @@ public class Preferences {
         }
     }
 
+    @SuppressWarnings("unused")
     public int getOldVersion() {
         return oldVersion;
     }
 
+    @SuppressWarnings("unused")
     @SuppressLint("ApplySharedPref")
     public int uniqueId() {
         int value = uniqueIdCurrentValue.incrementAndGet();
@@ -106,8 +105,8 @@ public class Preferences {
     }
 
     public ApiSet getApiSet() {
-//        ApiSet defaultSet = BuildConfig.DEBUG ? ApiSet.TEST : ApiSet.PROD;
-        ApiSet defaultSet = ApiSet.PROD;
+        ApiSet defaultSet = BuildConfig.DEBUG ? ApiSet.TEST : ApiSet.PROD;
+//        ApiSet defaultSet = ApiSet.PROD;
         if (apiSet == null) {
             apiSet = ApiSet.valueOf(common.getString(API_BASE_URL, defaultSet.name()));
         }
@@ -131,6 +130,7 @@ public class Preferences {
         return common.getLong(SERVER_TIME_OFFSET, 0L);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean hasAccount() {
         return getUserId() != null;
     }
@@ -146,6 +146,7 @@ public class Preferences {
                 .apply();
     }
 
+    @SuppressLint("ApplySharedPref")
     void onLogout() {
         profile = null;
         if (common != null)
@@ -154,6 +155,7 @@ public class Preferences {
                     .commit();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isPermissionRequested(String permission) {
         return common.getBoolean(PREFIX_PERMISSION_REQUESTED + permission, false);
     }

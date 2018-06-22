@@ -143,6 +143,9 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
     @Override
     public void onQuestionAnswered(Choice a) {
+        if (question.variant1 == 0)
+            return;
+
         statistics().questions().answer(a);
         appService().answer(question, a);
     }

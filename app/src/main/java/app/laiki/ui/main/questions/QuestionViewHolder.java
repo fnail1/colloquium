@@ -8,6 +8,7 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
+import app.laiki.toolkit.collections.Query;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -81,8 +82,11 @@ public class QuestionViewHolder {
         } else {
             contacts = data().contacts.selectById(question.variant1, question.variant2, question.variant3, question.variant4).toList();
         }
-        Collections.sort(contacts, (c1, c2) -> c1.displayNameOrder.compareTo(c2.displayNameOrder));
 
+        if (contacts.isEmpty())
+            return;
+
+        Collections.sort(contacts, (c1, c2) -> c1.displayNameOrder.compareTo(c2.displayNameOrder));
         Contact contact1 = contacts.get(0);
         Contact contact2 = contacts.get(1 % contacts.size());
         Contact contact3 = contacts.get(2 % contacts.size());
