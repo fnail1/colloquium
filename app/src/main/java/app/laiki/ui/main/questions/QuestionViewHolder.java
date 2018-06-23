@@ -29,6 +29,7 @@ public class QuestionViewHolder {
 
     @BindView(R.id.answers) LinearLayout answers;
     @BindView(R.id.skip) TextView skip;
+    @BindView(R.id.next) TextView next;
     @BindView(R.id.message) TextView message;
     @BindView(R.id.variant1Text1) TextView variant1Text1;
     @BindView(R.id.variant1Text2) TextView variant1Text2;
@@ -73,6 +74,14 @@ public class QuestionViewHolder {
         this.contact2 = contact2;
         this.contact3 = contact3;
         this.contact4 = contact4;
+
+        rebind();
+    }
+
+    public void rebind() {
+        if (question == null)
+            return;
+
         root.setBackgroundColor(COLORS[(question.uniqueId.hashCode() & 0xffff) % COLORS.length]);
         photos().attach(icon, question.emojiUrl)
                 .size(
@@ -81,40 +90,77 @@ public class QuestionViewHolder {
                 .commit();
         message.setText(question.question);
 
-        v1.bind(contact1);
-        v2.bind(contact2);
-        v3.bind(contact3);
-        v4.bind(contact4);
+        if (question.answer == null) {
+            skip.setVisibility(View.VISIBLE);
+            next.setVisibility(View.GONE);
+        } else {
+            skip.setVisibility(View.GONE);
+            next.setVisibility(View.VISIBLE);
+        }
+
+        bindVariant(question.answer, Choice.A, variant1, v1, contact1);
+        bindVariant(question.answer, Choice.B, variant2, v2, contact2);
+        bindVariant(question.answer, Choice.C, variant3, v3, contact3);
+        bindVariant(question.answer, Choice.D, variant4, v4, contact4);
     }
 
-    public void rebind() {
-        if (question == null)
-            return;
-        bind(question, contact1, contact2, contact3, contact4);
+    private void bindVariant(Choice answer, Choice expected, LinearLayout viewRoot, VariantViewHolder viewText, Contact contact) {
+        if (answer == null) {
+            viewRoot.setAlpha(1f);
+            viewRoot.setSelected(false);
+        } else {
+            viewRoot.setEnabled(false);
+            if (answer != expected) {
+                viewRoot.setAlpha(.5f);
+                viewRoot.setSelected(false);
+            } else {
+                viewRoot.setAlpha(1f);
+                viewRoot.setSelected(true);
+            }
+        }
+        viewText.bind(contact);
+        viewRoot.requestLayout();
     }
 
-    @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})
+    @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip, R.id.next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.variant1:
                 callback.onQuestionAnswered(Choice.A);
+                onAnswer();
                 break;
             case R.id.variant2:
                 callback.onQuestionAnswered(Choice.B);
+                onAnswer();
                 break;
             case R.id.variant3:
                 callback.onQuestionAnswered(Choice.C);
+                onAnswer();
                 break;
             case R.id.variant4:
                 callback.onQuestionAnswered(Choice.D);
+                onAnswer();
                 break;
             case R.id.skip:
                 callback.onQuestionAnswered(Choice.E);
+                //no break;
+            case R.id.next:
+                callback.onNextClick();
                 break;
         }
     }
 
+    private void onAnswer() {
+        rebind();
+        next.setAlpha(0);
+        next.animate()
+                .setDuration(750)
+                .alpha(1);
+    }
+
     public interface QuestionAnsweredCallback {
         void onQuestionAnswered(Choice a);
+
+        void onNextClick();
     }
 }

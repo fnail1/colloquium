@@ -4,7 +4,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:theme="@style/AppThemeDark">
+                android:theme="@style/AppThemeDark"
+                tools:background="#7030a0">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -49,8 +50,8 @@
         android:id="@+id/answers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/skip"
-        android:layout_marginBottom="38dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="64dp"
         android:orientation="horizontal"
         android:paddingEnd="12dp"
         android:paddingStart="12dp">
@@ -76,18 +77,18 @@
 
                 <TextView
                     android:id="@+id/variant1Text1"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Имя"/>
 
                 <TextView
                     android:id="@+id/variant1Text2"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Фамилия"/>
             </LinearLayout>
 
@@ -106,18 +107,18 @@
 
                 <TextView
                     android:id="@+id/variant2Text1"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Иннокентий Изольдович"/>
 
                 <TextView
                     android:id="@+id/variant2Text2"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Кац"
                     tools:visibility="visible"/>
             </LinearLayout>
@@ -144,18 +145,18 @@
 
                 <TextView
                     android:id="@+id/variant3Text1"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Ухтыждлинноеимякакое"/>
 
                 <TextView
                     android:id="@+id/variant3Text2"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text="Ухтыждлиннаяфамилия"/>
             </LinearLayout>
 
@@ -174,18 +175,18 @@
 
                 <TextView
                     android:id="@+id/variant4Text1"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text="В одну строку"/>
 
                 <TextView
                     android:id="@+id/variant4Text2"
+                    style="@style/WhiteButtonTextAppearance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    style="@style/WhiteButtonTextAppearance"
                     tools:text=""
                     tools:visibility="gone"/>
             </LinearLayout>
@@ -211,4 +212,19 @@
         android:textColor="@color/mw_fade_white_70"
         />
 
+    <TextView
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/ripple_none_view_dark"
+        android:gravity="center_horizontal"
+        android:text="Следующий вопрос"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="@color/mw_fade_white_70"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        />
 </RelativeLayout>

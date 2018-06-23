@@ -31,7 +31,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static app.laiki.App.appService;
-import static app.laiki.App.appState;
 import static app.laiki.App.data;
 import static app.laiki.App.dateTimeService;
 import static app.laiki.App.prefs;
@@ -121,84 +120,88 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         if (activity == null)
             return;
 
-        Question q = data().questions.selectCurrent();
-
-        if (q != null && q.equals(question))
+        if (question != null)
             return;
 
-        activity.runOnUiThread(() -> {
-            if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
-                page1.setVisibility(View.GONE);
-                page2.setVisibility(View.GONE);
-                setupPlaceholders(true, null);
-                if (q == null && !requestSent) {
-                    requestSent = true;
-                    appService().requestNextQuestion();
-                }
-                return;
+        activity.runOnUiThread(this::updateViews);
+    }
+
+    private void updateViews() {
+        updateViews(data().questions.selectCurrent());
+    }
+
+    private void updateViews(Question q) {
+        if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
+            page1.setVisibility(View.GONE);
+            page2.setVisibility(View.GONE);
+            setupPlaceholders(true, null);
+            if (q == null && !requestSent) {
+                requestSent = true;
+                appService().requestNextQuestion();
             }
+            return;
+        }
 
-            List<Contact> contacts;
-            if (q.variant1 <= 0) {
-                contacts = data().contacts.selectRandom(4).toList();
-            } else {
-                contacts = data().contacts.selectById(q.variant1, q.variant2, q.variant3, q.variant4).toList();
-            }
+        List<Contact> contacts;
+        if (q.variant1 <= 0) {
+            contacts = data().contacts.selectRandom(4).toList();
+        } else {
+            contacts = data().contacts.selectById(q.variant1, q.variant2, q.variant3, q.variant4).toList();
+        }
 
-            if (contacts.isEmpty()) {
-                setupPlaceholders(false, "Похоже, что у вас нет контактов в телефоне. Добавьте 4-х друзей в адресную книгу и попробуйте еще разок \uD83D\uDE09");
-                page1.setVisibility(View.GONE);
-                page2.setVisibility(View.GONE);
-                return;
-            }
+        if (contacts.isEmpty()) {
+            setupPlaceholders(false, "Похоже, что у вас нет контактов в телефоне. Добавьте 4-х друзей в адресную книгу и попробуйте еще разок \uD83D\uDE09");
+            page1.setVisibility(View.GONE);
+            page2.setVisibility(View.GONE);
+            return;
+        }
 
-            setupPlaceholders(false, null);
+        setupPlaceholders(false, null);
 
-            Collections.sort(contacts, (c1, c2) -> c1.displayNameOrder.compareTo(c2.displayNameOrder));
-            Contact contact1 = contacts.get(0);
-            Contact contact2 = contacts.get(1 % contacts.size());
-            Contact contact3 = contacts.get(2 % contacts.size());
-            Contact contact4 = contacts.get(3 % contacts.size());
+        Collections.sort(contacts, (c1, c2) -> c1.displayNameOrder.compareTo(c2.displayNameOrder));
+        Contact contact1 = contacts.get(0);
+        Contact contact2 = contacts.get(1 % contacts.size());
+        Contact contact3 = contacts.get(2 % contacts.size());
+        Contact contact4 = contacts.get(3 % contacts.size());
 
-            if (q.variant1 == 0) {
-                q.variant1 = contact1._id;
-                q.variant2 = contact2._id;
-                q.variant3 = contact3._id;
-                q.variant4 = contact4._id;
-                ThreadPool.DB.execute(() -> data().questions.save(q));
-            }
-
-
-            requestSent = false;
-            boolean animate = question != null;
-            question = q;
-
-            if (prefs().serviceState().questionNumber % prefs().config().questionsFrameSize == 0 &&
-                    dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
-                foreground.bind(question, contact1, contact2, contact3, contact4);
-                updateTimer();
-                if (!animate) {
-                    page1.setVisibility(View.GONE);
-                    page2.setVisibility(View.GONE);
-                    stopscreen.setVisibility(View.VISIBLE);
-                } else {
-                    animateSwap(foreground.root, stopscreen);
-                }
-                return;
-            }
+        if (q.variant1 == 0) {
+            q.variant1 = contact1._id;
+            q.variant2 = contact2._id;
+            q.variant3 = contact3._id;
+            q.variant4 = contact4._id;
+            ThreadPool.DB.execute(() -> data().questions.save(q));
+        }
 
 
+        requestSent = false;
+        boolean animate = question != null;
+        question = q;
+
+        if (prefs().serviceState().questionNumber % prefs().config().questionsFrameSize == 0 &&
+                dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
+            foreground.bind(question, contact1, contact2, contact3, contact4);
+            updateTimer();
             if (!animate) {
-                foreground.root.setVisibility(View.VISIBLE);
-                foreground.bind(question, contact1, contact2, contact3, contact4);
+                page1.setVisibility(View.GONE);
+                page2.setVisibility(View.GONE);
+                stopscreen.setVisibility(View.VISIBLE);
             } else {
-                QuestionViewHolder t = foreground;
-                foreground = background;
-                background = t;
-                foreground.bind(question, contact1, contact2, contact3, contact4);
-                animateSwap(background.root, foreground.root);
+                animateSwap(foreground.root, stopscreen);
             }
-        });
+            return;
+        }
+
+
+        if (!animate) {
+            foreground.root.setVisibility(View.VISIBLE);
+            foreground.bind(question, contact1, contact2, contact3, contact4);
+        } else {
+            QuestionViewHolder t = foreground;
+            foreground = background;
+            background = t;
+            foreground.bind(question, contact1, contact2, contact3, contact4);
+            animateSwap(background.root, foreground.root);
+        }
     }
 
     private void updateTimer() {
@@ -239,13 +242,25 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onQuestionAnswered(Choice a) {
         if (question.variant1 == 0)
             return;
+
         ServiceState serviceState = prefs().serviceState();
         serviceState.lastAnswerTime = dateTimeService().getServerTime();
         serviceState.questionNumber++;
         prefs().save(serviceState);
 
         statistics().questions().answer(a);
-        appService().answer(question, a);
+        if (!question.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
+            question.answer = a;
+            ThreadPool.DB.execute(() -> {
+                data().questions.save(question);
+                appService().syncAnswers(question, a);
+            });
+        }
+    }
+
+    @Override
+    public void onNextClick() {
+        updateViews();
     }
 
     private void animateSwap(View prev, View next) {
@@ -269,7 +284,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         FragmentActivity activity = getActivity();
         if (activity != null) {
             activity.runOnUiThread(() -> {
-                progress.setVisibility(View.GONE);
+                foreground.rebind();
             });
         }
         appService().requestNextQuestion();

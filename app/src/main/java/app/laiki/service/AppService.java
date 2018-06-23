@@ -223,15 +223,11 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         });
     }
 
-    public void answer(Question question, @NonNull Choice answer) {
-        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new AbsRequestTask("answer") {
+    public void syncAnswers(Question question, @NonNull Choice answer) {
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new AbsRequestTask("syncAnswers") {
 
             @Override
             protected void performRequest(AppData appData) throws IOException, ServerException {
-                if (!question.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
-                    question.answer = answer;
-                    appData.questions.save(question);
-                }
                 syncAnsweredQuestionsSync(appData);
             }
 
