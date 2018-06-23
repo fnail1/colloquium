@@ -1,5 +1,6 @@
 package app.laiki.ui.main.questions;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,14 +21,20 @@ import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
 import app.laiki.service.AppService;
+import app.laiki.service.ServiceState;
 import app.laiki.toolkit.concurrent.ThreadPool;
+import app.laiki.ui.ContactsActivity;
 import app.laiki.ui.base.BaseFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static app.laiki.App.appService;
+import static app.laiki.App.appState;
 import static app.laiki.App.data;
+import static app.laiki.App.dateTimeService;
+import static app.laiki.App.prefs;
 import static app.laiki.App.screenMetrics;
 import static app.laiki.App.statistics;
 
@@ -40,6 +47,9 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     @BindView(R.id.progress) ProgressBar progress;
     @BindView(R.id.error) TextView error;
     @BindView(R.id.placeholders) FrameLayout placeholders;
+    @BindView(R.id.timer) TextView timer;
+    @BindView(R.id.contacts) TextView contacts;
+    @BindView(R.id.stopscreen) FrameLayout stopscreen;
     private QuestionViewHolder background;
     private QuestionViewHolder foreground;
     private Question question;
@@ -89,7 +99,6 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         appService().newQuestionEvent.add(this);
         appService().answerSentEvent.add(this);
         appService().contactsSynchronizationEvent.add(this);
-
     }
 
     @Override
@@ -164,6 +173,21 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             boolean animate = question != null;
             question = q;
 
+            if (prefs().serviceState().questionNumber % prefs().config().questionsFrameSize == 0 &&
+                    dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
+                foreground.bind(question, contact1, contact2, contact3, contact4);
+                updateTimer();
+                if (!animate) {
+                    page1.setVisibility(View.GONE);
+                    page2.setVisibility(View.GONE);
+                    stopscreen.setVisibility(View.VISIBLE);
+                } else {
+                    animateSwap(foreground.root, stopscreen);
+                }
+                return;
+            }
+
+
             if (!animate) {
                 foreground.root.setVisibility(View.VISIBLE);
                 foreground.bind(question, contact1, contact2, contact3, contact4);
@@ -175,6 +199,16 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
                 animateSwap(background.root, foreground.root);
             }
         });
+    }
+
+    private void updateTimer() {
+        long timeSpan = prefs().config().deadTime - (dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime);
+        if (timeSpan > 0) {
+            timer.setText(dateTimeService().formatTime(timeSpan, false));
+            timer.postDelayed(this::updateTimer, 1000);
+        } else {
+            animateSwap(stopscreen, foreground.root);
+        }
     }
 
     private void setupPlaceholders(boolean progress, String error) {
@@ -205,6 +239,10 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onQuestionAnswered(Choice a) {
         if (question.variant1 == 0)
             return;
+        ServiceState serviceState = prefs().serviceState();
+        serviceState.lastAnswerTime = dateTimeService().getServerTime();
+        serviceState.questionNumber++;
+        prefs().save(serviceState);
 
         statistics().questions().answer(a);
         appService().answer(question, a);
@@ -240,5 +278,13 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     @Override
     public void onContactsSynchronizationComplete() {
         onNewQuestion(null);
+    }
+
+    @OnClick(R.id.contacts)
+    public void onViewClicked() {
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            startActivity(new Intent(activity, ContactsActivity.class));
+        }
     }
 }

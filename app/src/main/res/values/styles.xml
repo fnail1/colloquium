@@ -27,6 +27,8 @@
     <style name="AppThemeDark">
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="colorAccent">@color/colorTitle</item>
+        <item name="android:colorAccent">@color/colorTitle</item>
     </style>
 
     <style name="LoginActivityTheme" parent="AppTheme">
@@ -91,12 +93,6 @@
         <item name="tabTextAppearance">@style/TabTextAppearance</item>
     </style>
 
-    <style name="ProgressBarTheme">
-        <item name="colorAccent">@color/colorTitle</item>
-        <item name="android:colorAccent">@color/colorTitle</item>
-
-    </style>
-
     <style name="MainActivityTabTextAppearance">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -121,7 +117,6 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:lineSpacingExtra">1sp</item>
-        <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="SubtitleTextAppearance">
@@ -130,7 +125,6 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:lineSpacingExtra">8sp</item>
-        <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="DefaultButton" parent="SubtitleTextAppearance">

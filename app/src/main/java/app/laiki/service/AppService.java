@@ -364,7 +364,11 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void processResponse(AppData appData, GsonResponse body) {
-
+                if (body != null && body.success) {
+                    ServiceState serviceState = prefs().serviceState();
+                    serviceState.fcmTokenSent = true;
+                    prefs().save(serviceState);
+                }
             }
 
         });
@@ -380,7 +384,11 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                 GsonResponse body = response.body();
                 if (body != null && body.success) {
                     contact.inviteSent = true;
+                    ServiceState serviceState = prefs().serviceState();
+                    serviceState.lastAnswerTime = 0;
+                    prefs().save(serviceState);
                     ThreadPool.DB.execute(() -> {
+
                         appData.contacts.save(contact);
                         onFinish();
                     });

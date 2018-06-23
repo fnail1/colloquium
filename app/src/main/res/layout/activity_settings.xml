@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f8f8f8"
+    android:orientation="vertical"
     tools:context=".ui.settings.SettingsActivity"
     >
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="48dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:padding="8dp"
-        android:src="@drawable/ic_arrow_back"
-        android:tint="@color/mw_fade_black_80"
-        tools:ignore="RtlHardcoded"
-        android:contentDescription="@string/icon"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_vertical"
-        android:text="Настройки"
-        android:textAppearance="@style/SubtitleTextAppearance"
-        android:textStyle="bold"
-        />
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/icon"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/mw_fade_black_80"
+            tools:ignore="RtlHardcoded"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginRight="48dp"
+            android:gravity="center"
+            android:text="Настройки"
+            android:textAppearance="@style/SubtitleTextAppearance"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/title"
         android:background="#9ab3c0"/>
 
 
@@ -43,7 +46,6 @@
         android:id="@+id/notifications"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/title"
         android:drawableLeft="@drawable/ic_cellphone"
         android:drawablePadding="24dp"
         android:foreground="@drawable/ripple_rect_view_light"
@@ -58,7 +60,6 @@
         android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/notifications"
         android:background="@drawable/ripple_rect_view_light"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_exit"
@@ -76,7 +77,6 @@
         android:id="@+id/version"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/logout"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
@@ -89,20 +89,18 @@
         android:id="@+id/line1"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/version"
         android:background="#546d79"/>
 
     <Spinner
         android:id="@+id/api"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/version"/>
+        />
 
     <TextView
         android:id="@+id/import_db"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/api"
         android:background="@drawable/ripple_rect_view_light"
         android:clickable="true"
         android:focusable="true"
@@ -119,10 +117,8 @@
         android:id="@+id/copy_fcm"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/import_db"
         android:background="@drawable/ripple_rect_view_light"
         android:clickable="true"
-
         android:focusable="true"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
@@ -131,4 +127,55 @@
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#546d79"
         tools:ignore="RtlHardcoded"/>
-</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_rect_view_light"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:text="Количество вопросов за один подход"/>
+
+        <EditText
+            android:id="@+id/questions_frame_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:inputType="numberDecimal"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_rect_view_light"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:text="Пауза между подходами"/>
+
+        <EditText
+            android:id="@+id/questions_dead_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:inputType="numberDecimal"
+            />
+    </LinearLayout>
+</LinearLayout>

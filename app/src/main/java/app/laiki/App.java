@@ -119,6 +119,8 @@ public class App extends Application {
 
         instance = this;
 
+        if (!preferences.serviceState().fcmTokenSent)
+            appService.syncFcm();
 
 //        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(() -> {
 //            try {

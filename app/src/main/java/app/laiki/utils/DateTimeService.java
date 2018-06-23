@@ -384,6 +384,24 @@ public class DateTimeService {
         return -serverTimeOffset + TimeZone.getDefault().getRawOffset();
     }
 
+    public String formatTime(long timeSpan, boolean showMillis) {
+        if (timeSpan < 0)
+            timeSpan = 0;
+        int millis = (int) ((timeSpan / 100) % 10);
+
+        timeSpan /= 1000;
+
+        int seconds = (int) (timeSpan % 60);
+        timeSpan /= 60;
+        int minutes = (int) (timeSpan % 60);
+        timeSpan /= 60;
+        int hours = (int) timeSpan;
+        if (showMillis)
+            return String.format(Locale.getDefault(), "%02d:%02d:%02d.%1d", hours, minutes, seconds, millis);
+        else
+            return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
     public interface DateChangedEventHandler {
         void onDateTimeChanged();
     }

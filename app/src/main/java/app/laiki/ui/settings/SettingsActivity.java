@@ -8,10 +8,13 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import app.laiki.R;
 import app.laiki.api.ApiSet;
 import app.laiki.diagnostics.DebugUtils;
 import app.laiki.service.fcm.FcmRegistrationService;
+import app.laiki.toolkit.phonenumbers.PhoneNumberUtils;
 import app.laiki.ui.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +43,8 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
     @BindView(R.id.copy_fcm) TextView copyFcm;
     @BindView(R.id.version) TextView version;
     @BindView(R.id.api) Spinner api;
+    @BindView(R.id.questions_frame_size) EditText questionsFrameSize;
+    @BindView(R.id.questions_dead_time) EditText questionsDeadTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +59,8 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
             importDb.setVisibility(View.GONE);
             copyFcm.setVisibility(View.GONE);
             api.setVisibility(View.GONE);
+            questionsFrameSize.setVisibility(View.GONE);
+            questionsDeadTime.setVisibility(View.GONE);
         } else {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_spinner_item, query(ApiSet.values()).select(Enum::name).toList());
 //            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -68,6 +76,51 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
 
+                }
+            });
+            questionsFrameSize.setText(String.valueOf(prefs().config().questionsFrameSize));
+            questionsFrameSize.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String digits = PhoneNumberUtils.digitsOnly(s.toString());
+                    if (digits == null)
+                        return;
+                    Configuration config = prefs().config();
+                    config.questionsFrameSize = Integer.parseInt(digits);
+                    prefs().save(config);
+                }
+            });
+
+            questionsDeadTime.setText(String.valueOf(prefs().config().deadTime));
+            questionsFrameSize.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String digits = PhoneNumberUtils.digitsOnly(s.toString());
+                    if (digits == null)
+                        return;
+                    Configuration config = prefs().config();
+                    config.questionsFrameSize = Integer.parseInt(digits);
+                    prefs().save(config);
                 }
             });
         }
