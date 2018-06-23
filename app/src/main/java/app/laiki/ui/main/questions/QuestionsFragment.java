@@ -53,6 +53,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     private QuestionViewHolder foreground;
     private Question question;
     private boolean requestSent;
+    private boolean questionBindComplete;
 
     @Nullable
     @Override
@@ -120,10 +121,9 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         if (activity == null)
             return;
 
-        if (question != null)
-            return;
-
-        activity.runOnUiThread(this::updateViews);
+        if (!questionBindComplete) {
+            activity.runOnUiThread(this::updateViews);
+        }
     }
 
     private void updateViews() {
@@ -131,6 +131,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     }
 
     private void updateViews(Question q) {
+
         if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
             page1.setVisibility(View.GONE);
             page2.setVisibility(View.GONE);
@@ -141,6 +142,9 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             }
             return;
         }
+
+        if (q.equals(question))
+            return;
 
         List<Contact> contacts;
         if (q.variant1 <= 0) {
@@ -176,10 +180,11 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         requestSent = false;
         boolean animate = question != null;
         question = q;
+        questionBindComplete = true;
 
         if (prefs().serviceState().questionNumber % prefs().config().questionsFrameSize == 0 &&
                 dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
-            foreground.bind(question, contact1, contact2, contact3, contact4);
+            background.bind(question, contact1, contact2, contact3, contact4);
             updateTimer();
             if (!animate) {
                 page1.setVisibility(View.GONE);
@@ -196,9 +201,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             foreground.root.setVisibility(View.VISIBLE);
             foreground.bind(question, contact1, contact2, contact3, contact4);
         } else {
-            QuestionViewHolder t = foreground;
-            foreground = background;
-            background = t;
+            swapPages();
             foreground.bind(question, contact1, contact2, contact3, contact4);
             animateSwap(background.root, foreground.root);
         }
@@ -210,8 +213,15 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             timer.setText(dateTimeService().formatTime(timeSpan, false));
             timer.postDelayed(this::updateTimer, 1000);
         } else {
+            swapPages();
             animateSwap(stopscreen, foreground.root);
         }
+    }
+
+    private void swapPages() {
+        QuestionViewHolder t = foreground;
+        foreground = background;
+        background = t;
     }
 
     private void setupPlaceholders(boolean progress, String error) {
@@ -260,6 +270,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
     @Override
     public void onNextClick() {
+        questionBindComplete = false;
         updateViews();
     }
 
@@ -281,12 +292,12 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
     @Override
     public void onAnswerSent(Question args) {
-        FragmentActivity activity = getActivity();
-        if (activity != null) {
-            activity.runOnUiThread(() -> {
-                foreground.rebind();
-            });
-        }
+//        FragmentActivity activity = getActivity();
+//        if (activity != null) {
+//            activity.runOnUiThread(() -> {
+//                foreground.rebind();
+//            });
+//        }
         appService().requestNextQuestion();
     }
 

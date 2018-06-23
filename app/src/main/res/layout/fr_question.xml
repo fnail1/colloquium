@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
@@ -201,8 +202,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="@dimen/padding"
+        android:layout_marginBottom="12dp"
+        android:layout_marginRight="@dimen/indent"
+        android:padding="@dimen/indent"
         android:background="@drawable/ripple_none_view_dark"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_fast_forward"
@@ -218,7 +220,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="12dp"
+        android:padding="@dimen/indent"
         android:background="@drawable/ripple_none_view_dark"
         android:gravity="center_horizontal"
         android:text="Следующий вопрос"
@@ -226,5 +229,14 @@
         android:textColor="@color/mw_fade_white_70"
         android:visibility="invisible"
         tools:visibility="visible"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
         />
 </RelativeLayout>

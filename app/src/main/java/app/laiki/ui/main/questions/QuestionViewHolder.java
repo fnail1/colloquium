@@ -3,15 +3,16 @@ package app.laiki.ui.main.questions;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static app.laiki.App.photos;
 
@@ -47,6 +48,7 @@ public class QuestionViewHolder {
     private final VariantViewHolder v2;
     private final VariantViewHolder v3;
     private final VariantViewHolder v4;
+    @BindView(R.id.progress) ProgressBar progress;
     private Question question;
     private Contact contact1;
     private Contact contact2;
@@ -60,6 +62,7 @@ public class QuestionViewHolder {
     public QuestionViewHolder(View root, QuestionAnsweredCallback callback) {
         this.callback = callback;
         this.root = root;
+        root.setOnClickListener(this::onViewClicked);
         ButterKnife.bind(this, root);
         v1 = new VariantViewHolder(variant1, variant1Text1, variant1Text2);
         v2 = new VariantViewHolder(variant2, variant2Text1, variant2Text2);
@@ -93,9 +96,19 @@ public class QuestionViewHolder {
         if (question.answer == null) {
             skip.setVisibility(View.VISIBLE);
             next.setVisibility(View.GONE);
+            progress.setVisibility(View.GONE);
         } else {
             skip.setVisibility(View.GONE);
-            next.setVisibility(View.VISIBLE);
+            if (question.answer == Choice.E) {
+                next.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+            } else {
+                if (progress.getVisibility() == View.GONE)
+                    next.setVisibility(View.VISIBLE);
+                else
+                    next.setVisibility(View.GONE);
+
+            }
         }
 
         bindVariant(question.answer, Choice.A, variant1, v1, contact1);
@@ -145,7 +158,12 @@ public class QuestionViewHolder {
                 callback.onQuestionAnswered(Choice.E);
                 //no break;
             case R.id.next:
+            case R.id.root:
+            case R.id.page1:
+            case R.id.page2:
                 callback.onNextClick();
+                progress.setVisibility(View.VISIBLE);
+                rebind();
                 break;
         }
     }
