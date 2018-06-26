@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/subtitle2"
         android:layout_centerHorizontal="true"
-        android:text="Узнай, кому нравишься"
+        android:text="Узнай, кому ты нравишься"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textStyle="bold"
         />

@@ -240,6 +240,6 @@
         android:layout_marginBottom="@dimen/padding"
         android:layout_centerHorizontal="true"
         android:textAppearance="@style/SubtitleTextAppearance"
-        tools:text="Лайки ❤️ laiki.app"/>
+        tools:text="#ЧСН ❤️ laiki.app"/>
 
 </RelativeLayout>
