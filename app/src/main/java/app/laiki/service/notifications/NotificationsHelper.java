@@ -1,5 +1,6 @@
 package app.laiki.service.notifications;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,6 +24,7 @@ import app.laiki.ui.main.MainActivity;
 import app.laiki.utils.GraphicUtils;
 
 import static app.laiki.App.app;
+import static app.laiki.App.appState;
 import static app.laiki.App.dateTimeService;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
@@ -149,8 +151,17 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
 
     public void onStopScreenOut() {
         trace();
+
+        Activity topActivity = appState().getTopActivity();
+        if (topActivity instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) topActivity;
+            if (mainActivity.currentPage() == MainActivity.PAGE_QUESTION) {
+                return;
+            }
+        }
+
         NotificationManager nm = getNotificationManager();
-        Bitmap bitmap = GraphicUtils.getResourceBitmap(app(), R.drawable.logo);
+        Bitmap bitmap = GraphicUtils.getResourceBitmap(app(), R.mipmap.ic_launcher_round);
 
         String title = "\uD83D\uDC4D Новые вопросы!\n";
         String content = "Заходи, а то сами себя не ответят";
@@ -170,5 +181,9 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
         builder.setContentIntent(cmd);
 
         nm.notify(STOP_SCREEN_OUT_NOTIFICATION_ID, builder.build());
+    }
+
+    public void clearStopScreenOut() {
+        getNotificationManager().cancel(STOP_SCREEN_OUT_NOTIFICATION_ID);
     }
 }

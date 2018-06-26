@@ -35,6 +35,7 @@ import app.laiki.utils.Utils;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
+import static app.laiki.App.notifications;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
 import static app.laiki.diagnostics.Logger.trace;
@@ -42,8 +43,11 @@ import static app.laiki.diagnostics.Logger.trace;
 public class MainActivity extends BaseActivity implements AppService.AnswerUpdatedEventHandler {
 
     public static final String ACTION_OPEN_ANSWER = "action_open_answer";
+    public static final int PAGE_QUESTION = 1;
+
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pages) ViewPager pages;
+
     private TabsTheme tabsTheme;
     private int answersCounter = -1;
     private int answersCounterColor = 0xffffffff;
@@ -120,6 +124,9 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
             @Override
             public void onPageSelected(int position) {
                 trace();
+                if(position == PAGE_QUESTION){
+                    notifications().clearStopScreenOut();
+                }
             }
 
             @Override
@@ -143,6 +150,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
         String action = intent.getAction();
         if (action == null)
             return;
+
         switch (action) {
             case ACTION_OPEN_ANSWER:
                 pages.setCurrentItem(0);
@@ -191,6 +199,10 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
         SpannableStringBuilder ssb = new SpannableStringBuilder(text);
         ssb.setSpan(new AnswersCounterSpan(), 4, text.length(), SpannableStringBuilder.SPAN_INCLUSIVE_EXCLUSIVE);
         return ssb;
+    }
+
+    public int currentPage() {
+        return pages.getCurrentItem();
     }
 
     private class AnswersCounterSpan extends CharacterStyle {
