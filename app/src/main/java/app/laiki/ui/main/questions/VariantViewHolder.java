@@ -29,6 +29,13 @@ public class VariantViewHolder {
         append(sb, contact.firstName);
         append(sb, contact.middleName);
         append(sb, contact.lastName);
+
+        if (sb.length() == 0) {
+            text1.setText(contact.displayName);
+            text2.setVisibility(View.GONE);
+            return;
+        }
+
         float w = text1.getPaint().measureText(sb, 0, sb.length() - 1);
 
         int width = root.getWidth() - root.getPaddingLeft() - root.getPaddingRight();

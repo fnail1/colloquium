@@ -130,7 +130,11 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             return;
 
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(() -> {
-            AddressBookSyncHelper.doSync(app());
+            try {
+                AddressBookSyncHelper.doSync(app());
+            } catch (SecurityException e) {
+                return;
+            }
             ServiceState serviceState = prefs().serviceState();
             lastContactsSync = dateTimeService().getServerTime();
             prefs().save(serviceState);
