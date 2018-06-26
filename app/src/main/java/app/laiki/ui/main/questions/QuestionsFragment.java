@@ -33,6 +33,7 @@ import butterknife.Unbinder;
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
 import static app.laiki.App.dateTimeService;
+import static app.laiki.App.notifications;
 import static app.laiki.App.prefs;
 import static app.laiki.App.screenMetrics;
 import static app.laiki.App.statistics;
@@ -186,6 +187,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
                 dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
             background.bind(question, contact1, contact2, contact3, contact4);
             updateTimer();
+            notifications().onStopScreenIn();
             if (!animate) {
                 page1.setVisibility(View.GONE);
                 page2.setVisibility(View.GONE);
@@ -208,6 +210,8 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     }
 
     private void updateTimer() {
+        if (timer == null)
+            return;
         long timeSpan = prefs().config().deadTime - (dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime);
         if (timeSpan > 0) {
             timer.setText(dateTimeService().formatTime(timeSpan, false));
