@@ -12,6 +12,7 @@ public class Statistics {
     private LoginWorkflow loginWorkflow;
     private QuestionsStatistics questions;
     private AnswersStatistics answers;
+    private ProfileStatistics profile;
 
     public Statistics(Context context) {
         new FlurryAgent.Builder()
@@ -20,9 +21,9 @@ public class Statistics {
     }
 
     public LoginWorkflow login() {
-        if (loginWorkflow == null) {
+        if (loginWorkflow == null)
             loginWorkflow = new LoginWorkflow();
-        }
+
         return loginWorkflow;
     }
 
@@ -41,6 +42,13 @@ public class Statistics {
 
     public ContactsStatistics contacts() {
         return new ContactsStatistics();
+    }
+
+    public ProfileStatistics profile() {
+        if (profile == null)
+            profile = new ProfileStatistics();
+
+        return profile;
     }
 
     public class LoginWorkflow {
@@ -67,6 +75,14 @@ public class Statistics {
             map.put("Answer", a.name());
             FlurryAgent.logEvent("Question.Answered", map);
         }
+
+        public void stopScreen() {
+            FlurryAgent.logEvent("Question.StopScreen");
+        }
+
+        public void contacts() {
+            FlurryAgent.logEvent("Question.Contacts.Click");
+        }
     }
 
     public class AnswersStatistics {
@@ -77,11 +93,34 @@ public class Statistics {
         public void read() {
             FlurryAgent.logEvent("Answer.Read");
         }
+
+        public void contacts() {
+            FlurryAgent.logEvent("Answers.Contacts");
+        }
     }
 
     public class ContactsStatistics {
         public void invite() {
             FlurryAgent.logEvent("Contacts.InviteSent");
+
+        }
+    }
+
+    public class ProfileStatistics {
+        public void contacts() {
+            FlurryAgent.logEvent("Profile.Contacts");
+        }
+
+        public void settings() {
+            FlurryAgent.logEvent("Profile.Settings");
+        }
+
+        public void support() {
+            FlurryAgent.logEvent("Profile.Support");
+        }
+
+        public void vk() {
+            FlurryAgent.logEvent("Profile.Vk");
         }
     }
 }

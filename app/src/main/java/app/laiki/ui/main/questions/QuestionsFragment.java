@@ -192,7 +192,6 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
                 dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
             background.bind(question, contact1, contact2, contact3, contact4);
             updateTimer();
-            notifications().onStopScreenIn();
             if (!animate) {
                 page1.setVisibility(View.GONE);
                 page2.setVisibility(View.GONE);
@@ -282,6 +281,12 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         prefs().save(serviceState);
 
         statistics().questions().answer(a);
+
+        if (serviceState.questionNumber % prefs().config().questionsFrameSize == 0) {
+            statistics().questions().stopScreen();
+            notifications().onStopScreenIn();
+        }
+
         if (!question.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
             question.answer = a;
             ThreadPool.DB.execute(() -> {
@@ -333,6 +338,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     public void onViewClicked() {
         FragmentActivity activity = getActivity();
         if (activity != null) {
+            statistics().questions().contacts();
             startActivity(new Intent(activity, ContactsActivity.class));
         }
     }

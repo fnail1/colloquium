@@ -39,6 +39,7 @@ import static app.laiki.App.api;
 import static app.laiki.App.data;
 import static app.laiki.App.prefs;
 import static app.laiki.App.screenMetrics;
+import static app.laiki.App.statistics;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
 
 public class ProfileFragment extends BaseFragment {
@@ -92,6 +93,7 @@ public class ProfileFragment extends BaseFragment {
 
         switch (view.getId()) {
             case R.id.contacts:
+                statistics().profile().contacts();
                 startActivity(new Intent(activity, ContactsActivity.class));
                 break;
 
@@ -99,13 +101,16 @@ public class ProfileFragment extends BaseFragment {
                 resetAnswers();
                 break;
             case R.id.settings:
+                statistics().profile().settings();
                 startActivity(new Intent(activity, SettingsActivity.class));
                 break;
 
             case R.id.support:
+                statistics().profile().support();
                 sendEmail();
                 break;
             case R.id.vk:
+                statistics().profile().vk();
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://vk.com/public167808448")));
                 break;
         }

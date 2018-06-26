@@ -28,6 +28,7 @@ import app.laiki.ui.views.MyFrameLayout;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
+import static app.laiki.App.statistics;
 
 public class AnswersFragment extends BaseFragment implements AppService.AnswerUpdatedEventHandler {
 
@@ -90,6 +91,7 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
 
     @OnClick(R.id.contacts)
     public void onViewClicked() {
+        statistics().answers().contacts();
         startActivity(new Intent(getActivity(), ContactsActivity.class));
     }
 
