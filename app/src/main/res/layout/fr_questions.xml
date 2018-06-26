@@ -57,7 +57,7 @@
         android:id="@+id/stopscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#02C7A2"
+        android:background="@drawable/bg_main"
         android:visibility="gone"
         tools:visibility="visible">
 
