@@ -50,6 +50,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     @BindView(R.id.timer) TextView timer;
     @BindView(R.id.contacts) TextView contacts;
     @BindView(R.id.stopscreen) FrameLayout stopscreen;
+    @BindView(R.id.counter) TextView counter;
     private QuestionViewHolder background;
     private QuestionViewHolder foreground;
     private Question question;
@@ -136,6 +137,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
             page1.setVisibility(View.GONE);
             page2.setVisibility(View.GONE);
+            updateCounter(false);
             setupPlaceholders(true, null);
             if (q == null && !requestSent) {
                 requestSent = true;
@@ -158,6 +160,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             setupPlaceholders(false, "Похоже, что у вас нет контактов в телефоне. Добавьте 4-х друзей в адресную книгу и попробуйте еще разок \uD83D\uDE09");
             page1.setVisibility(View.GONE);
             page2.setVisibility(View.GONE);
+            updateCounter(false);
             return;
         }
 
@@ -183,7 +186,9 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         question = q;
         questionBindComplete = true;
 
-        if (prefs().serviceState().questionNumber % prefs().config().questionsFrameSize == 0 &&
+        int N = prefs().config().questionsFrameSize;
+        int n = prefs().serviceState().questionNumber % N;
+        if (n == 0 &&
                 dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
             background.bind(question, contact1, contact2, contact3, contact4);
             updateTimer();
@@ -195,9 +200,11 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             } else {
                 animateSwap(foreground.root, stopscreen);
             }
+            updateCounter(false);
             return;
         }
 
+        updateCounter(true);
 
         if (!animate) {
             foreground.root.setVisibility(View.VISIBLE);
@@ -219,6 +226,18 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         } else {
             swapPages();
             animateSwap(stopscreen, foreground.root);
+            updateCounter(true);
+        }
+    }
+
+    private void updateCounter(boolean visible) {
+        if (visible) {
+            int i = prefs().serviceState().questionNumber;
+            int n = prefs().config().questionsFrameSize;
+            counter.setVisibility(View.VISIBLE);
+            counter.setText("" + ((i % n) + 1) + "/" + n);
+        } else {
+            counter.setVisibility(View.GONE);
         }
     }
 
