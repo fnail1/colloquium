@@ -268,7 +268,8 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
 
         @Override
         public void afterTextChanged(Editable s) {
-
+            if (s.length() == 4)
+                onViewClicked(button);
         }
     }
 }
