@@ -92,19 +92,19 @@ public class AnswerActivity extends BaseActivity {
                 root.setBackgroundColor(0xffF5F5F5);
                 getWindow().setStatusBarColor(0xffF5F5F5);
                 icon.setImageResource(R.drawable.ic_camel);
-                copyright.setText("#ЧСН ❤️ laiki.app");
+                copyright.setText("#ЧСН ❤️ chsn.app");
                 break;
             case MALE:
                 root.setBackgroundColor(0xff2767A9);
                 getWindow().setStatusBarColor(0xff2767A9);
                 icon.setImageResource(R.drawable.ic_male);
-                copyright.setText("#ЧСН ❤️ laiki.app");
+                copyright.setText("#ЧСН ❤️ chsn.app");
                 break;
             case FEMALE:
                 root.setBackgroundColor(0xffED1C45);
                 getWindow().setStatusBarColor(0xffED1C45);
                 icon.setImageResource(R.drawable.ic_female);
-                copyright.setText("#ЧСН \uD83D\uDC99️ laiki.app");
+                copyright.setText("#ЧСН \uD83D\uDC99️ chsn.app");
                 break;
         }
 
