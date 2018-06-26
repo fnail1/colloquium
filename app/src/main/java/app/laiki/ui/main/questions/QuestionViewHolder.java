@@ -120,6 +120,7 @@ public class QuestionViewHolder {
     private void bindVariant(Choice answer, Choice expected, LinearLayout viewRoot, VariantViewHolder viewText, Contact contact) {
         if (answer == null) {
             viewRoot.setAlpha(1f);
+            viewRoot.setEnabled(true);
             viewRoot.setSelected(false);
         } else {
             viewRoot.setEnabled(false);
