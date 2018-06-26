@@ -5,6 +5,7 @@ import android.util.ArrayMap;
 
 import com.flurry.android.FlurryAgent;
 
+import app.laiki.BuildConfig;
 import app.laiki.model.types.Choice;
 
 public class Statistics {
@@ -16,7 +17,7 @@ public class Statistics {
 
     public Statistics(Context context) {
         new FlurryAgent.Builder()
-                .withLogEnabled(true)
+                .withLogEnabled(BuildConfig.DEBUG)
                 .build(context, "SR7M5GNN8BVW5DYTJZ2N");
     }
 
@@ -81,7 +82,7 @@ public class Statistics {
         }
 
         public void contacts() {
-            FlurryAgent.logEvent("Question.Contacts.Click");
+            FlurryAgent.logEvent("Question.Contacts");
         }
     }
 
@@ -102,7 +103,6 @@ public class Statistics {
     public class ContactsStatistics {
         public void invite() {
             FlurryAgent.logEvent("Contacts.InviteSent");
-
         }
     }
 
