@@ -226,7 +226,7 @@
         android:gravity="center_horizontal"
         android:text="Нажми для продолжения"
         android:textAppearance="@style/SubtitleTextAppearance"
-        android:textColor="@color/mw_fade_white_70"
+        android:textColor="@color/textColorPrimary"
         android:visibility="invisible"
         tools:visibility="visible"
         />
