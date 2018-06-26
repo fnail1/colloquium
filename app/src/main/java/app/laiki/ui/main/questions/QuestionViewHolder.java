@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static app.laiki.App.photos;
+import static app.laiki.App.screenMetrics;
 
 public class QuestionViewHolder {
 
@@ -172,9 +173,11 @@ public class QuestionViewHolder {
     private void onAnswer() {
         rebind();
         next.setAlpha(0);
+        next.setTranslationY(screenMetrics().screen.height - next.getY());
         next.animate()
                 .setDuration(750)
-                .alpha(1);
+                .alpha(1)
+                .translationY(0);
     }
 
     public interface QuestionAnsweredCallback {
