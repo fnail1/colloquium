@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import app.laiki.BuildConfig;
 import retrofit2.Response;
 import app.laiki.App;
 import app.laiki.Preferences;
@@ -46,6 +47,7 @@ public class AppStateObserver {
     private Activity closedActivity;
     public boolean initialized;
     private Runnable onBackgroundTask = this::onBackground;
+    public int numberOfAnswers;
 
     public AppStateObserver(App context, Preferences preferences) {
         initialized = true;
@@ -85,6 +87,10 @@ public class AppStateObserver {
         if (actual) {
             topActivity = null;
             closedActivity = null;
+            ServiceState serviceState = prefs().serviceState();
+            serviceState.sessionNumber++;
+            numberOfAnswers = 0;
+            prefs().save(serviceState);
             onStateChanged();
         }
     }
@@ -101,7 +107,6 @@ public class AppStateObserver {
         // java.lang.IllegalArgumentException: You must call this method on the main thread
         lowMemoryEvent.fire(null);
     }
-
 
 
     public interface AppStateEventHandler {

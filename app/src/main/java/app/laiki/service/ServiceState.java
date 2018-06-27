@@ -5,4 +5,7 @@ public class ServiceState {
     public int questionNumber;
     public long lastAnswerTime;
     public boolean fcmTokenSent;
+    public int sessionNumber;
+    public boolean rateUsComplete;
+    public boolean rateUsRequired;
 }

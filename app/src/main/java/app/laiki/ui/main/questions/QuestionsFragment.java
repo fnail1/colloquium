@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -30,7 +31,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.content.ComponentCallbacks2.TRIM_MEMORY_BACKGROUND;
 import static app.laiki.App.appService;
+import static app.laiki.App.appState;
 import static app.laiki.App.data;
 import static app.laiki.App.dateTimeService;
 import static app.laiki.App.notifications;
@@ -38,7 +41,12 @@ import static app.laiki.App.prefs;
 import static app.laiki.App.screenMetrics;
 import static app.laiki.App.statistics;
 
-public class QuestionsFragment extends BaseFragment implements AppService.NewQuestionEventHandler, QuestionViewHolder.QuestionAnsweredCallback, AppService.AnswerSentEventHandler, AppService.ContactsSynchronizationEventHandler {
+public class QuestionsFragment extends BaseFragment
+        implements AppService.NewQuestionEventHandler,
+        QuestionViewHolder.QuestionAnsweredCallback,
+        AppService.AnswerSentEventHandler,
+        AppService.ContactsSynchronizationEventHandler,
+        RateUsViewHolder.Callback {
     public static final String STATE_QUESTION_ID = "question_id";
 
     @BindView(R.id.page1) View page1;
@@ -51,11 +59,13 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     @BindView(R.id.contacts) TextView contacts;
     @BindView(R.id.stopscreen) FrameLayout stopscreen;
     @BindView(R.id.counter) TextView counter;
+    @BindView(R.id.root) RelativeLayout root;
     private QuestionViewHolder background;
     private QuestionViewHolder foreground;
     private Question question;
     private boolean requestSent;
     private boolean questionBindComplete;
+    private View activePage;
 
     @Nullable
     @Override
@@ -133,6 +143,28 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
     }
 
     private void updateViews(Question q) {
+        FragmentActivity activity = getActivity();
+        if (activity == null)
+            return;
+
+        ServiceState serviceState = prefs().serviceState();
+
+        if (serviceState.rateUsRequired) {
+            if (question == Question.RATE_US)
+                return;
+            question = Question.RATE_US;
+
+            RateUsViewHolder rateUsViewHolder = new RateUsViewHolder(LayoutInflater.from(activity), root, this);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) rateUsViewHolder.root.getLayoutParams();
+            layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+            layoutParams.alignWithParent = true;
+            root.addView(rateUsViewHolder.root);
+            rateUsViewHolder.bind();
+            statistics().rateUs().start();
+            showPage(rateUsViewHolder.root);
+            return;
+        }
 
         if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
             page1.setVisibility(View.GONE);
@@ -182,37 +214,25 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
 
 
         requestSent = false;
-        boolean animate = question != null;
         question = q;
         questionBindComplete = true;
 
         int N = prefs().config().questionsFrameSize;
-        int n = prefs().serviceState().questionNumber % N;
+        int n = serviceState.questionNumber % N;
         if (n == 0 &&
-                dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime < prefs().config().deadTime) {
+                dateTimeService().getServerTime() - serviceState.lastAnswerTime < prefs().config().deadTime) {
             background.bind(question, contact1, contact2, contact3, contact4);
             updateTimer();
-            if (!animate) {
-                page1.setVisibility(View.GONE);
-                page2.setVisibility(View.GONE);
-                stopscreen.setVisibility(View.VISIBLE);
-            } else {
-                animateSwap(foreground.root, stopscreen);
-            }
+
+            showPage(stopscreen);
             updateCounter(false);
             return;
         }
 
         updateCounter(true);
-
-        if (!animate) {
-            foreground.root.setVisibility(View.VISIBLE);
-            foreground.bind(question, contact1, contact2, contact3, contact4);
-        } else {
-            swapPages();
-            foreground.bind(question, contact1, contact2, contact3, contact4);
-            animateSwap(background.root, foreground.root);
-        }
+        swapPages();
+        foreground.bind(question, contact1, contact2, contact3, contact4);
+        showPage(foreground.root);
     }
 
     private void updateTimer() {
@@ -224,7 +244,7 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
             timer.postDelayed(this::updateTimer, 1000);
         } else {
             swapPages();
-            animateSwap(stopscreen, foreground.root);
+            showPage(foreground.root);
             updateCounter(true);
         }
     }
@@ -275,9 +295,13 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         if (question.variant1 == 0)
             return;
 
+        appState().numberOfAnswers++;
         ServiceState serviceState = prefs().serviceState();
         serviceState.lastAnswerTime = dateTimeService().getServerTime();
         serviceState.questionNumber++;
+        if (!serviceState.rateUsComplete && serviceState.sessionNumber > 0 && appState().numberOfAnswers == 1) {
+            serviceState.rateUsRequired = true;
+        }
         prefs().save(serviceState);
 
         statistics().questions().answer(a);
@@ -302,7 +326,18 @@ public class QuestionsFragment extends BaseFragment implements AppService.NewQue
         updateViews();
     }
 
-    private void animateSwap(View prev, View next) {
+    private void showPage(View next) {
+        View prev = this.activePage;
+        activePage = next;
+
+        if (next == prev)
+            return;
+
+        if (prev == null) {
+            next.setVisibility(View.VISIBLE);
+            return;
+        }
+
         prev.animate()
                 .setDuration(500)
                 .translationY(-screenMetrics().screen.height)

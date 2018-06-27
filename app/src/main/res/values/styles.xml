@@ -21,6 +21,7 @@
 
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/mw_fade_black_30</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
 
     </style>
 
@@ -46,6 +47,15 @@
     </style>
 
     <style name="MainActivityTheme" parent="AppTheme">
+    </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <item name="android:textColorPrimary">#546d79</item>
+        <item name="android:textColor">@color/colorAccent</item>
+
     </style>
 
     <style name="Splash" parent="@style/Theme.AppCompat.Light">

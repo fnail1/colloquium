@@ -1,54 +1,28 @@
 package app.laiki.ui.main.questions;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static app.laiki.App.photos;
 import static app.laiki.App.screenMetrics;
 
-public class QuestionViewHolder {
-
-    public static final int[] COLORS = {
-            0xFF1A1334, 0xFF26294A, 0xFF02545A, 0xFF0C7351,
-            0xFFAAD962, 0xFFFBBF45, 0xFFEF6A32, 0xFFED1C45,
-            0xFFA12A5E, 0xFFA12A5E, 0xFF2767A9, 0xFF14407F,
-            0xFF14407F};
+public class QuestionViewHolder extends AbsQuestionViewHolder {
 
     private final QuestionAnsweredCallback callback;
     public final View root;
-    @BindView(R.id.icon) ImageView icon;
 
-    @BindView(R.id.answers) LinearLayout answers;
-    @BindView(R.id.skip) TextView skip;
-    @BindView(R.id.next) TextView next;
-    @BindView(R.id.message) TextView message;
-    @BindView(R.id.variant1Text1) TextView variant1Text1;
-    @BindView(R.id.variant1Text2) TextView variant1Text2;
-    @BindView(R.id.variant1) LinearLayout variant1;
-    @BindView(R.id.variant2Text1) TextView variant2Text1;
-    @BindView(R.id.variant2Text2) TextView variant2Text2;
-    @BindView(R.id.variant2) LinearLayout variant2;
-    @BindView(R.id.variant3Text1) TextView variant3Text1;
-    @BindView(R.id.variant3Text2) TextView variant3Text2;
-    @BindView(R.id.variant3) LinearLayout variant3;
-    @BindView(R.id.variant4Text1) TextView variant4Text1;
-    @BindView(R.id.variant4Text2) TextView variant4Text2;
-    @BindView(R.id.variant4) LinearLayout variant4;
-    private final VariantViewHolder v1;
-    private final VariantViewHolder v2;
-    private final VariantViewHolder v3;
-    private final VariantViewHolder v4;
+    private final ContactViewHolder v1;
+    private final ContactViewHolder v2;
+    private final ContactViewHolder v3;
+    private final ContactViewHolder v4;
     @BindView(R.id.progress) ProgressBar progress;
     private Question question;
     private Contact contact1;
@@ -61,14 +35,14 @@ public class QuestionViewHolder {
      * @param root     R.layout.fr_question
      */
     public QuestionViewHolder(View root, QuestionAnsweredCallback callback) {
+        super(root);
         this.callback = callback;
         this.root = root;
         root.setOnClickListener(this::onViewClicked);
-        ButterKnife.bind(this, root);
-        v1 = new VariantViewHolder(variant1, variant1Text1, variant1Text2);
-        v2 = new VariantViewHolder(variant2, variant2Text1, variant2Text2);
-        v3 = new VariantViewHolder(variant3, variant3Text1, variant3Text2);
-        v4 = new VariantViewHolder(variant4, variant4Text1, variant4Text2);
+        v1 = new ContactViewHolder(variant1, variant1Text1, variant1Text2);
+        v2 = new ContactViewHolder(variant2, variant2Text1, variant2Text2);
+        v3 = new ContactViewHolder(variant3, variant3Text1, variant3Text2);
+        v4 = new ContactViewHolder(variant4, variant4Text1, variant4Text2);
 //        R.layout.fr_question
     }
 
@@ -118,7 +92,7 @@ public class QuestionViewHolder {
         bindVariant(question.answer, Choice.D, variant4, v4, contact4);
     }
 
-    private void bindVariant(Choice answer, Choice expected, LinearLayout viewRoot, VariantViewHolder viewText, Contact contact) {
+    private void bindVariant(Choice answer, Choice expected, LinearLayout viewRoot, ContactViewHolder viewText, Contact contact) {
         if (answer == null) {
             viewRoot.setAlpha(1f);
             viewRoot.setEnabled(true);

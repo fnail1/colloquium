@@ -15,7 +15,7 @@ import app.laiki.model.entities.Contact;
 import app.laiki.model.types.Choice;
 import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.ui.base.BaseActivity;
-import app.laiki.ui.main.questions.VariantViewHolder;
+import app.laiki.ui.main.questions.ContactViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,10 +47,10 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.variant4) LinearLayout variant4;
     @BindView(R.id.copyright) TextView copyright;
     private Answer answer;
-    private VariantViewHolder v1;
-    private VariantViewHolder v2;
-    private VariantViewHolder v3;
-    private VariantViewHolder v4;
+    private ContactViewHolder v1;
+    private ContactViewHolder v2;
+    private ContactViewHolder v3;
+    private ContactViewHolder v4;
     private volatile HashMap<String, Contact> contacts;
 
     @Override
@@ -58,10 +58,10 @@ public class AnswerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
         ButterKnife.bind(this);
-        v1 = new VariantViewHolder(variant1, variant1Text1, variant1Text2);
-        v2 = new VariantViewHolder(variant2, variant2Text1, variant2Text2);
-        v3 = new VariantViewHolder(variant3, variant3Text1, variant3Text2);
-        v4 = new VariantViewHolder(variant4, variant4Text1, variant4Text2);
+        v1 = new ContactViewHolder(variant1, variant1Text1, variant1Text2);
+        v2 = new ContactViewHolder(variant2, variant2Text1, variant2Text2);
+        v3 = new ContactViewHolder(variant3, variant3Text1, variant3Text2);
+        v4 = new ContactViewHolder(variant4, variant4Text1, variant4Text2);
 
         long id = getIntent().getLongExtra(EXTRA_ANSWER_ID, 0);
 
@@ -118,7 +118,7 @@ public class AnswerActivity extends BaseActivity {
         bindVariant(answer.variantD, Choice.D, variant4, v4);
     }
 
-    private void bindVariant(String contactServerId, Choice expected, LinearLayout viewRoot, VariantViewHolder viewText) {
+    private void bindVariant(String contactServerId, Choice expected, LinearLayout viewRoot, ContactViewHolder viewText) {
         Contact contact = contacts.get(contactServerId);
         if (answer.answer != expected) {
             viewRoot.setAlpha(.5f);

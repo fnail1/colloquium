@@ -14,6 +14,7 @@ public class Statistics {
     private QuestionsStatistics questions;
     private AnswersStatistics answers;
     private ProfileStatistics profile;
+    private RateUsStatistics rateUs;
 
     public Statistics(Context context) {
         new FlurryAgent.Builder()
@@ -50,6 +51,13 @@ public class Statistics {
             profile = new ProfileStatistics();
 
         return profile;
+    }
+
+    public RateUsStatistics rateUs() {
+        if (rateUs == null)
+            rateUs = new RateUsStatistics();
+
+        return rateUs;
     }
 
     public class LoginWorkflow {
@@ -121,6 +129,22 @@ public class Statistics {
 
         public void vk() {
             FlurryAgent.logEvent("Profile.Vk");
+        }
+    }
+
+    public class RateUsStatistics {
+        public void start() {
+            FlurryAgent.logEvent("Rating.Request");
+        }
+
+        public void answer(Choice a) {
+            ArrayMap<String, String> map = new ArrayMap<>();
+            map.put("Answer", a.name());
+            FlurryAgent.logEvent("Rating.Set", map);
+        }
+
+        public void googlePlayStarted() {
+            FlurryAgent.logEvent("Rating.Store");
         }
     }
 }

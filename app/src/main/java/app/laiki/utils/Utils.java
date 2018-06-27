@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -27,6 +29,7 @@ import java.util.UUID;
 
 import app.laiki.R;
 
+import static app.laiki.diagnostics.DebugUtils.safeThrow;
 import static app.laiki.diagnostics.Logger.trace;
 
 
@@ -256,4 +259,15 @@ public final class Utils {
         return new String(buf);
     }
 
+    public static void startGooglePlay(@NonNull Context context) {
+
+        Uri storeUri = Uri.parse("market://details?id=app.laiki");
+        Intent goToStoreIntent = new Intent(Intent.ACTION_VIEW, storeUri);
+        goToStoreIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (goToStoreIntent.resolveActivity(context.getPackageManager()) != null)
+            context.startActivity(goToStoreIntent);
+        else
+            safeThrow(new Throwable("Can not open Google Play"));
+
+    }
 }
