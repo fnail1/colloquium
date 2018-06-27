@@ -175,7 +175,7 @@ public class QuestionViewHolder {
         next.setAlpha(0);
         next.setTranslationY(screenMetrics().screen.height - next.getY());
         next.animate()
-                .setDuration(750)
+                .setDuration(500)
                 .alpha(1)
                 .translationY(0);
     }

@@ -248,30 +248,39 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         LongSparseArray<Contact> contacts = appData.contacts.selectQuestionsVariants().toLongSparseArray(c -> c._id);
 
         for (Question question : questions) {
-            String p1 = contacts.get(question.variant1).serverId;
-            String p2 = contacts.get(question.variant2).serverId;
-            String p3 = contacts.get(question.variant3).serverId;
-            String p4 = contacts.get(question.variant4).serverId;
+            Contact contact1 = contacts.get(question.variant1);
+            Contact contact2 = contacts.get(question.variant2);
+            Contact contact3 = contacts.get(question.variant3);
+            Contact contact4 = contacts.get(question.variant4);
 
-            String name = null;
+            if (contact1 == null || contact2 == null || contact3 == null || contact4 == null) {
+                appData.questions.delete(question);
+                continue;
+            }
+
+            String name;
             switch (question.answer) {
                 case A:
-                    name = contacts.get(question.variant1).displayName;
+                    name = contact1.displayName;
                     break;
                 case B:
-                    name = contacts.get(question.variant2).displayName;
+                    name = contact2.displayName;
                     break;
                 case C:
-                    name = contacts.get(question.variant3).displayName;
+                    name = contact3.displayName;
                     break;
                 case D:
-                    name = contacts.get(question.variant4).displayName;
+                    name = contact4.displayName;
                     break;
                 case E:
+                default:
+                    name = null;
                     break;
             }
 
-            Response<GsonResponse> response = api().answer(question.serverId, question.answer, name, p1, p2, p3, p4).execute();
+            Response<GsonResponse> response = api().answer(question.serverId, question.answer, name,
+                    contact1.serverId, contact2.serverId, contact3.serverId, contact4.serverId).execute();
+
             switch (response.code()) {
                 case HttpURLConnection.HTTP_OK:
                     break;
