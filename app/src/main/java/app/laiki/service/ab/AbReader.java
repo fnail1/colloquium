@@ -24,49 +24,25 @@ public class AbReader implements Iterable<SyncUnit>, Closeable {
             ContactsContract.CommonDataKinds.Contactables.CONTACT_ID + " ASC, " +
                     ContactsContract.CommonDataKinds.Phone._ID + " ASC ";
 
-    private static final String[] CONTACT_INFO_COLUMNS;
-
-    static {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            CONTACT_INFO_COLUMNS = new String[]{
-                    ContactsContract.CommonDataKinds.Phone._ID,
-                    ContactsContract.CommonDataKinds.Contactables.CONTACT_ID,
-                    ContactsContract.Data.MIMETYPE,
-                    ContactsContract.CommonDataKinds.StructuredName.PREFIX,
-                    ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
-                    ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
-                    ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
-                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                    ContactsContract.CommonDataKinds.Phone.NUMBER,
-                    ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
-                    ContactsContract.CommonDataKinds.Phone.TYPE,
-                    ContactsContract.CommonDataKinds.Event.START_DATE,
-                    ContactsContract.CommonDataKinds.Event.TYPE,
-                    ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP,
-                    ContactsContract.Contacts.PHOTO_URI,
-                    ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
-                    ContactsContract.Settings.ACCOUNT_TYPE,
-            };
-        } else {
-            CONTACT_INFO_COLUMNS = new String[]{
-                    ContactsContract.CommonDataKinds.Phone._ID,
-                    ContactsContract.CommonDataKinds.Contactables.CONTACT_ID,
-                    ContactsContract.Data.MIMETYPE,
-                    ContactsContract.CommonDataKinds.StructuredName.PREFIX,
-                    ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
-                    ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
-                    ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
-                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                    ContactsContract.CommonDataKinds.Phone.NUMBER,
-                    ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
-                    ContactsContract.CommonDataKinds.Event.START_DATE,
-                    ContactsContract.CommonDataKinds.Event.TYPE,
-                    ContactsContract.Contacts.PHOTO_URI,
-                    ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
-                    ContactsContract.Settings.ACCOUNT_TYPE
-            };
-        }
-    }
+    private static final String[] CONTACT_INFO_COLUMNS = new String[]{
+            ContactsContract.CommonDataKinds.Phone._ID,
+            ContactsContract.CommonDataKinds.Contactables.CONTACT_ID,
+            ContactsContract.Data.MIMETYPE,
+            ContactsContract.CommonDataKinds.StructuredName.PREFIX,
+            ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
+            ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
+            ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER,
+            ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
+            ContactsContract.CommonDataKinds.Phone.TYPE,
+            ContactsContract.CommonDataKinds.Event.START_DATE,
+            ContactsContract.CommonDataKinds.Event.TYPE,
+            ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP,
+            ContactsContract.Contacts.PHOTO_URI,
+            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
+            ContactsContract.Settings.ACCOUNT_TYPE,
+    };
 
 
     private final Cursor cursor;

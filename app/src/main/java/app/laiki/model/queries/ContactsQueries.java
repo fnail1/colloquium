@@ -3,12 +3,14 @@ package app.laiki.model.queries;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.List;
 import java.util.Random;
 
 import app.laiki.BuildConfig;
 import app.laiki.model.entities.Answer;
 import app.laiki.model.entities.Contact;
 import app.laiki.toolkit.data.CursorWrapper;
+import app.laiki.toolkit.data.DbUtils;
 import app.laiki.toolkit.data.SQLiteCommands;
 import app.laiki.toolkit.data.SimpleCursorWrapper;
 
@@ -75,6 +77,24 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
                 "\'" + answer.variantD + "'" +
                 ")\n";
 
+        return new ContactsCursor(db.rawQuery(sql, null));
+    }
+
+    public int countSentInvites() {
+        return DbUtils.count(db, "select count(*) from Contacts where inviteSent != 0 ", (String[]) null);
+    }
+
+    public CursorWrapper<Contact> selectInviteVariants(int skip, int limit) {
+        String sql = "select c.*, count(q._id) q\n" +
+                "from Contacts c\n" +
+                "left join Questions q on \n" +
+                "    (q.answer=0 and q.variant1=c._id) or\n" +
+                "    (q.answer=1 and q.variant2=c._id) or\n" +
+                "    (q.answer=2 and q.variant3=c._id) or\n" +
+                "    (q.answer=3 and q.variant4=c._id) \n" +
+                "group by c._id\n" +
+                "order by q desc\n" +
+                "limit " + limit + " offset " + skip;
         return new ContactsCursor(db.rawQuery(sql, null));
     }
 

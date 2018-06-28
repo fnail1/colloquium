@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static android.content.ComponentCallbacks2.TRIM_MEMORY_BACKGROUND;
 import static app.laiki.App.appService;
 import static app.laiki.App.appState;
 import static app.laiki.App.data;
@@ -46,8 +45,13 @@ public class QuestionsFragment extends BaseFragment
         QuestionViewHolder.QuestionAnsweredCallback,
         AppService.AnswerSentEventHandler,
         AppService.ContactsSynchronizationEventHandler,
-        RateUsViewHolder.Callback {
+        RateUsViewHolder.Callback,
+        InviteViewHolder.Callback,
+        StopScreenViewHolder.Callback {
     public static final String STATE_QUESTION_ID = "question_id";
+    private static final Question RATE_US = new Question();
+    private static final Question INVITE = new Question();
+    private static final Question STOP_SCREEN = new Question();
 
     @BindView(R.id.page1) View page1;
     @BindView(R.id.page2) View page2;
@@ -55,9 +59,8 @@ public class QuestionsFragment extends BaseFragment
     @BindView(R.id.progress) ProgressBar progress;
     @BindView(R.id.error) TextView error;
     @BindView(R.id.placeholders) FrameLayout placeholders;
-    @BindView(R.id.timer) TextView timer;
-    @BindView(R.id.contacts) TextView contacts;
-    @BindView(R.id.stopscreen) FrameLayout stopscreen;
+    //    @BindView(R.id.timer) TextView timer;
+//    @BindView(R.id.contacts) TextView contacts;
     @BindView(R.id.counter) TextView counter;
     @BindView(R.id.root) RelativeLayout root;
     private QuestionViewHolder background;
@@ -150,52 +153,58 @@ public class QuestionsFragment extends BaseFragment
         ServiceState serviceState = prefs().serviceState();
 
         if (serviceState.rateUsRequired) {
-            if (question == Question.RATE_US)
-                return;
-            question = Question.RATE_US;
-
-            RateUsViewHolder rateUsViewHolder = new RateUsViewHolder(LayoutInflater.from(activity), root, this);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) rateUsViewHolder.root.getLayoutParams();
-            layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-            layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
-            layoutParams.alignWithParent = true;
-            root.addView(rateUsViewHolder.root);
-            rateUsViewHolder.bind();
-            statistics().rateUs().start();
-            showPage(rateUsViewHolder.root);
+            showRateUs(activity);
             return;
         }
 
+        int questionNumber = serviceState.questionNumber % prefs().config().questionsFrameSize;
+
+        if (showInvite(activity, questionNumber))
+            return;
+
         if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
-            page1.setVisibility(View.GONE);
-            page2.setVisibility(View.GONE);
-            updateCounter(false);
-            setupPlaceholders(true, null);
-            if (q == null && !requestSent) {
-                requestSent = true;
-                appService().requestNextQuestion();
-            }
+            showEmpty(q);
             return;
         }
 
         if (q.equals(question))
             return;
 
-        List<Contact> contacts;
-        if (q.variant1 <= 0) {
-            contacts = data().contacts.selectRandom(4).toList();
-        } else {
-            contacts = data().contacts.selectById(q.variant1, q.variant2, q.variant3, q.variant4).toList();
-        }
+        List<Contact> contacts = selectContacts(q);
 
         if (contacts.isEmpty()) {
-            setupPlaceholders(false, "Похоже, что у вас нет контактов в телефоне. Добавьте 4-х друзей в адресную книгу и попробуйте еще разок \uD83D\uDE09");
-            page1.setVisibility(View.GONE);
-            page2.setVisibility(View.GONE);
-            updateCounter(false);
+            showNoContacts();
             return;
         }
 
+        showQuestion(activity, q, serviceState, contacts, questionNumber);
+    }
+
+    private boolean showInvite(FragmentActivity activity, int questionNumber) {
+        if (question == INVITE)
+            return true;
+
+        if (questionNumber != 8)
+            return false;
+
+        int sent = data().contacts.countSentInvites();
+        if (sent >= 5)
+            return false;
+
+        List<Contact> contacts = data().contacts.selectInviteVariants(0, 4).toList();
+        if (contacts.size() < 4)
+            return false;
+
+        question = INVITE;
+        InviteViewHolder inviteViewHolder = new InviteViewHolder(LayoutInflater.from(activity), root, this);
+
+        inviteViewHolder.bind(contacts.get(0), contacts.get(1), contacts.get(2), contacts.get(3));
+        statistics().questions().invite();
+        showPage(inviteViewHolder.root);
+        return true;
+    }
+
+    private void showQuestion(FragmentActivity activity, Question q, ServiceState serviceState, List<Contact> contacts, int questionNumber) {
         setupPlaceholders(false, null);
 
         Collections.sort(contacts, (c1, c2) -> c1.displayNameOrder.compareTo(c2.displayNameOrder));
@@ -204,6 +213,33 @@ public class QuestionsFragment extends BaseFragment
         Contact contact3 = contacts.get(2 % contacts.size());
         Contact contact4 = contacts.get(3 % contacts.size());
 
+        bindVariants(q, contact1, contact2, contact3, contact4);
+
+        requestSent = false;
+
+        if (questionNumber == 0 &&
+                dateTimeService().getServerTime() - serviceState.lastAnswerTime < prefs().config().deadTime) {
+            if (question == STOP_SCREEN)
+                return;
+            question = STOP_SCREEN;
+
+            statistics().questions().stopScreen();
+            StopScreenViewHolder stopScreenViewHolder = new StopScreenViewHolder(LayoutInflater.from(activity), root, this);
+            stopScreenViewHolder.bind();
+            showPage(stopScreenViewHolder.root);
+            updateCounter(false);
+            return;
+        }
+
+        question = q;
+        questionBindComplete = true;
+        updateCounter(true);
+        swapPages();
+        foreground.bind(question, contact1, contact2, contact3, contact4);
+        showPage(foreground.root);
+    }
+
+    private void bindVariants(Question q, Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
         if (q.variant1 == 0) {
             q.variant1 = contact1._id;
             q.variant2 = contact2._id;
@@ -211,43 +247,47 @@ public class QuestionsFragment extends BaseFragment
             q.variant4 = contact4._id;
             ThreadPool.DB.execute(() -> data().questions.save(q));
         }
-
-
-        requestSent = false;
-        question = q;
-        questionBindComplete = true;
-
-        int N = prefs().config().questionsFrameSize;
-        int n = serviceState.questionNumber % N;
-        if (n == 0 &&
-                dateTimeService().getServerTime() - serviceState.lastAnswerTime < prefs().config().deadTime) {
-            background.bind(question, contact1, contact2, contact3, contact4);
-            updateTimer();
-            statistics().questions().stopScreen();
-            showPage(stopscreen);
-            updateCounter(false);
-            return;
-        }
-
-        updateCounter(true);
-        swapPages();
-        foreground.bind(question, contact1, contact2, contact3, contact4);
-        showPage(foreground.root);
     }
 
-    private void updateTimer() {
-        if (timer == null)
-            return;
-        long timeSpan = prefs().config().deadTime - (dateTimeService().getServerTime() - prefs().serviceState().lastAnswerTime);
-        if (timeSpan > 0) {
-            timer.setText(dateTimeService().formatTime(timeSpan, false));
-            timer.postDelayed(this::updateTimer, 1000);
+    private void showNoContacts() {
+        setupPlaceholders(false, "Похоже, что у вас нет контактов в телефоне. Добавьте 4-х друзей в адресную книгу и попробуйте еще разок \uD83D\uDE09");
+        page1.setVisibility(View.GONE);
+        page2.setVisibility(View.GONE);
+        updateCounter(false);
+    }
+
+    @NonNull
+    private List<Contact> selectContacts(Question q) {
+        if (q.variant1 <= 0) {
+            return data().contacts.selectRandom(4).toList();
         } else {
-            swapPages();
-            showPage(foreground.root);
-            updateCounter(true);
+            return data().contacts.selectById(q.variant1, q.variant2, q.variant3, q.variant4).toList();
         }
     }
+
+    private void showEmpty(Question q) {
+        page1.setVisibility(View.GONE);
+        page2.setVisibility(View.GONE);
+        updateCounter(false);
+        setupPlaceholders(true, null);
+        if (q == null && !requestSent) {
+            requestSent = true;
+            appService().requestNextQuestion();
+        }
+    }
+
+    private void showRateUs(FragmentActivity activity) {
+        if (question == RATE_US)
+            return;
+
+        question = RATE_US;
+
+        RateUsViewHolder rateUsViewHolder = new RateUsViewHolder(LayoutInflater.from(activity), root, this);
+        rateUsViewHolder.bind();
+        statistics().rateUs().start();
+        showPage(rateUsViewHolder.root);
+    }
+
 
     private void updateCounter(boolean visible) {
         if (visible) {
@@ -332,6 +372,14 @@ public class QuestionsFragment extends BaseFragment
         if (next == prev)
             return;
 
+        if (root.indexOfChild(next) < 0) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) next.getLayoutParams();
+            layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+            layoutParams.alignWithParent = true;
+            root.addView(next);
+        }
+
         if (prev == null) {
             next.setVisibility(View.VISIBLE);
             return;
@@ -368,12 +416,4 @@ public class QuestionsFragment extends BaseFragment
         onNewQuestion(null);
     }
 
-    @OnClick(R.id.contacts)
-    public void onViewClicked() {
-        FragmentActivity activity = getActivity();
-        if (activity != null) {
-            statistics().questions().contacts();
-            startActivity(new Intent(activity, ContactsActivity.class));
-        }
-    }
 }

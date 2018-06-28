@@ -17,7 +17,6 @@ import static app.laiki.App.screenMetrics;
 public class QuestionViewHolder extends AbsQuestionViewHolder {
 
     private final QuestionAnsweredCallback callback;
-    public final View root;
 
     private final ContactViewHolder v1;
     private final ContactViewHolder v2;
@@ -37,7 +36,6 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
     public QuestionViewHolder(View root, QuestionAnsweredCallback callback) {
         super(root);
         this.callback = callback;
-        this.root = root;
         root.setOnClickListener(this::onViewClicked);
         v1 = new ContactViewHolder(variant1, variant1Text1, variant1Text2);
         v2 = new ContactViewHolder(variant2, variant2Text1, variant2Text2);

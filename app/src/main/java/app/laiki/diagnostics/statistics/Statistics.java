@@ -92,6 +92,10 @@ public class Statistics {
         public void contacts() {
             FlurryAgent.logEvent("Question.Contacts");
         }
+
+        public void invite() {
+            FlurryAgent.logEvent("Question.Invite");
+        }
     }
 
     public class AnswersStatistics {

@@ -14,7 +14,6 @@ import app.laiki.toolkit.data.DbTable;
 public class Question extends BaseRow {
     public static final int FLAG_ANSWERED = 1;
     public static final int FLAG_SENT = 2;
-    public static final Question RATE_US = new Question();
 
     public String serverId;
     @DbColumn(unique = true)
