@@ -223,7 +223,7 @@ public class QuestionsFragment extends BaseFragment
                 dateTimeService().getServerTime() - serviceState.lastAnswerTime < prefs().config().deadTime) {
             background.bind(question, contact1, contact2, contact3, contact4);
             updateTimer();
-
+            statistics().questions().stopScreen();
             showPage(stopscreen);
             updateCounter(false);
             return;
@@ -307,7 +307,6 @@ public class QuestionsFragment extends BaseFragment
         statistics().questions().answer(a);
 
         if (serviceState.questionNumber % prefs().config().questionsFrameSize == 0) {
-            statistics().questions().stopScreen();
             notifications().onStopScreenIn();
         }
 
