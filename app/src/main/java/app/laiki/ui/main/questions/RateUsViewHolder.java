@@ -39,8 +39,8 @@ public class RateUsViewHolder extends AbsQuestionViewHolder {
     public void bind() {
         message.setText("Как тебе наша приложуха ЧСН?");
         this.icon.setImageResource(R.drawable.ic_rate_us);
-        v1.bind("Огонь \uD83D\uDD25", null);
-        v2.bind("Норм", null);
+        v1.bind("Норм", null);
+        v2.bind("Огонь \uD83D\uDD25", null);
         v3.bind("ХЗ", null);
         v4.bind("Чет не оч", null);
         root.setBackgroundColor(COLORS[(prefs().uniqueId() & 0xffff) % COLORS.length]);

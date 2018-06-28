@@ -34,6 +34,7 @@ import butterknife.OnClick;
 import static app.laiki.App.app;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
+import static app.laiki.diagnostics.Logger.trace;
 import static app.laiki.toolkit.collections.Query.query;
 
 public class SettingsActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
@@ -102,7 +103,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
             });
 
             questionsDeadTime.setText(String.valueOf(prefs().config().deadTime));
-            questionsFrameSize.addTextChangedListener(new TextWatcher() {
+            questionsDeadTime.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -119,7 +120,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
                     if (digits == null)
                         return;
                     Configuration config = prefs().config();
-                    config.questionsFrameSize = Integer.parseInt(digits);
+                    config.deadTime = Integer.parseInt(digits);
                     prefs().save(config);
                 }
             });

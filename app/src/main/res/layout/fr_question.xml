@@ -53,26 +53,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="64dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingEnd="12dp"
         android:paddingStart="12dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             >
 
             <LinearLayout
                 android:id="@+id/variant1"
                 style="@style/WhiteButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="58dp"
                 android:layout_marginBottom="@dimen/indent"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="@dimen/indent"
+                android:layout_weight=".5"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -97,12 +97,13 @@
             <LinearLayout
                 android:id="@+id/variant2"
                 style="@style/WhiteButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="58dp"
                 android:layout_marginBottom="@dimen/indent"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="@dimen/indent"
+                android:layout_weight=".5"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -127,20 +128,21 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            >
 
             <LinearLayout
                 android:id="@+id/variant3"
                 style="@style/WhiteButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="58dp"
                 android:layout_marginBottom="@dimen/indent"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="@dimen/indent"
+                android:layout_weight=".5"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -165,8 +167,9 @@
             <LinearLayout
                 android:id="@+id/variant4"
                 style="@style/WhiteButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="58dp"
+                android:layout_weight=".5"
                 android:layout_marginBottom="@dimen/indent"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
@@ -204,11 +207,11 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="12dp"
         android:layout_marginRight="@dimen/indent"
-        android:padding="@dimen/indent"
         android:background="@drawable/ripple_none_view_dark"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_fast_forward"
         android:gravity="center_horizontal"
+        android:padding="@dimen/indent"
         android:text="Пропустить"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="@color/mw_fade_white_70"
@@ -221,9 +224,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="12dp"
-        android:padding="@dimen/indent"
         android:background="@drawable/ripple_none_view_dark"
         android:gravity="center_horizontal"
+        android:padding="@dimen/indent"
         android:text="Нажми для продолжения"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="@color/textColorPrimary"
