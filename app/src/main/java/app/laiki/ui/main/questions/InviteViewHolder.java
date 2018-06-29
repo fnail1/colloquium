@@ -112,7 +112,7 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
         }
 
         if (query(contacts).first(c -> !c.flags.get(Contact.FLAG_INVITE_REQUESTED)) == null)
-            callback.onNextClick();
+            root.post(callback::onNextClick);
     }
 
 
