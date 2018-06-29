@@ -75,8 +75,8 @@ public class ContactViewHolder extends VariantViewHolder {
 
         text1.animate()
                 .alpha(0)
-//                .scaleX(0)
-//                .scaleY(0)
+//                .scaleX(0.85f)
+//                .scaleY(0.85f)
                 .setDuration(ANIMATION_DURATION)
                 .withEndAction(() -> {
                     bind(contact);
@@ -86,14 +86,12 @@ public class ContactViewHolder extends VariantViewHolder {
 //                            .scaleX(1)
 //                            .scaleY(1)
                             .setDuration(ANIMATION_DURATION)
-                            .withEndAction(() -> {
-                                callback.onAnimationOutComplete();
-                            });
+                            .withEndAction(callback::onAnimationOutComplete);
                 });
         text2.animate()
                 .alpha(0)
-//                .scaleX(0)
-//                .scaleY(0)
+//                .scaleX(0.85f)
+//                .scaleY(0.85f)
                 .setDuration(ANIMATION_DURATION)
                 .withEndAction(() -> {
                     text2.animate()

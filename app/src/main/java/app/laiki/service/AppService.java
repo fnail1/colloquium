@@ -428,6 +428,14 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     private void sendInviteSync(AppData appData, Contact contact) {
         try {
+            if (BuildConfig.DEBUG) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
             Response<GsonResponse> response = api().invite(contact.phone).execute();
             if (response.code() != HttpURLConnection.HTTP_OK)
                 safeThrow(new ServerException(response));
