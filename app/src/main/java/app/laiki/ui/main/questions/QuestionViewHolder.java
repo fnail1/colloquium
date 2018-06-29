@@ -14,6 +14,7 @@ import butterknife.OnClick;
 import static app.laiki.App.photos;
 import static app.laiki.App.screenMetrics;
 
+@SuppressWarnings("ConstantConditions")
 public class QuestionViewHolder extends AbsQuestionViewHolder {
 
     private final QuestionAnsweredCallback callback;
@@ -22,7 +23,6 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
     private final ContactViewHolder v2;
     private final ContactViewHolder v3;
     private final ContactViewHolder v4;
-    @BindView(R.id.progress) ProgressBar progress;
     private Question question;
     private Contact contact1;
     private Contact contact2;
@@ -33,6 +33,7 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
      * @param callback
      * @param root     R.layout.fr_question
      */
+    @SuppressWarnings("WeakerAccess")
     public QuestionViewHolder(View root, QuestionAnsweredCallback callback) {
         super(root);
         this.callback = callback;
@@ -135,9 +136,11 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
             case R.id.root:
             case R.id.page1:
             case R.id.page2:
-                callback.onNextClick();
-                progress.setVisibility(View.VISIBLE);
-                rebind();
+                if (question.answer != null) {
+                    callback.onNextClick();
+                    progress.setVisibility(View.VISIBLE);
+                    rebind();
+                }
                 break;
         }
     }

@@ -1,12 +1,12 @@
 package app.laiki.ui.main.questions;
 
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import app.laiki.R;
@@ -36,7 +36,9 @@ public class AbsQuestionViewHolder {
     @BindView(R.id.variant4) LinearLayout variant4;
     @BindView(R.id.answers) LinearLayout answers;
     @BindView(R.id.skip) TextView skip;
+    @Nullable
     @BindView(R.id.next) TextView next;
+    @Nullable
     @BindView(R.id.progress) ProgressBar progress;
     View root;
 

@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 public class VariantViewHolder {
     protected final View root;
-    private final TextView text1;
-    private final TextView text2;
+    protected final TextView text1;
+    protected final TextView text2;
 
     public VariantViewHolder(View root, TextView text1, TextView text2) {
         this.root = root;

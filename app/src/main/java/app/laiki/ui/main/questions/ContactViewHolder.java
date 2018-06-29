@@ -1,5 +1,6 @@
 package app.laiki.ui.main.questions;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -7,6 +8,8 @@ import app.laiki.R;
 import app.laiki.model.entities.Contact;
 
 public class ContactViewHolder extends VariantViewHolder {
+
+    public static final int ANIMATION_DURATION = 500;
 
     public ContactViewHolder(View root, TextView text1, TextView text2) {
         super(root, text1, text2);
@@ -61,16 +64,57 @@ public class ContactViewHolder extends VariantViewHolder {
         append(sb, contact.namePrefix);
         append(sb, contact.firstName);
         sb.delete(sb.length() - 1, sb.length());
-        bind(sb,contact.middleName);
+        bind(sb, contact.middleName);
     }
 
     public void bind(String name) {
-        bind(name,null);
+        bind(name, null);
     }
+
+    public void animateBind(Contact contact, @NonNull AnimationCallback callback) {
+
+        text1.animate()
+                .alpha(0)
+//                .scaleX(0)
+//                .scaleY(0)
+                .setDuration(ANIMATION_DURATION)
+                .withEndAction(() -> {
+                    bind(contact);
+                    callback.onAnimationInComplete();
+                    text1.animate()
+                            .alpha(1)
+//                            .scaleX(1)
+//                            .scaleY(1)
+                            .setDuration(ANIMATION_DURATION)
+                            .withEndAction(() -> {
+                                callback.onAnimationOutComplete();
+                            });
+                });
+        text2.animate()
+                .alpha(0)
+//                .scaleX(0)
+//                .scaleY(0)
+                .setDuration(ANIMATION_DURATION)
+                .withEndAction(() -> {
+                    text2.animate()
+                            .alpha(1)
+//                            .scaleX(1)
+//                            .scaleY(1)
+                            .setDuration(ANIMATION_DURATION);
+                });
+        return;
+    }
+
 
     private void append(StringBuilder sb, String s) {
         if (s == null)
             return;
         sb.append(s).append(' ');
+    }
+
+    public interface AnimationCallback {
+        void onAnimationInComplete();
+
+        void onAnimationOutComplete();
     }
 }

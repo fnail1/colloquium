@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import app.laiki.diagnostics.Logger;
 import app.laiki.model.AppData;
+import app.laiki.toolkit.Flags32;
 import app.laiki.toolkit.data.BaseRow;
 import app.laiki.toolkit.data.DbColumn;
 import app.laiki.toolkit.data.DbTable;
@@ -14,6 +15,9 @@ import app.laiki.toolkit.phonenumbers.PhoneNumberUtils;
 
 @DbTable(name = AppData.TABLE_CONTACTS)
 public class Contact extends BaseRow {
+
+    public static final int FLAG_INVITE_REQUESTED = 1;
+    public static final int FLAG_INVITE_SENT = 2;
 
     @DbColumn(unique = true)
     public long abContactId;
@@ -32,7 +36,7 @@ public class Contact extends BaseRow {
     public long contactLastUpdatedTimestamp;
     public String avatar;
 
-    public boolean inviteSent;
+    public final Flags32 flags = new Flags32();
 
     public void onUpdateName() {
         if (namePrefix != null) {

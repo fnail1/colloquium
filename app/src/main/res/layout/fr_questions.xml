@@ -20,10 +20,10 @@
         android:id="@+id/counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/SubtitleTextAppearance"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="88dp"
+        android:textAppearance="@style/SubtitleTextAppearance"
         tools:text="11/33"
         />
 
@@ -33,7 +33,7 @@
         android:layout_height="match_parent"
         android:background="#ff00000f"
         android:visibility="gone"
-        tools:visibility="invisible"
+        tools:visibility="visible"
         >
 
         <LinearLayout

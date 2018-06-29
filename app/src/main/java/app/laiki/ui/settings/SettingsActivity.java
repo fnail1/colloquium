@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -34,7 +35,6 @@ import butterknife.OnClick;
 import static app.laiki.App.app;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
-import static app.laiki.diagnostics.Logger.trace;
 import static app.laiki.toolkit.collections.Query.query;
 
 public class SettingsActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
@@ -46,6 +46,10 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
     @BindView(R.id.api) Spinner api;
     @BindView(R.id.questions_frame_size) EditText questionsFrameSize;
     @BindView(R.id.questions_dead_time) EditText questionsDeadTime;
+    @BindView(R.id.invite_threshold) EditText inviteThreshold;
+    @BindView(R.id.questions_frame_size_container) LinearLayout questionsFrameSizeContainer;
+    @BindView(R.id.questions_dead_time_container) LinearLayout questionsDeadTimeContainer;
+    @BindView(R.id.invite_threshold_container) LinearLayout inviteThresholdContainer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +64,9 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
             importDb.setVisibility(View.GONE);
             copyFcm.setVisibility(View.GONE);
             api.setVisibility(View.GONE);
-            questionsFrameSize.setVisibility(View.GONE);
-            questionsDeadTime.setVisibility(View.GONE);
+            questionsFrameSizeContainer.setVisibility(View.GONE);
+            questionsDeadTimeContainer.setVisibility(View.GONE);
+            inviteThresholdContainer.setVisibility(View.GONE);
         } else {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_spinner_item, query(ApiSet.values()).select(Enum::name).toList());
 //            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -79,51 +84,9 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
 
                 }
             });
-            questionsFrameSize.setText(String.valueOf(prefs().config().questionsFrameSize));
-            questionsFrameSize.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    String digits = PhoneNumberUtils.digitsOnly(s.toString());
-                    if (digits == null)
-                        return;
-                    Configuration config = prefs().config();
-                    config.questionsFrameSize = Integer.parseInt(digits);
-                    prefs().save(config);
-                }
-            });
-
-            questionsDeadTime.setText(String.valueOf(prefs().config().deadTime));
-            questionsDeadTime.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    String digits = PhoneNumberUtils.digitsOnly(s.toString());
-                    if (digits == null)
-                        return;
-                    Configuration config = prefs().config();
-                    config.deadTime = Integer.parseInt(digits);
-                    prefs().save(config);
-                }
-            });
+            setupQuestionsFrameSize();
+            setupQuestionsDeadTime();
+            setupInviteThreshold();
         }
 
         try {
@@ -137,6 +100,81 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
         }
 
 //        safeThrow(new Exception("test"));
+    }
+
+    private void setupQuestionsFrameSize() {
+        questionsFrameSize.setText(String.valueOf(prefs().config().questionsFrameSize));
+        questionsFrameSize.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String digits = PhoneNumberUtils.digitsOnly(s.toString());
+                if (digits == null)
+                    return;
+                Configuration config = prefs().config();
+                config.questionsFrameSize = Integer.parseInt(digits);
+                prefs().save(config);
+            }
+        });
+    }
+
+    private void setupQuestionsDeadTime() {
+        questionsDeadTime.setText(String.valueOf(prefs().config().deadTime));
+        questionsDeadTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String digits = PhoneNumberUtils.digitsOnly(s.toString());
+                if (digits == null)
+                    return;
+                Configuration config = prefs().config();
+                config.deadTime = Integer.parseInt(digits);
+                prefs().save(config);
+            }
+        });
+    }
+
+    private void setupInviteThreshold() {
+        inviteThreshold.setText(String.valueOf(prefs().config().inviteTrigger));
+        inviteThreshold.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String digits = PhoneNumberUtils.digitsOnly(s.toString());
+                if (digits == null)
+                    return;
+                Configuration config = prefs().config();
+                config.inviteTrigger = Integer.parseInt(digits);
+                prefs().save(config);
+            }
+        });
     }
 
 

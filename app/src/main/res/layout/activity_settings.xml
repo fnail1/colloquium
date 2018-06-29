@@ -129,6 +129,7 @@
         tools:ignore="RtlHardcoded"/>
 
     <LinearLayout
+        android:id="@+id/questions_frame_size_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_rect_view_light"
@@ -155,6 +156,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/questions_dead_time_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_rect_view_light"
@@ -171,6 +173,33 @@
 
         <EditText
             android:id="@+id/questions_dead_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:inputType="numberDecimal"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/invite_threshold_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_rect_view_light"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:text="Показать вопрос-инвайт после вопроса"/>
+
+        <EditText
+            android:id="@+id/invite_threshold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"

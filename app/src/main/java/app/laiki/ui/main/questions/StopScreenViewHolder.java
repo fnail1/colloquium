@@ -51,9 +51,6 @@ public class StopScreenViewHolder {
             timer.postDelayed(this::bind, 1000);
         } else {
             callback.onNextClick();
-//            swapPages();
-//            showPage(foreground.root);
-//            updateCounter(true);
         }
     }
 

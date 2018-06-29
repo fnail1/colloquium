@@ -1,6 +1,5 @@
 package app.laiki.ui.main.questions;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,11 +23,9 @@ import app.laiki.model.types.Choice;
 import app.laiki.service.AppService;
 import app.laiki.service.ServiceState;
 import app.laiki.toolkit.concurrent.ThreadPool;
-import app.laiki.ui.ContactsActivity;
 import app.laiki.ui.base.BaseFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static app.laiki.App.appService;
@@ -56,7 +53,7 @@ public class QuestionsFragment extends BaseFragment
     @BindView(R.id.page1) View page1;
     @BindView(R.id.page2) View page2;
     Unbinder unbinder;
-    @BindView(R.id.progress) ProgressBar progress;
+    ProgressBar progress;
     @BindView(R.id.error) TextView error;
     @BindView(R.id.placeholders) FrameLayout placeholders;
     //    @BindView(R.id.timer) TextView timer;
@@ -69,12 +66,14 @@ public class QuestionsFragment extends BaseFragment
     private boolean requestSent;
     private boolean questionBindComplete;
     private View activePage;
+    private boolean inviteComplete;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fr_questions, container, false);
         unbinder = ButterKnife.bind(this, view);
+        progress = placeholders.findViewById(R.id.progress);
         return view;
     }
 
@@ -128,6 +127,7 @@ public class QuestionsFragment extends BaseFragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        progress = null;
     }
 
     @Override
@@ -152,10 +152,8 @@ public class QuestionsFragment extends BaseFragment
 
         ServiceState serviceState = prefs().serviceState();
 
-        if (serviceState.rateUsRequired) {
-            showRateUs(activity);
+        if (showRateUs(activity, serviceState))
             return;
-        }
 
         int questionNumber = serviceState.questionNumber % prefs().config().questionsFrameSize;
 
@@ -184,7 +182,10 @@ public class QuestionsFragment extends BaseFragment
         if (question == INVITE)
             return true;
 
-        if (questionNumber != 8)
+        if (inviteComplete)
+            return false;
+
+        if (questionNumber != prefs().config().inviteTrigger)
             return false;
 
         int sent = data().contacts.countSentInvites();
@@ -276,9 +277,11 @@ public class QuestionsFragment extends BaseFragment
         }
     }
 
-    private void showRateUs(FragmentActivity activity) {
+    private boolean showRateUs(FragmentActivity activity, ServiceState serviceState) {
+        if (!serviceState.rateUsRequired)
+            return false;
         if (question == RATE_US)
-            return;
+            return true;
 
         question = RATE_US;
 
@@ -286,6 +289,7 @@ public class QuestionsFragment extends BaseFragment
         rateUsViewHolder.bind();
         statistics().rateUs().start();
         showPage(rateUsViewHolder.root);
+        return true;
     }
 
 
@@ -332,7 +336,8 @@ public class QuestionsFragment extends BaseFragment
 
     @Override
     public void onQuestionAnswered(Choice a) {
-        if (question.variant1 == 0)
+        Question q = this.question;
+        if (q == null || q.variant1 == 0)
             return;
 
         appState().numberOfAnswers++;
@@ -350,11 +355,11 @@ public class QuestionsFragment extends BaseFragment
             notifications().onStopScreenIn();
         }
 
-        if (!question.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
-            question.answer = a;
+        if (!q.flags.getAndSet(Question.FLAG_ANSWERED, true)) {
+            q.answer = a;
             ThreadPool.DB.execute(() -> {
-                data().questions.save(question);
-                appService().syncAnswers(question, a);
+                data().questions.save(q);
+                appService().syncAnswers(q, a);
             });
         }
     }
@@ -362,6 +367,8 @@ public class QuestionsFragment extends BaseFragment
     @Override
     public void onNextClick() {
         questionBindComplete = false;
+        inviteComplete = question == INVITE;
+        question = null;
         updateViews();
     }
 

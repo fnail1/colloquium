@@ -2,7 +2,6 @@ package app.laiki.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +20,7 @@ import app.laiki.ui.main.contacts.ContactsAdapter;
 
 import static app.laiki.App.appService;
 
-public class ContactsActivity extends BaseActivity implements AppService.InviteSentEventHandler {
+public class ContactsActivity extends BaseActivity implements AppService.ContactUpdatedEventHandler {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
@@ -41,13 +40,13 @@ public class ContactsActivity extends BaseActivity implements AppService.InviteS
     @Override
     protected void onResume() {
         super.onResume();
-        appService().inviteSentEvent.add(this);
+        appService().contactUpdated.add(this);
         list.getAdapter().notifyDataSetChanged();
     }
 
     @Override
     protected void onPause() {
-        appService().inviteSentEvent.remove(this);
+        appService().contactUpdated.remove(this);
         super.onPause();
     }
 
@@ -89,7 +88,7 @@ public class ContactsActivity extends BaseActivity implements AppService.InviteS
     }
 
     @Override
-    public void onInviteSent(Contact args) {
+    public void onContactUpdated(Contact args) {
         runOnUiThread(() -> list.getAdapter().notifyDataSetChanged());
     }
 }

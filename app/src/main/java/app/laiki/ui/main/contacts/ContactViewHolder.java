@@ -58,14 +58,15 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
         name.setText(contact.displayName);
 
 
-        if (appService().sentInvites.indexOfKey(contact._id) >= 0) {
+        boolean inviteSent = contact.flags.get(Contact.FLAG_INVITE_SENT);
+        if (contact.flags.get(Contact.FLAG_INVITE_REQUESTED) && !inviteSent) {
             progress.setVisibility(View.VISIBLE);
             invite.setVisibility(View.GONE);
         } else {
             progress.setVisibility(View.GONE);
             invite.setVisibility(View.VISIBLE);
-            invite.setEnabled(!contact.inviteSent);
-            invite.setText(contact.inviteSent ? "Отправили" : "Отправить");
+            invite.setEnabled(!inviteSent);
+            invite.setText(inviteSent ? "Отправили" : "Отправить");
         }
     }
 

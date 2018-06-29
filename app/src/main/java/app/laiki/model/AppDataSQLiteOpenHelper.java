@@ -27,7 +27,7 @@ import app.laiki.toolkit.data.DbUtils;
 import static app.laiki.diagnostics.Logger.logDb;
 
 public class AppDataSQLiteOpenHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     AppDataSQLiteOpenHelper(Context context, String dbName) {
         super(context, dbName, getCursorFactory(), VERSION);
@@ -82,7 +82,10 @@ public class AppDataSQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch (oldVersion) {
-            case 10:
+            case 1:
+                db.execSQL("alter table Contacts add column flags integer");
+                db.execSQL("update Contacts set flags=(inviteSent * 3)");
+                break;
 
         }
     }

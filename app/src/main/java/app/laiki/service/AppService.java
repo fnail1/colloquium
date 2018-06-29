@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import app.laiki.BuildConfig;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import app.laiki.api.model.GsonAnswers;
 import app.laiki.api.model.GsonQuestionResponse;
@@ -80,14 +80,12 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         }
     };
 
-    public final ObservableEvent<InviteSentEventHandler, AppService, Contact> inviteSentEvent = new ObservableEvent<InviteSentEventHandler, AppService, Contact>(this) {
+    public final ObservableEvent<ContactUpdatedEventHandler, AppService, Contact> contactUpdated = new ObservableEvent<ContactUpdatedEventHandler, AppService, Contact>(this) {
         @Override
-        protected void notifyHandler(InviteSentEventHandler handler, AppService sender, Contact args) {
-            handler.onInviteSent(args);
+        protected void notifyHandler(ContactUpdatedEventHandler handler, AppService sender, Contact args) {
+            handler.onContactUpdated(args);
         }
     };
-
-    public final LongSparseArray<Contact> sentInvites = new LongSparseArray<>();
 
     public AppService(Context context, AppStateObserver appStateObserver) {
         this.context = context;
@@ -129,6 +127,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         if (dateTimeService().getServerTime() - lastContactsSync <= MAX_SYNCHRONIZATION_LAG)
             return;
 
+        AppData appData = data();
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(() -> {
             try {
                 AddressBookSyncHelper.doSync(app());
@@ -141,14 +140,23 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             contactsSynchronizationEvent.fire(null);
 
             try {
-                syncAnsweredQuestionsSync(data());
-                syncReadAnswersSync(data());
+                syncAnsweredQuestionsSync(appData);
+                syncReadAnswersSync(appData);
+                syncInvitesSync(appData);
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServerException e) {
                 safeThrow(e);
             }
         });
+    }
+
+    private void syncInvitesSync(AppData appData) {
+        List<Contact> contacts = appData.contacts.selectPendingInvites().toList();
+        for (Contact contact : contacts) {
+            sendInviteSync(appData, contact);
+        }
     }
 
     public boolean pingApi() {
@@ -168,6 +176,13 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
                     @Override
                     protected void processResponse(AppData appData, GsonQuestionResponse body) {
+                        if (BuildConfig.DEBUG) {
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         question = new Question();
                         MergeHelper.merge(question, body.question, body.question_cycle);
                         data().questions.save(question);
@@ -248,6 +263,14 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         LongSparseArray<Contact> contacts = appData.contacts.selectQuestionsVariants().toLongSparseArray(c -> c._id);
 
         for (Question question : questions) {
+            if (BuildConfig.DEBUG) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
             Contact contact1 = contacts.get(question.variant1);
             Contact contact2 = contacts.get(question.variant2);
             Contact contact3 = contacts.get(question.variant3);
@@ -384,36 +407,46 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     public void sendInvite(Contact contact) {
-        sentInvites.put(contact._id, contact);
-
+        contact.flags.set(Contact.FLAG_INVITE_REQUESTED);
         AppData appData = data();
-        api().invite(contact.phone).enqueue(new Callback<GsonResponse>() {
-            @Override
-            public void onResponse(Call<GsonResponse> call, Response<GsonResponse> response) {
+
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(() -> {
+            appData.contacts.save(contact);
+            contactUpdated.fire(contact);
+            sendInviteSync(appData, contact);
+        });
+
+    }
+
+    private void sendInviteSync(AppData appData, Contact contact) {
+        try {
+            if (BuildConfig.DEBUG) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+            Response<GsonResponse> response = api().invite(contact.phone).execute();
+            if (response.code() != HttpURLConnection.HTTP_OK)
+                safeThrow(new ServerException(response));
+
+            if (response.code() != HttpURLConnection.HTTP_INTERNAL_ERROR) {
                 GsonResponse body = response.body();
                 if (body != null && body.success) {
-                    contact.inviteSent = true;
+                    contact.flags.set(Contact.FLAG_INVITE_SENT, true);
                     ServiceState serviceState = prefs().serviceState();
                     serviceState.lastAnswerTime = 0;
                     prefs().save(serviceState);
-                    ThreadPool.DB.execute(() -> {
-
-                        appData.contacts.save(contact);
-                        onFinish();
-                    });
+                    appData.contacts.save(contact);
                 }
             }
-
-            @Override
-            public void onFailure(Call<GsonResponse> call, Throwable t) {
-                onFinish();
-            }
-
-            protected void onFinish() {
-                sentInvites.remove(contact._id);
-                inviteSentEvent.fire(contact);
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            contactUpdated.fire(contact);
+        }
     }
 
     public interface NewQuestionEventHandler {
@@ -432,7 +465,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         void onContactsSynchronizationComplete();
     }
 
-    public interface InviteSentEventHandler {
-        void onInviteSent(Contact args);
+    public interface ContactUpdatedEventHandler {
+        void onContactUpdated(Contact args);
     }
 }

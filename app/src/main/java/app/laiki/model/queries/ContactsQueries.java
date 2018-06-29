@@ -14,6 +14,8 @@ import app.laiki.toolkit.data.DbUtils;
 import app.laiki.toolkit.data.SQLiteCommands;
 import app.laiki.toolkit.data.SimpleCursorWrapper;
 
+import static app.laiki.model.entities.Contact.FLAG_INVITE_REQUESTED;
+import static app.laiki.model.entities.Contact.FLAG_INVITE_SENT;
 import static app.laiki.model.entities.Question.FLAG_ANSWERED;
 import static app.laiki.model.entities.Question.FLAG_SENT;
 
@@ -81,7 +83,7 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
     }
 
     public int countSentInvites() {
-        return DbUtils.count(db, "select count(*) from Contacts where inviteSent != 0 ", (String[]) null);
+        return DbUtils.count(db, "select count(*) from Contacts where flags & " + FLAG_INVITE_REQUESTED + " != 0 ", (String[]) null);
     }
 
     public CursorWrapper<Contact> selectInviteVariants(int skip, int limit) {
@@ -92,9 +94,18 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
                 "    (q.answer=1 and q.variant2=c._id) or\n" +
                 "    (q.answer=2 and q.variant3=c._id) or\n" +
                 "    (q.answer=3 and q.variant4=c._id) \n" +
+                "where c.flags & " + (FLAG_INVITE_REQUESTED | FLAG_INVITE_SENT) + " = 0\n" +
                 "group by c._id\n" +
                 "order by q desc\n" +
                 "limit " + limit + " offset " + skip;
+        return new ContactsCursor(db.rawQuery(sql, null));
+    }
+
+    public CursorWrapper<Contact> selectPendingInvites() {
+        String sql = "select c.* \n" +
+                "from Contacts c \n" +
+                "where c.flags & " + (FLAG_INVITE_REQUESTED | FLAG_INVITE_SENT) + " = " + FLAG_INVITE_REQUESTED + "\n";
+
         return new ContactsCursor(db.rawQuery(sql, null));
     }
 
