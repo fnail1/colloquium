@@ -258,12 +258,14 @@ public interface ApiService {
 
             @Override
             public Response intercept(@NonNull Chain chain) throws IOException {
-                //
-//                try {
-//                    Thread.sleep(10 * 1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+
+                if (prefs().config().emulateSlowConnection) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 Request original = chain.request();
                 Request.Builder requestBuilder = original.newBuilder();

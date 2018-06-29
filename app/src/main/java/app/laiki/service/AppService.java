@@ -183,13 +183,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
                     @Override
                     protected void processResponse(AppData appData, GsonQuestionResponse body) {
-                        if (BuildConfig.DEBUG) {
-                            try {
-                                Thread.sleep(2000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
                         question = new Question();
                         MergeHelper.merge(question, body.question, body.question_cycle);
                         data().questions.save(question);
@@ -271,14 +264,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         LongSparseArray<Contact> contacts = appData.contacts.selectQuestionsVariants().toLongSparseArray(c -> c._id);
 
         for (Question question : questions) {
-            if (BuildConfig.DEBUG) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
             Contact contact1 = contacts.get(question.variant1);
             Contact contact2 = contacts.get(question.variant2);
             Contact contact3 = contacts.get(question.variant3);
@@ -443,14 +428,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     private void sendInviteSync(AppData appData, Contact contact) {
         try {
-            if (BuildConfig.DEBUG) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
             Response<GsonResponse> response = api().invite(contact.phone).execute();
             if (response.code() != HttpURLConnection.HTTP_OK)
                 safeThrow(new ServerException(response));

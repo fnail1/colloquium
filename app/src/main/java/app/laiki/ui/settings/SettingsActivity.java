@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -50,6 +51,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
     @BindView(R.id.questions_frame_size_container) LinearLayout questionsFrameSizeContainer;
     @BindView(R.id.questions_dead_time_container) LinearLayout questionsDeadTimeContainer;
     @BindView(R.id.invite_threshold_container) LinearLayout inviteThresholdContainer;
+    @BindView(R.id.emulate_slow_connection) CheckedTextView emulateSlowConnection;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
             questionsFrameSizeContainer.setVisibility(View.GONE);
             questionsDeadTimeContainer.setVisibility(View.GONE);
             inviteThresholdContainer.setVisibility(View.GONE);
+            emulateSlowConnection.setVisibility(View.GONE);
         } else {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_spinner_item, query(ApiSet.values()).select(Enum::name).toList());
 //            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -87,6 +90,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
             setupQuestionsFrameSize();
             setupQuestionsDeadTime();
             setupInviteThreshold();
+            setupEmulateSlowConnection();
         }
 
         try {
@@ -100,6 +104,17 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
         }
 
 //        safeThrow(new Exception("test"));
+    }
+
+    private void setupEmulateSlowConnection() {
+        emulateSlowConnection.setChecked(prefs().config().emulateSlowConnection);
+        emulateSlowConnection.setOnClickListener(v -> {
+            boolean checked = !emulateSlowConnection.isChecked();
+            emulateSlowConnection.setChecked(checked);
+            Configuration config = prefs().config();
+            config.emulateSlowConnection = checked;
+            prefs().save(config);
+        });
     }
 
     private void setupQuestionsFrameSize() {
