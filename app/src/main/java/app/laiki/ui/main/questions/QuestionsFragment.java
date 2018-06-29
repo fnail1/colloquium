@@ -32,6 +32,7 @@ import static app.laiki.App.appService;
 import static app.laiki.App.appState;
 import static app.laiki.App.data;
 import static app.laiki.App.dateTimeService;
+import static app.laiki.App.networkObserver;
 import static app.laiki.App.notifications;
 import static app.laiki.App.prefs;
 import static app.laiki.App.screenMetrics;
@@ -52,14 +53,13 @@ public class QuestionsFragment extends BaseFragment
 
     @BindView(R.id.page1) View page1;
     @BindView(R.id.page2) View page2;
-    Unbinder unbinder;
     ProgressBar progress;
     @BindView(R.id.error) TextView error;
     @BindView(R.id.placeholders) FrameLayout placeholders;
-    //    @BindView(R.id.timer) TextView timer;
-//    @BindView(R.id.contacts) TextView contacts;
     @BindView(R.id.counter) TextView counter;
     @BindView(R.id.root) RelativeLayout root;
+
+    Unbinder unbinder;
     private QuestionViewHolder background;
     private QuestionViewHolder foreground;
     private Question question;
@@ -267,10 +267,16 @@ public class QuestionsFragment extends BaseFragment
     }
 
     private void showEmpty(Question q) {
-        page1.setVisibility(View.GONE);
-        page2.setVisibility(View.GONE);
+        cleanupPage(page1);
+        cleanupPage(page2);
+        cleanupPage(activePage);
         updateCounter(false);
-        setupPlaceholders(true, null);
+        String errorMessage = null;
+        if (!networkObserver().isNetworkAvailable())
+            errorMessage = "Проверьте подключение к интернету";
+        else
+            errorMessage = "Ждем следующий вопрос";
+        setupPlaceholders(true, errorMessage);
         if (q == null && !requestSent) {
             requestSent = true;
             appService().requestNextQuestion();
@@ -359,7 +365,7 @@ public class QuestionsFragment extends BaseFragment
             q.answer = a;
             ThreadPool.DB.execute(() -> {
                 data().questions.save(q);
-                appService().syncAnswers(q, a);
+                appService().syncAnswers();
             });
         }
     }
@@ -395,16 +401,22 @@ public class QuestionsFragment extends BaseFragment
         prev.animate()
                 .setDuration(500)
                 .translationY(-screenMetrics().screen.height)
-                .withEndAction(() -> {
-                    prev.setTranslationY(0);
-                    prev.setVisibility(View.GONE);
-                });
+                .withEndAction(() -> cleanupPage(prev));
 
         next.setVisibility(View.VISIBLE);
         next.setTranslationY(screenMetrics().screen.height);
         next.animate()
                 .setDuration(500)
                 .translationY(0);
+    }
+
+    private void cleanupPage(View p) {
+        if (p == page1 || p == page2 || p == placeholders) {
+            p.setTranslationY(0);
+            p.setVisibility(View.GONE);
+        } else {
+            root.removeView(p);
+        }
     }
 
     @Override

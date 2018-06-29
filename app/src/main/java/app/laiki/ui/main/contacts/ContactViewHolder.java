@@ -74,7 +74,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
     public void onViewClicked() {
         if (!AntiDoubleClickLock.onClick(this, R.id.invite))
             return;
-        statistics().contacts().invite();
+        statistics().contacts().inviteSent();
         appService().sendInvite(contact);
 
         bind(contact);

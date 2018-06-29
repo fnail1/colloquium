@@ -53,4 +53,15 @@ public class Question extends BaseRow {
 
         return Objects.hash(super.hashCode(), uniqueId);
     }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "_id=" + _id +
+                ", uniqueId='" + uniqueId + '\'' +
+                ", question='" + question + '\'' +
+                ", answer='" + answer + '\'' +
+                ", flags='" + flags.get() + '\'' +
+                '}';
+    }
 }

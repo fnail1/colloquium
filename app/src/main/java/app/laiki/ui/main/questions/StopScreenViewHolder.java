@@ -37,7 +37,7 @@ public class StopScreenViewHolder {
     public void onViewClicked() {
         Activity activity = Utils.getActivity(root);
         if (activity != null) {
-            statistics().questions().contacts();
+            statistics().contacts().start("StopScreen");
             activity.startActivity(new Intent(activity, ContactsActivity.class));
         }
     }

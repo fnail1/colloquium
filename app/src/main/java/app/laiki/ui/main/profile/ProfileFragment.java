@@ -93,7 +93,7 @@ public class ProfileFragment extends BaseFragment {
 
         switch (view.getId()) {
             case R.id.contacts:
-                statistics().profile().contacts();
+                statistics().contacts().start("Profile");
                 startActivity(new Intent(activity, ContactsActivity.class));
                 break;
 

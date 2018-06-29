@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import app.laiki.R;
-import app.laiki.model.entities.Answer;
 import app.laiki.model.entities.Contact;
-import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
 import app.laiki.service.AppService;
 import butterknife.OnClick;
@@ -17,6 +15,7 @@ import butterknife.OnClick;
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
 import static app.laiki.App.prefs;
+import static app.laiki.App.statistics;
 import static app.laiki.toolkit.collections.Query.query;
 
 public class InviteViewHolder extends AbsQuestionViewHolder {
@@ -68,6 +67,7 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
     }
 
     private void onContactsSelected(Choice choice) {
+        statistics().contacts().inviteSent();
         Contact contact = contacts[choice.ordinal()];
         ContactViewHolder v = variants[choice.ordinal()];
         v.root.setSelected(true);

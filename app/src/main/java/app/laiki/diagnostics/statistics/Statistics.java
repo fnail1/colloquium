@@ -89,10 +89,6 @@ public class Statistics {
             FlurryAgent.logEvent("Question.StopScreen");
         }
 
-        public void contacts() {
-            FlurryAgent.logEvent("Question.Contacts");
-        }
-
         public void invite() {
             FlurryAgent.logEvent("Question.Invite");
         }
@@ -106,23 +102,22 @@ public class Statistics {
         public void read() {
             FlurryAgent.logEvent("Answer.Read");
         }
-
-        public void contacts() {
-            FlurryAgent.logEvent("Answers.Contacts");
-        }
     }
 
     public class ContactsStatistics {
-        public void invite() {
+        public void start(String parent) {
+            ArrayMap<String, String> map = new ArrayMap<>();
+            map.put("Answer", parent);
+            FlurryAgent.logEvent("Contacts.Start", map);
+
+        }
+
+        public void inviteSent() {
             FlurryAgent.logEvent("Contacts.InviteSent");
         }
     }
 
     public class ProfileStatistics {
-        public void contacts() {
-            FlurryAgent.logEvent("Profile.Contacts");
-        }
-
         public void settings() {
             FlurryAgent.logEvent("Profile.Settings");
         }

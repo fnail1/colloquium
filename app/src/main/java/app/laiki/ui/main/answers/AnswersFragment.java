@@ -91,7 +91,7 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
 
     @OnClick(R.id.contacts)
     public void onViewClicked() {
-        statistics().answers().contacts();
+        statistics().contacts().start("Answers");
         startActivity(new Intent(getActivity(), ContactsActivity.class));
     }
 

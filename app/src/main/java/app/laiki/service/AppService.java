@@ -41,6 +41,7 @@ import static app.laiki.App.data;
 import static app.laiki.App.dateTimeService;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
+import static app.laiki.diagnostics.Logger.logV;
 import static app.laiki.diagnostics.Logger.trace;
 
 @SuppressWarnings("WeakerAccess")
@@ -138,16 +139,22 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             lastContactsSync = dateTimeService().getServerTime();
             prefs().save(serviceState);
             contactsSynchronizationEvent.fire(null);
+        });
+        syncAnswers();
+        syncReadAnswers();
+        syncInvites();
+    }
 
-            try {
-                syncAnsweredQuestionsSync(appData);
-                syncReadAnswersSync(appData);
+    public void syncInvites() {
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(new AbsRequestTask("syncInvites") {
+            @Override
+            protected void performRequest(AppData appData) throws IOException, ServerException {
                 syncInvitesSync(appData);
+            }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ServerException e) {
-                safeThrow(e);
+            @Override
+            protected void onFinish() {
+
             }
         });
     }
@@ -186,6 +193,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                         question = new Question();
                         MergeHelper.merge(question, body.question, body.question_cycle);
                         data().questions.save(question);
+                        logV("API QWE123", "ASK %s", question);
                     }
 
                     @Override
@@ -242,7 +250,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         });
     }
 
-    public void syncAnswers(Question question, @NonNull Choice answer) {
+    public void syncAnswers() {
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.MEDIUM).execute(new AbsRequestTask("syncAnswers") {
 
             @Override
@@ -252,7 +260,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             @Override
             protected void onFinish() {
-                answerSentEvent.fire(question);
+                answerSentEvent.fire(null);
             }
 
         });
@@ -316,7 +324,22 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             question.flags.set(Question.FLAG_SENT, true);
             appData.questions.save(question);
+            logV("API QWE123", "ANSWER %s", question);
         }
+    }
+
+    public void syncReadAnswers() {
+        ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(new AbsRequestTask("syncReadAnswers") {
+            @Override
+            protected void performRequest(AppData appData) throws IOException, ServerException {
+                syncReadAnswersSync(appData);
+            }
+
+            @Override
+            protected void onFinish() {
+
+            }
+        });
     }
 
     private void syncReadAnswersSync(AppData appData) throws IOException {
