@@ -15,14 +15,14 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import okhttp3.logging.HttpLoggingInterceptor;
 import app.laiki.BuildConfig;
-import app.laiki.diagnostics.statistics.StatParam;
 import app.laiki.toolkit.data.SQLiteCommands;
 import app.laiki.toolkit.io.FileUtils;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import static app.laiki.App.app;
 
@@ -285,30 +285,7 @@ public class Logger {
         logV(LOG_FCM, TAG_FCM, mesage, args);
     }
 
-    public static void logStat(String message, String event, StatParam[] params) {
-        if (!LOG_STAT)
-            return;
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(message);
-        sb.append(": \'");
-        sb.append(event);
-        sb.append("\'");
-        if (params != null) {
-            sb.append(" {");
-            if (params.length > 0) {
-                for (StatParam param : params) {
-                    sb.append(param.toString()).append(", ");
-                }
-                sb.delete(sb.length() - 2, sb.length());
-            }
-
-            sb.append('}');
-        }
-        logV(true, TAG_STAT, sb.toString());
-    }
-
-    public static void logStat(String message, String event, Bundle params) {
+    public static void logStat(String message, String event, Map<String,String> params) {
         if (!LOG_STAT)
             return;
 

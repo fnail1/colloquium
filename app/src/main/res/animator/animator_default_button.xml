@@ -9,6 +9,15 @@
             android:valueTo="8dp"
             android:valueType="floatType"/>
     </item>
+
+    <item android:state_enabled="false" android:state_selected="false">
+        <objectAnimator
+            android:duration="@android:integer/config_shortAnimTime"
+            android:propertyName="elevation"
+            android:valueTo="0dp"
+            android:valueType="floatType"/>
+    </item>
+
     <item>
         <objectAnimator
             android:duration="@android:integer/config_shortAnimTime"

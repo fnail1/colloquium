@@ -8,6 +8,8 @@ import com.flurry.android.FlurryAgent;
 import app.laiki.BuildConfig;
 import app.laiki.model.types.Choice;
 
+import static app.laiki.diagnostics.Logger.logStat;
+
 public class Statistics {
 
     private LoginWorkflow loginWorkflow;
@@ -62,88 +64,106 @@ public class Statistics {
 
     public class LoginWorkflow {
         public void start() {
-            FlurryAgent.logEvent("Login.Start");
+            logEvent("Login.Start");
         }
 
         public void login() {
-            FlurryAgent.logEvent("Login.PhoneEntered");
+            logEvent("Login.PhoneEntered");
         }
 
         public void auth() {
-            FlurryAgent.logEvent("Login.CodeEntered");
+            logEvent("Login.CodeEntered");
         }
 
         public void permission() {
-            FlurryAgent.logEvent("Login.PermissionRequested");
+            logEvent("Login.PermissionRequested");
         }
     }
 
+    private void logEvent(String event) {
+        if (BuildConfig.DEBUG) {
+            logStat("logEvent", event, null);
+            return;
+        }
+        FlurryAgent.logEvent(event);
+    }
+
+    private void logEvent(String event, ArrayMap<String, String> map) {
+        if (BuildConfig.DEBUG) {
+            logStat("logEvent", event, map);
+            return;
+        }
+        FlurryAgent.logEvent(event, map);
+    }
+
     public class QuestionsStatistics {
+
         public void answer(Choice a) {
             ArrayMap<String, String> map = new ArrayMap<>();
             map.put("Answer", a.name());
-            FlurryAgent.logEvent("Question.Answered", map);
+            logEvent("Question.Answered", map);
         }
 
         public void stopScreen() {
-            FlurryAgent.logEvent("Question.StopScreen");
+            logEvent("Question.StopScreen");
         }
 
         public void invite() {
-            FlurryAgent.logEvent("Question.Invite");
+            logEvent("Question.Invite");
         }
+
     }
 
     public class AnswersStatistics {
         public void recieved() {
-            FlurryAgent.logEvent("Answer.Recieved");
+            logEvent("Answer.Recieved");
         }
 
         public void read() {
-            FlurryAgent.logEvent("Answer.Read");
+            logEvent("Answer.Read");
         }
     }
 
     public class ContactsStatistics {
         public void start(String parent) {
             ArrayMap<String, String> map = new ArrayMap<>();
-            map.put("Answer", parent);
-            FlurryAgent.logEvent("Contacts.Start", map);
+            map.put("Parent", parent);
+            logEvent("Contacts.Start", map);
 
         }
 
         public void inviteSent() {
-            FlurryAgent.logEvent("Contacts.InviteSent");
+            logEvent("Contacts.InviteSent");
         }
     }
 
     public class ProfileStatistics {
         public void settings() {
-            FlurryAgent.logEvent("Profile.Settings");
+            logEvent("Profile.Settings");
         }
 
         public void support() {
-            FlurryAgent.logEvent("Profile.Support");
+            logEvent("Profile.Support");
         }
 
         public void vk() {
-            FlurryAgent.logEvent("Profile.Vk");
+            logEvent("Profile.Vk");
         }
     }
 
     public class RateUsStatistics {
         public void start() {
-            FlurryAgent.logEvent("Rating.Request");
+            logEvent("Rating.Request");
         }
 
         public void answer(Choice a) {
             ArrayMap<String, String> map = new ArrayMap<>();
             map.put("Answer", a.name());
-            FlurryAgent.logEvent("Rating.Set", map);
+            logEvent("Rating.Set", map);
         }
 
         public void googlePlayStarted() {
-            FlurryAgent.logEvent("Rating.Store");
+            logEvent("Rating.Store");
         }
     }
 }

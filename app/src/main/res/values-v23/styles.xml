@@ -28,6 +28,7 @@
 
     <style name="AnswersActivityTheme" parent="AppTheme">
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">#33000000</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
     </style>
