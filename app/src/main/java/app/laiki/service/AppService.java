@@ -186,7 +186,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                         question = new Question();
                         MergeHelper.merge(question, body.question, body.question_cycle);
                         data().questions.save(question);
-                        logV("API QWE123", "ASK %s", question);
                     }
 
                     @Override
@@ -309,7 +308,6 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
             question.flags.set(Question.FLAG_SENT, true);
             appData.questions.save(question);
-            logV("API QWE123", "ANSWER %s", question);
         }
     }
 

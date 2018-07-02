@@ -36,7 +36,7 @@ public class AbsQuestionViewHolder {
     };
     private static final WeakReference[] BACKGROUNDS = new WeakReference[BACKGROUND_RES_IDS.length];
 
-    static Drawable randomBackground(Context context) {
+    public static Drawable randomBackground(Context context) {
         return randomBackground(context, prefs().uniqueId());
     }
 

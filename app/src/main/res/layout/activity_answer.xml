@@ -87,8 +87,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="4dp"
-            android:clickable="true"
-            android:focusable="true"
+            android:stateListAnimator="@null"
             >
 
             <TextView
@@ -115,8 +114,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="4dp"
-            android:clickable="true"
-            android:focusable="true"
+            android:stateListAnimator="@null"
             >
 
             <TextView
@@ -144,8 +142,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="4dp"
-            android:clickable="true"
-            android:focusable="true"
+            android:stateListAnimator="@null"
             >
 
             <TextView
@@ -173,8 +170,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="4dp"
-            android:clickable="true"
-            android:focusable="true"
+            android:stateListAnimator="@null"
             >
 
             <TextView

@@ -3,6 +3,8 @@ package app.laiki.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,7 +17,7 @@ import app.laiki.model.entities.Contact;
 import app.laiki.model.types.Choice;
 import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.ui.base.BaseActivity;
-import app.laiki.utils.GraphicUtils;
+import app.laiki.ui.main.questions.QuestionViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,7 +44,6 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.variant4text) TextView variant4text;
     @BindView(R.id.copyright) TextView copyright;
     private Answer answer;
-    private volatile HashMap<String, Contact> contacts;
     private boolean readSent;
 
     @Override
@@ -55,35 +56,29 @@ public class AnswerActivity extends BaseActivity {
 
         ThreadPool.DB.execute(() -> {
             answer = data().answers.selectById(id);
-            contacts = data().contacts.select(answer).toMap(c -> c.serverId);
-            runOnUiThread(this::bindData);
+            HashMap<String, Contact> contacts = data().contacts.select(answer).toMap(c -> c.serverId);
+            runOnUiThread(() -> bindData(contacts));
         });
     }
 
-    private void bindData() {
-        if (contacts == null) {
-            return;
-        }
-
+    private void bindData(HashMap<String, Contact> contacts) {
         if (!readSent) {
             readSent = true;
             statistics().answers().read();
             appService().answerRead(answer);
         }
 
+        root.setBackground(QuestionViewHolder.randomBackground(this));
         switch (answer.gender) {
             case CAMEL:
-                root.setBackground(GraphicUtils.getDrawable(this, R.drawable.bg_q11));
                 icon.setImageResource(R.drawable.ic_camel);
                 copyright.setText("#ЧСН ❤️ chsn.app");
                 break;
             case MALE:
-                root.setBackground(GraphicUtils.getDrawable(this, R.drawable.bg_q08));
                 icon.setImageResource(R.drawable.ic_male);
                 copyright.setText("#ЧСН ❤️ chsn.app");
                 break;
             case FEMALE:
-                root.setBackground(GraphicUtils.getDrawable(this, R.drawable.bg_q02));
                 icon.setImageResource(R.drawable.ic_female);
                 copyright.setText("#ЧСН \uD83D\uDC99️ chsn.app");
                 break;
@@ -93,27 +88,47 @@ public class AnswerActivity extends BaseActivity {
 
         message.setText(answer.questionText);
 
-        bindVariant(answer.variantA, Choice.A, variant1, variant1text);
-        bindVariant(answer.variantB, Choice.B, variant2, variant2text);
-        bindVariant(answer.variantC, Choice.C, variant3, variant3text);
-        bindVariant(answer.variantD, Choice.D, variant4, variant4text);
+        bindVariantText(variant1text, Choice.A, contacts.get(answer.variantA));
+        bindVariantText(variant2text, Choice.B, contacts.get(answer.variantB));
+        bindVariantText(variant3text, Choice.C, contacts.get(answer.variantC));
+        bindVariantText(variant4text, Choice.D, contacts.get(answer.variantD));
+
+        root.postDelayed(() -> {
+
+            Animation a = new Animation() {
+                @Override
+                protected void applyTransformation(float alpha, Transformation t) {
+                    super.applyTransformation(alpha, t);
+
+                    if (answer.answer != Choice.A) applyAnimation(variant1, alpha);
+                    if (answer.answer != Choice.B) applyAnimation(variant2, alpha);
+                    if (answer.answer != Choice.C) applyAnimation(variant3, alpha);
+                    if (answer.answer != Choice.D) applyAnimation(variant4, alpha);
+                }
+            };
+            a.setDuration(450);
+            root.startAnimation(a);
+
+        }, 500);
     }
 
-    private void bindVariant(String contactServerId, Choice expected, View viewRoot, TextView viewText) {
-        Contact contact = contacts.get(contactServerId);
-        viewRoot.setEnabled(false);
+    private void applyAnimation(View variantView, float alpha) {
+        variantView.setAlpha(.5f + (1 - alpha) / 2);
+        float elevation = 12 * (1 - alpha);
+        if (elevation < 1f)
+            elevation = 1f;
+        variantView.setElevation(elevation);
+    }
+
+    private void bindVariantText(TextView viewText, Choice expected, Contact contact) {
         boolean selected = answer.answer == expected;
-        viewRoot.setSelected(selected);
-        if (!selected) {
-            viewRoot.setAlpha(.5f);
+        if (selected && answer.answerName != null)
+            viewText.setText(answer.answerName);
+        else if (contact == null)
+            viewText.setText(R.string.hidden);
+        else
             viewText.setText(contact.displayName);
-        } else {
-            if (answer.answerName != null) {
-                viewText.setText(answer.answerName);
-            } else {
-                viewText.setText(contact.displayName);
-            }
-        }
+
     }
 
 
