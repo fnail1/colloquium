@@ -161,7 +161,8 @@ public class QuestionsFragment extends BaseFragment
             return;
 
         if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
-            showEmpty(q);
+            if (question == null)
+                showEmpty(q);
             return;
         }
 
@@ -179,14 +180,14 @@ public class QuestionsFragment extends BaseFragment
     }
 
     private boolean showInvite(FragmentActivity activity, int questionNumber) {
-        if (question == INVITE)
-            return true;
-
         if (inviteComplete)
             return false;
 
         if (questionNumber != prefs().config().inviteTrigger)
             return false;
+
+        if (question == INVITE)
+            return true;
 
         int sent = data().contacts.countSentInvites();
         if (sent >= 5)
@@ -374,7 +375,6 @@ public class QuestionsFragment extends BaseFragment
     public void onNextClick() {
         questionBindComplete = false;
         inviteComplete = question == INVITE;
-        question = null;
         updateViews();
     }
 
@@ -398,16 +398,36 @@ public class QuestionsFragment extends BaseFragment
             return;
         }
 
-        prev.animate()
-                .setDuration(500)
-                .translationY(-screenMetrics().screen.height)
-                .withEndAction(() -> cleanupPage(prev));
 
         next.setVisibility(View.VISIBLE);
-        next.setTranslationY(screenMetrics().screen.height);
-        next.animate()
-                .setDuration(500)
-                .translationY(0);
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View view = root.getChildAt(i);
+            if (view == next) {
+                next.setAlpha(1);
+                prev.animate()
+                        .setDuration(500)
+                        .alpha(0)
+                        .withEndAction(() -> cleanupPage(prev));
+                break;
+            } else if (view == prev) {
+                next.setAlpha(0);
+                next.animate()
+                        .setDuration(500)
+                        .alpha(1)
+                        .withEndAction(() -> cleanupPage(prev));
+            }
+        }
+//        prev.animate()
+//                .setDuration(500)
+//                .translationY(-screenMetrics().screen.height)
+//                .withEndAction(() -> cleanupPage(prev));
+//
+//        next.setVisibility(View.VISIBLE);
+//        next.setTranslationY(screenMetrics().screen.height);
+//        next.animate()
+//                .setDuration(500)
+//                .translationY(0);
+
     }
 
     private void cleanupPage(View p) {

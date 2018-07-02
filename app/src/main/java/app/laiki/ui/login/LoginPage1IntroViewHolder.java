@@ -23,7 +23,7 @@ import static app.laiki.App.prefs;
 public class LoginPage1IntroViewHolder implements LoginActivity.LoginPageViewHolder {
 
     private final View root;
-    @BindView(R.id.button) TextView button;
+    @BindView(R.id.button) View button;
     @BindView(R.id.policy) TextView policy;
 
     public LoginPage1IntroViewHolder(View root) {

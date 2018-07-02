@@ -3,6 +3,7 @@ package app.laiki.ui.main.questions;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import app.laiki.R;
 import app.laiki.model.entities.Contact;
@@ -19,10 +20,6 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
 
     private final QuestionAnsweredCallback callback;
 
-    private final ContactViewHolder v1;
-    private final ContactViewHolder v2;
-    private final ContactViewHolder v3;
-    private final ContactViewHolder v4;
     private Question question;
     private Contact contact1;
     private Contact contact2;
@@ -38,10 +35,6 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
         super(root);
         this.callback = callback;
         root.setOnClickListener(this::onViewClicked);
-        v1 = new ContactViewHolder(variant1, variant1Text1, variant1Text2);
-        v2 = new ContactViewHolder(variant2, variant2Text1, variant2Text2);
-        v3 = new ContactViewHolder(variant3, variant3Text1, variant3Text2);
-        v4 = new ContactViewHolder(variant4, variant4Text1, variant4Text2);
 //        R.layout.fr_question
     }
 
@@ -59,7 +52,7 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
         if (question == null)
             return;
 
-        root.setBackgroundColor(COLORS[(question.uniqueId.hashCode() & 0xffff) % COLORS.length]);
+        root.setBackground(randomBackground(root.getContext(), question.uniqueId.hashCode()));
         photos().attach(icon, question.emojiUrl)
                 .size(
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
@@ -85,29 +78,28 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
             }
         }
 
-        bindVariant(question.answer, Choice.A, variant1, v1, contact1);
-        bindVariant(question.answer, Choice.B, variant2, v2, contact2);
-        bindVariant(question.answer, Choice.C, variant3, v3, contact3);
-        bindVariant(question.answer, Choice.D, variant4, v4, contact4);
+        bindVariant(question.answer, Choice.A, variant1, variant1Text, contact1);
+        bindVariant(question.answer, Choice.B, variant2, variant2Text, contact2);
+        bindVariant(question.answer, Choice.C, variant3, variant3Text, contact3);
+        bindVariant(question.answer, Choice.D, variant4, variant4Text, contact4);
     }
 
-    private void bindVariant(Choice answer, Choice expected, LinearLayout viewRoot, ContactViewHolder viewText, Contact contact) {
+    private void bindVariant(Choice answer, Choice expected, View view, TextView textView, Contact contact) {
         if (answer == null) {
-            viewRoot.setAlpha(1f);
-            viewRoot.setEnabled(true);
-            viewRoot.setSelected(false);
+            view.setAlpha(1f);
+            view.setEnabled(true);
+            view.setSelected(false);
         } else {
-            viewRoot.setEnabled(false);
+            view.setEnabled(false);
             if (answer != expected) {
-                viewRoot.setAlpha(.5f);
-                viewRoot.setSelected(false);
+                view.setAlpha(.5f);
+                view.setSelected(false);
             } else {
-                viewRoot.setAlpha(1f);
-                viewRoot.setSelected(true);
+                view.setAlpha(1f);
+                view.setSelected(true);
             }
         }
-        viewText.bind(contact);
-        viewRoot.requestLayout();
+        textView.setText(contact.displayName);
     }
 
     @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip, R.id.next})

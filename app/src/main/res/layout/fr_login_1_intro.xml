@@ -7,20 +7,26 @@
                 tools:context=".ui.login.LoginActivity"
     >
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/subtitle"
-        android:layout_alignParentTop="true">
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-38dp"
+        android:src="@drawable/sinners_souls"/>
 
-        <ImageView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo"
-            android:layout_gravity="center"
-            android:contentDescription="@string/icon"/>
-    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/logo"/>
 
     <TextView
         android:id="@+id/subtitle"
@@ -67,14 +73,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/padding"
-        android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:gravity="center_horizontal"
-        android:textAppearance="@style/SubtitleTextAppearance"
-        android:textSize="12sp"
+        android:layout_marginStart="24dp"
         android:alpha=".7"
+        android:gravity="center_horizontal"
+        android:text="Продолжая, вы соглашаетсясь с политикой конфиденциальности"
+        android:textAppearance="@style/SubtitleTextAppearance"
         android:textColorLink="#ffffff"
-        android:text="Продолжая, вы соглашаетсясь с политикой конфиденциальности"/>
+        android:textSize="12sp"/>
 
 
 </RelativeLayout>

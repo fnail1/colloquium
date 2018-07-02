@@ -3,6 +3,10 @@ package app.laiki.ui.main.questions;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,27 +23,24 @@ import static app.laiki.App.statistics;
 import static app.laiki.toolkit.collections.Query.query;
 
 public class InviteViewHolder extends AbsQuestionViewHolder {
+    public static final int ANIMATION_DURATION = 500;
 
     private final Callback callback;
 
-    private final ContactViewHolder[] variants;
+    private final TextView[] variants;
     private Contact[] contacts;
 
     public InviteViewHolder(LayoutInflater inflater, ViewGroup parent, Callback callback) {
         super(inflater.inflate(R.layout.fr_question_invite, parent, false));
         this.callback = callback;
-        variants = new ContactViewHolder[]{
-                new ContactViewHolder(variant1, variant1Text1, variant1Text2),
-                new ContactViewHolder(variant2, variant2Text1, variant2Text2),
-                new ContactViewHolder(variant3, variant3Text1, variant3Text2),
-                new ContactViewHolder(variant4, variant4Text1, variant4Text2)};
+        variants = new TextView[]{variant1Text, variant2Text, variant3Text, variant4Text};
     }
 
     public void bind(Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
-        root.setBackgroundColor(COLORS[(prefs().uniqueId() & 0xffff) % COLORS.length]);
+        root.setBackground(randomBackground(root.getContext()));
         this.contacts = new Contact[]{contact1, contact2, contact3, contact4};
         for (int i = 0; i < variants.length; i++) {
-            variants[i].bind(contacts[i]);
+            variants[i].setText(contacts[i].displayName);
         }
         icon.setImageResource(R.drawable.ic_question_invite);
 
@@ -69,9 +70,9 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
     private void onContactsSelected(Choice choice) {
         statistics().contacts().inviteSent();
         Contact contact = contacts[choice.ordinal()];
-        ContactViewHolder v = variants[choice.ordinal()];
-        v.root.setSelected(true);
-        v.root.setEnabled(false);
+        TextView v = variants[choice.ordinal()];
+        v.setSelected(true);
+        v.setEnabled(false);
         appService().contactUpdated.add(new AppService.ContactUpdatedEventHandler() {
             @Override
             public void onContactUpdated(Contact args) {
@@ -95,24 +96,59 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
             root.post(() -> {
                 contacts[choice.ordinal()] = c;
-                ContactViewHolder v = variants[choice.ordinal()];
-                v.animateBind(c, new ContactViewHolder.AnimationCallback() {
-                    @Override
-                    public void onAnimationInComplete() {
-                        v.root.setSelected(false);
-                    }
+                TextView v = variants[choice.ordinal()];
+                bindContactWithAnimation(c, v);
 
-                    @Override
-                    public void onAnimationOutComplete() {
-                        v.root.setEnabled(true);
-                    }
-                });
             });
             break;
         }
 
         if (query(contacts).first(c -> !c.flags.get(Contact.FLAG_INVITE_REQUESTED)) == null)
             root.post(callback::onNextClick);
+    }
+
+    private void bindContactWithAnimation(Contact c, TextView v) {
+        Animation out = new AlphaAnimation(0,1);
+        out.setDuration(ANIMATION_DURATION);
+        out.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setEnabled(true);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        Animation in = new AlphaAnimation(1,0);
+        in.setDuration(ANIMATION_DURATION);
+        in.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setText(c.displayName);
+                v.setSelected(false);
+                v.startAnimation(out);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        v.startAnimation(in);
     }
 
 

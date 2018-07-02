@@ -11,8 +11,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/answers"
-        android:paddingTop="72dp"
+        android:layout_above="@+id/variant1"
+        android:paddingTop="64dp"
         >
 
         <LinearLayout
@@ -57,156 +57,121 @@
 
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/answers"
+    <FrameLayout
+        android:id="@+id/variant1"
+        style="@style/WhiteButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_above="@+id/variant2"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <TextView
+            android:id="@+id/variant1text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="@style/WhiteButtonTextAppearance"
+            android:textColor="#000000"
+            tools:text="Имя Фамилия"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/variant2"
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_above="@+id/variant3"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <TextView
+            android:id="@+id/variant2text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="@style/WhiteButtonTextAppearance"
+            android:textColor="#000000"
+            tools:text="Иннокентий Изольдович Кац"
+
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/variant3"
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_above="@+id/variant4"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <TextView
+            android:id="@+id/variant3text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="@style/WhiteButtonTextAppearance"
+            android:textColor="#000000"
+            tools:text="Ухтыждлинноеимякакое Ухтыждлиннаяфамилия"
+
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/variant4"
+        style="@style/WhiteButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="64dp"
-        android:orientation="vertical"
-        android:paddingEnd="12dp"
-        android:paddingStart="12dp">
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        >
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/variant4text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="@style/WhiteButtonTextAppearance"
+            android:textColor="#000000"
+            tools:text="Ян"
 
-            <LinearLayout
-                android:id="@+id/variant1"
-                style="@style/WhiteButton"
-                android:layout_width="0dp"
-                android:layout_height="58dp"
-                android:layout_marginBottom="@dimen/indent"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="@dimen/indent"
-                android:layout_weight=".5"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+            />
 
-                <TextView
-                    android:id="@+id/variant1Text1"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text="Имя"/>
+    </FrameLayout>
 
-                <TextView
-                    android:id="@+id/variant1Text2"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text="Фамилия"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/variant2"
-                style="@style/WhiteButton"
-                android:layout_width="0dp"
-                android:layout_height="58dp"
-                android:layout_marginBottom="@dimen/indent"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="@dimen/indent"
-                android:layout_weight=".5"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/variant2Text1"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text="Иннокентий Изольдович"/>
-
-                <TextView
-                    android:id="@+id/variant2Text2"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text="Кац"
-                    tools:visibility="visible"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-            <LinearLayout
-                android:id="@+id/variant3"
-                style="@style/WhiteButton"
-                android:layout_width="0dp"
-                android:layout_height="58dp"
-                android:layout_marginBottom="@dimen/indent"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="@dimen/indent"
-                android:layout_weight=".5"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/variant3Text1"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text="Ухтыждлинноеимякакое"/>
-
-                <TextView
-                    android:id="@+id/variant3Text2"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text="Ухтыждлиннаяфамилия"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/variant4"
-                style="@style/WhiteButton"
-                android:layout_width="0dp"
-                android:layout_height="58dp"
-                android:layout_weight=".5"
-                android:layout_marginBottom="@dimen/indent"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="@dimen/indent"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/variant4Text1"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text="В одну строку"/>
-
-                <TextView
-                    android:id="@+id/variant4Text2"
-                    style="@style/WhiteButtonTextAppearance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    tools:text=""
-                    tools:visibility="gone"/>
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
 
 
     <TextView

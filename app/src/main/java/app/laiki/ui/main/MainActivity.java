@@ -102,8 +102,8 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
                         answersCounterColor = 0xffff0000;
                         break;
                     case LIGHT:
-                        colorTitle = Utils.getColor(MainActivity.this, R.color.colorTitle);
-                        colorSubtitle = Utils.getColor(MainActivity.this, R.color.colorSubtitle);
+                        colorTitle = 0xFFFFFFFF;
+                        colorSubtitle = 0xB3FFFFFF;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             View decorView = getWindow().getDecorView();
                             int flags = decorView.getSystemUiVisibility();

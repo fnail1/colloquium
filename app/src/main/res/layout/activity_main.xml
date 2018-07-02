@@ -34,10 +34,5 @@
         app:tabPaddingStart="0dp"
         app:tabTextAppearance="@style/MainActivityTabTextAppearance"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="48dp"
-        android:background="#9ab3c0"/>
 
 </android.support.design.widget.CoordinatorLayout>

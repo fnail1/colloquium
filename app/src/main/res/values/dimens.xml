@@ -10,5 +10,5 @@
     <dimen name="item_height_large">56dp</dimen>
     <dimen name="notification_image_size">64dp</dimen>
     <dimen name="grid_item_width">168dp</dimen>
-    <dimen name="question_icon_size">128dp</dimen>
+    <dimen name="question_icon_size">92dp</dimen>
 </resources>
