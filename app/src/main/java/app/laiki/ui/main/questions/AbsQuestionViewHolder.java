@@ -53,7 +53,7 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
         super.animateReveal();
 
         int delay = 200;
-        int step = 200;
+        int step = 100;
 
         animateLayer(icon, animationOffsetY, delay);
         delay += step;
@@ -83,13 +83,13 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
     }
 
     private void animateLayer(@NonNull View view, float offset, int delay) {
-        view.setTranslationY(offset - view.getHeight());
+        view.setTranslationY(offset);
         float alpha = view.getAlpha();
         view.setAlpha(0);
 
         view.animate()
                 .setStartDelay(delay)
-                .setDuration(500)
+                .setDuration(300)
                 .translationY(0)
                 .alpha(alpha);
 
