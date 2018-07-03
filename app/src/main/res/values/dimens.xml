@@ -11,4 +11,6 @@
     <dimen name="notification_image_size">64dp</dimen>
     <dimen name="grid_item_width">168dp</dimen>
     <dimen name="question_icon_size">92dp</dimen>
+    <dimen name="question_screen_item_reveal_offset">200dp</dimen>
+    <dimen name="question_screen_item_reveal_offset_neg">-200dp</dimen>
 </resources>

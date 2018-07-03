@@ -18,8 +18,7 @@ import static app.laiki.App.dateTimeService;
 import static app.laiki.App.prefs;
 import static app.laiki.App.statistics;
 
-public class StopScreenViewHolder {
-    public final View root;
+public class StopScreenViewHolder extends AbsPageViewHolder {
     @BindView(R.id.timer) TextView timer;
     private final Callback callback;
 
@@ -28,9 +27,8 @@ public class StopScreenViewHolder {
     }
 
     public StopScreenViewHolder(View root, Callback callback) {
-        this.root = root;
+        super(root);
         this.callback = callback;
-        ButterKnife.bind(this, root);
     }
 
     @OnClick(R.id.contacts)

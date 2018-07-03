@@ -81,13 +81,6 @@ public class QuestionsFragment extends BaseFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        View.OnLayoutChangeListener onLayoutChangeListener = (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom) {
-                onPageLayout();
-            }
-        };
-        page1.addOnLayoutChangeListener(onLayoutChangeListener);
-        page2.addOnLayoutChangeListener(onLayoutChangeListener);
         foreground = new QuestionViewHolder(page1, this);
         background = new QuestionViewHolder(page2, this);
 
@@ -95,10 +88,6 @@ public class QuestionsFragment extends BaseFragment
         page2.setVisibility(View.GONE);
 
         onNewQuestion(null);
-    }
-
-    private void onPageLayout() {
-        foreground.rebind();
     }
 
     @Override
@@ -202,7 +191,7 @@ public class QuestionsFragment extends BaseFragment
 
         inviteViewHolder.bind(contacts.get(0), contacts.get(1), contacts.get(2), contacts.get(3));
         statistics().questions().invite();
-        showPage(inviteViewHolder.root);
+        showPage(inviteViewHolder);
         return true;
     }
 
@@ -228,7 +217,7 @@ public class QuestionsFragment extends BaseFragment
             statistics().questions().stopScreen();
             StopScreenViewHolder stopScreenViewHolder = new StopScreenViewHolder(LayoutInflater.from(activity), root, this);
             stopScreenViewHolder.bind();
-            showPage(stopScreenViewHolder.root);
+            showPage(stopScreenViewHolder);
             updateCounter(false);
             return;
         }
@@ -238,7 +227,7 @@ public class QuestionsFragment extends BaseFragment
         updateCounter(true);
         swapPages();
         foreground.bind(question, contact1, contact2, contact3, contact4);
-        showPage(foreground.root);
+        showPage(foreground);
     }
 
     private void bindVariants(Question q, Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
@@ -295,7 +284,7 @@ public class QuestionsFragment extends BaseFragment
         RateUsViewHolder rateUsViewHolder = new RateUsViewHolder(LayoutInflater.from(activity), root, this);
         rateUsViewHolder.bind();
         statistics().rateUs().start();
-        showPage(rateUsViewHolder.root);
+        showPage(rateUsViewHolder);
         return true;
     }
 
@@ -378,7 +367,8 @@ public class QuestionsFragment extends BaseFragment
         updateViews();
     }
 
-    private void showPage(View next) {
+    private void showPage(AbsPageViewHolder holder) {
+        View next = holder.root;
         View prev = this.activePage;
         activePage = next;
 
@@ -398,13 +388,14 @@ public class QuestionsFragment extends BaseFragment
             return;
         }
 
-
+        holder.animateReveal();
         next.setVisibility(View.VISIBLE);
         for (int i = 0; i < root.getChildCount(); i++) {
             View view = root.getChildAt(i);
             if (view == next) {
                 next.setAlpha(1);
                 prev.animate()
+                        .setStartDelay(0)
                         .setDuration(500)
                         .alpha(0)
                         .withEndAction(() -> cleanupPage(prev));
@@ -412,21 +403,13 @@ public class QuestionsFragment extends BaseFragment
             } else if (view == prev) {
                 next.setAlpha(0);
                 next.animate()
+                        .setStartDelay(0)
                         .setDuration(500)
                         .alpha(1)
                         .withEndAction(() -> cleanupPage(prev));
+                break;
             }
         }
-//        prev.animate()
-//                .setDuration(500)
-//                .translationY(-screenMetrics().screen.height)
-//                .withEndAction(() -> cleanupPage(prev));
-//
-//        next.setVisibility(View.VISIBLE);
-//        next.setTranslationY(screenMetrics().screen.height);
-//        next.animate()
-//                .setDuration(500)
-//                .translationY(0);
 
     }
 
@@ -441,12 +424,6 @@ public class QuestionsFragment extends BaseFragment
 
     @Override
     public void onAnswerSent(Question args) {
-//        FragmentActivity activity = getActivity();
-//        if (activity != null) {
-//            activity.runOnUiThread(() -> {
-//                foreground.rebind();
-//            });
-//        }
         appService().requestNextQuestion();
     }
 

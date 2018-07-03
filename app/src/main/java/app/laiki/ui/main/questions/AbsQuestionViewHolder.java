@@ -1,59 +1,19 @@
 package app.laiki.ui.main.questions;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
-
 import app.laiki.R;
-import app.laiki.utils.GraphicUtils;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-import static app.laiki.App.prefs;
+public class AbsQuestionViewHolder extends AbsPageViewHolder {
 
-public class AbsQuestionViewHolder {
-    private static final int[] BACKGROUND_RES_IDS = {
-            R.drawable.bg_q01,
-            R.drawable.bg_q02,
-            R.drawable.bg_q03,
-            R.drawable.bg_q04,
-            R.drawable.bg_q05,
-            R.drawable.bg_q06,
-            R.drawable.bg_q07,
-            R.drawable.bg_q08,
-            R.drawable.bg_q09,
-            R.drawable.bg_q10,
-            R.drawable.bg_q11,
-    };
-    private static final WeakReference[] BACKGROUNDS = new WeakReference[BACKGROUND_RES_IDS.length];
-
-    public static Drawable randomBackground(Context context) {
-        return randomBackground(context, prefs().uniqueId());
-    }
-
-    static Drawable randomBackground(Context context, int key) {
-        int index = (key & 0xffff) % BACKGROUNDS.length;
-        WeakReference ref = BACKGROUNDS[index];
-        Drawable d;
-        if (ref != null) {
-            d = (Drawable) ref.get();
-            if (d != null)
-                return d;
-        }
-        d = GraphicUtils.getDrawable(context, BACKGROUND_RES_IDS[index]);
-        BACKGROUNDS[index] = new WeakReference<>(d);
-
-        return d;
-    }
 
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.message) TextView message;
@@ -72,18 +32,66 @@ public class AbsQuestionViewHolder {
     @Nullable
     @BindView(R.id.progress)
     ProgressBar progress;
-    View root;
+    @Nullable
+    @BindView(R.id.title)
+    TextView title;
+    private float animationOffsetY;
+
 
     public AbsQuestionViewHolder(LayoutInflater inflater, ViewGroup parent) {
         this(inflater.inflate(R.layout.fr_question, parent, false));
     }
 
     public AbsQuestionViewHolder(View root) {
-        this.root = root;
-        ButterKnife.bind(this, root);
-//        variant2Text = (TextView) variant2;
-//        variant3Text = (TextView) variant3;
-//        variant4Text = (TextView) variant4;
+        super(root);
+        animationOffsetY = root.getResources().getDimensionPixelOffset(R.dimen.question_screen_item_reveal_offset);
     }
 
+
+    @Override
+    public void animateReveal() {
+        super.animateReveal();
+
+        int delay = 200;
+        int step = 200;
+
+        animateLayer(icon, animationOffsetY, delay);
+        delay += step;
+
+        if (title != null) {
+            animateLayer(title, animationOffsetY, delay);
+            delay += step;
+        }
+
+        animateLayer(message, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(variant1, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(variant2, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(variant3, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(variant4, animationOffsetY, delay);
+        delay += step;
+
+        if (next != null)
+            animateLayer(next, animationOffsetY, delay);
+    }
+
+    private void animateLayer(@NonNull View view, float offset, int delay) {
+        view.setTranslationY(offset - view.getHeight());
+        float alpha = view.getAlpha();
+        view.setAlpha(0);
+
+        view.animate()
+                .setStartDelay(delay)
+                .setDuration(500)
+                .translationY(0)
+                .alpha(alpha);
+
+    }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import app.laiki.BuildConfig;
+import app.laiki.api.ApiSet;
 import app.laiki.model.entities.Answer;
 import app.laiki.model.entities.Contact;
 import app.laiki.toolkit.data.CursorWrapper;
@@ -14,6 +15,7 @@ import app.laiki.toolkit.data.DbUtils;
 import app.laiki.toolkit.data.SQLiteCommands;
 import app.laiki.toolkit.data.SimpleCursorWrapper;
 
+import static app.laiki.App.prefs;
 import static app.laiki.model.entities.Contact.FLAG_INVITE_REQUESTED;
 import static app.laiki.model.entities.Contact.FLAG_INVITE_SENT;
 import static app.laiki.model.entities.Question.FLAG_ANSWERED;
@@ -33,12 +35,21 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
         int m = 0xffff;
         int a = random.nextInt() & m;
         int k = random.nextInt() & m;
+        String orderBy;
+        if (BuildConfig.DEBUG) {
+            switch (prefs().getApiSet()) {
+                case PROD:
+                    orderBy = "(phone like '" + prefs().profile().phone + "') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
+                    break;
+                default:
+                    orderBy = "(phone like '7999111223%') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
+                    break;
+            }
+        } else {
+            orderBy = " ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
+        }
         String sql = selectAll + "\n" +
-                (BuildConfig.DEBUG
-                        ? ("order by (phone like '7999111223%') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n")
-//                "order by length(displayName) desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n" +
-//                "order by (" + a + " + _id * " + k + ") & " + m + "\n" +
-                        : ("order by (" + a + " + _id * " + k + ") & " + m + "\n")) +
+                "order by " + orderBy + "" +
                 "limit " + count + " offset 0";
 
         return new ContactsCursor(db.rawQuery(sql, null));

@@ -1,15 +1,12 @@
 package app.laiki.ui.main.questions;
 
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
-import butterknife.BindView;
 import butterknife.OnClick;
 
 import static app.laiki.App.photos;
@@ -35,6 +32,7 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
         super(root);
         this.callback = callback;
         root.setOnClickListener(this::onViewClicked);
+
 //        R.layout.fr_question
     }
 
@@ -142,6 +140,7 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
         next.setAlpha(0);
         next.setTranslationY(screenMetrics().screen.height - next.getY());
         next.animate()
+                .setStartDelay(0)
                 .setDuration(500)
                 .alpha(1)
                 .translationY(0);

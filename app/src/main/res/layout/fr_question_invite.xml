@@ -13,6 +13,9 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/variant1"
         android:paddingTop="64dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+
         >
 
         <LinearLayout
@@ -22,6 +25,8 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:orientation="vertical"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             tools:ignore="UselessParent">
 
             <ImageView
@@ -33,6 +38,7 @@
                 tools:background="#7fff33ff"/>
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/indent"
