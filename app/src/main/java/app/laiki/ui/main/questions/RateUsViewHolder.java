@@ -30,7 +30,7 @@ public class RateUsViewHolder extends AbsQuestionViewHolder {
     }
 
     public void bind() {
-        message.setText("Как тебе наша приложуха ЧСН?");
+        setMessage("Как тебе наша приложуха ЧСН?");
         this.icon.setImageResource(R.drawable.ic_rate_us);
         variant1Text.setText("Огонь \uD83D\uDD25");
         variant2Text.setText("Норм");

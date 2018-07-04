@@ -59,7 +59,7 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size))
                 .commit();
-        message.setText(question.question);
+        setMessage(question.question);
 
         if (question.answer == null) {
             skip.setVisibility(View.VISIBLE);

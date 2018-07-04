@@ -1,11 +1,13 @@
 package app.laiki.ui.main.questions;
 
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,13 +16,14 @@ import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.types.Choice;
 import app.laiki.service.AppService;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
-import static app.laiki.App.prefs;
 import static app.laiki.App.statistics;
 import static app.laiki.toolkit.collections.Query.query;
+import static app.laiki.utils.Utils.dpToPx;
 
 public class InviteViewHolder extends AbsQuestionViewHolder {
     public static final int ANIMATION_DURATION = 500;
@@ -44,6 +47,40 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
         }
         icon.setImageResource(R.drawable.ic_question_invite);
 
+        setMessage("Каких друзей ты бы позвал в ЧСН? Мы отправим им приглашения. Для тебя это бесплатно и анонимно.");
+
+    }
+
+    @Override
+    protected int getAnchor() {
+        return R.id.title;
+    }
+
+    @NonNull
+    @Override
+    protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
+        ConstraintLayout layout = (ConstraintLayout) this.root;
+
+        ConstraintSet cset = new ConstraintSet();
+
+        TextView tv = (TextView) inflater.inflate(R.layout.item_invite_text, (ViewGroup) root, false);
+        tv.setId(View.generateViewId());
+        tv.setText(chars, start, end - start);
+
+        layout.addView(tv);
+        cset.clone(layout);
+
+        if (textLines.isEmpty())
+            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM, (int) dpToPx(root.getContext(), 7));
+        else
+            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM);
+        cset.connect(tv.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        cset.connect(tv.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+
+        cset.applyTo(layout);
+
+        textLines.add(tv);
+        return tv;
     }
 
     @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})
@@ -108,7 +145,7 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
     }
 
     private void bindContactWithAnimation(Contact c, TextView v) {
-        Animation out = new AlphaAnimation(0,1);
+        Animation out = new AlphaAnimation(0, 1);
         out.setDuration(ANIMATION_DURATION);
         out.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -127,7 +164,7 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
             }
         });
 
-        Animation in = new AlphaAnimation(1,0);
+        Animation in = new AlphaAnimation(1, 0);
         in.setDuration(ANIMATION_DURATION);
         in.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -150,7 +187,6 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
         v.startAnimation(in);
     }
-
 
     public interface Callback {
         void onNextClick();

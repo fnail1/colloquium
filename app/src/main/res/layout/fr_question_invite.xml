@@ -1,80 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/root"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:theme="@style/AppThemeDark"
-                tools:background="#7030a0">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:id="@+id/root"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:fitsSystemWindows="true"
+                                             android:theme="@style/AppThemeDark"
+                                             tools:background="#7030a0">
 
-    <FrameLayout
+
+    <View
+        android:id="@+id/anchor"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="108dp"
+        android:background="#00000000"
+        app:layout_constraintBottom_toTopOf="@id/variant1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/question_icon_size"
+        android:layout_height="@dimen/question_icon_size"
+        android:layout_marginBottom="@dimen/indent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_stopscreen"
+        app:layout_constraintBottom_toTopOf="@id/anchor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/variant1"
-        android:paddingTop="64dp"
-        android:clipToPadding="false"
-        android:clipChildren="false"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/indent"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/anchor"
+        android:text="Party time!"
+        android:textAppearance="@style/TitleTextAppearance"
+        android:textStyle="bold"
+        />
 
-        >
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="7dp"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="The one that always stays cool under stress"
+        />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:orientation="vertical"
-            android:clipToPadding="false"
-            android:clipChildren="false"
-            tools:ignore="UselessParent">
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="@dimen/question_icon_size"
-                android:layout_height="@dimen/question_icon_size"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitXY"
-                tools:background="#7fff33ff"/>
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/indent"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center_horizontal"
-                android:text="Party time!"
-                android:textAppearance="@style/TitleTextAppearance"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:id="@+id/message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/padding"
-                android:gravity="center_horizontal"
-                android:textAppearance="@style/SubtitleTextAppearance"
-                android:text="Каких друзей ты бы позвал в ЧСН? Мы отправим им приглашения. Для тебя это бесплатно и анонимно."
-                />
-        </LinearLayout>
-
-    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/variant1"
         style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_above="@+id/variant2"
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:clickable="true"
         android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/variant2"
         >
 
         <TextView
@@ -96,13 +99,13 @@
         style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_above="@+id/variant3"
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:clickable="true"
         android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/variant3"
         >
 
         <TextView
@@ -125,13 +128,13 @@
         style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_above="@+id/variant4"
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:clickable="true"
         android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/variant4"
         >
 
         <TextView
@@ -154,13 +157,13 @@
         style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="64dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:clickable="true"
         android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
 
         <TextView
@@ -179,13 +182,10 @@
     </FrameLayout>
 
 
-
     <TextView
         android:id="@+id/skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="12dp"
         android:layout_marginRight="@dimen/indent"
         android:background="@drawable/ripple_none_view_dark"
@@ -196,6 +196,8 @@
         android:text="Пропустить"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="@color/mw_fade_white_70"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="RtlHardcoded"/>
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
