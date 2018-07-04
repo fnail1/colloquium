@@ -149,7 +149,7 @@
         <item name="android:minWidth">109dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:lineSpacingExtra">0px</item>
-        <item name="android:elevation">4dp</item>
+        <!--<item name="android:elevation">4dp</item>-->
         <item name="android:stateListAnimator">@animator/animator_default_button</item>
     </style>
 
@@ -170,6 +170,12 @@
         <item name="android:textColor">#000000</item>
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="VariantButton" parent="DefaultButton">
+        <item name="android:foreground">@drawable/ripple_rect_r28_view_light</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:gravity">start|center_vertical</item>
     </style>
 
     <style name="InviteButtonStyle">

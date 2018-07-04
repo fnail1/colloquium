@@ -1,12 +1,15 @@
 package app.laiki.ui.main.questions;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.TextView;
 
 import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
+import app.laiki.ui.views.VariantButtonBackgroundDrawable;
 import butterknife.OnClick;
 
 import static app.laiki.App.photos;
@@ -83,18 +86,32 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
     }
 
     private void bindVariant(Choice answer, Choice expected, View view, TextView textView, Contact contact) {
+        final VariantButtonBackgroundDrawable background = (VariantButtonBackgroundDrawable) view.getBackground();
         if (answer == null) {
-            view.setAlpha(1f);
+            background.setState(VariantButtonBackgroundDrawable.ButtonState.DEFAULT, 1);
             view.setEnabled(true);
             view.setSelected(false);
         } else {
             view.setEnabled(false);
+            VariantButtonBackgroundDrawable.ButtonState buttonState;
             if (answer != expected) {
-                view.setAlpha(.5f);
+                buttonState = VariantButtonBackgroundDrawable.ButtonState.DISABLED;
                 view.setSelected(false);
             } else {
-                view.setAlpha(1f);
+                buttonState = VariantButtonBackgroundDrawable.ButtonState.SELECTED;
                 view.setSelected(true);
+            }
+
+            if (background.getButtonState() != buttonState) {
+                Animation a = new Animation() {
+                    @Override
+                    protected void applyTransformation(float alpha, Transformation t) {
+                        super.applyTransformation(alpha, t);
+                        background.setState(buttonState, alpha);
+                    }
+                };
+                a.setDuration(450);
+                view.startAnimation(a);
             }
         }
         textView.setText(contact.displayName);

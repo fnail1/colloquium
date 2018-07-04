@@ -7,9 +7,10 @@
     <color name="colorTitle">#ffffff</color>
     <color name="colorSubtitle">#deffffff</color>
     <color name="colorText">#deffffff</color>
-    <color name="colorButton">#deffffff</color>
     <color name="textColorPrimary">#ffffff</color>
 
+    <color name="buttonColor">#fff</color>
+    <color name="buttonColorSelected">#57e659</color>
     <color name="colorWhite">#FFFFFF</color>
 
 

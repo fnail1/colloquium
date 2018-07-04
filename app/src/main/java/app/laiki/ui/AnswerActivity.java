@@ -18,6 +18,7 @@ import app.laiki.model.types.Choice;
 import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.questions.QuestionViewHolder;
+import app.laiki.ui.views.VariantButtonBackgroundDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,6 +52,10 @@ public class AnswerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
         ButterKnife.bind(this);
+        variant1.setBackground(new VariantButtonBackgroundDrawable(this));
+        variant2.setBackground(new VariantButtonBackgroundDrawable(this));
+        variant3.setBackground(new VariantButtonBackgroundDrawable(this));
+        variant4.setBackground(new VariantButtonBackgroundDrawable(this));
 
         long id = getIntent().getLongExtra(EXTRA_ANSWER_ID, 0);
 
@@ -99,17 +104,24 @@ public class AnswerActivity extends BaseActivity {
                 @Override
                 protected void applyTransformation(float alpha, Transformation t) {
                     super.applyTransformation(alpha, t);
-
-                    if (answer.answer != Choice.A) applyAnimation(variant1, alpha);
-                    if (answer.answer != Choice.B) applyAnimation(variant2, alpha);
-                    if (answer.answer != Choice.C) applyAnimation(variant3, alpha);
-                    if (answer.answer != Choice.D) applyAnimation(variant4, alpha);
+                    applyState(alpha, variant1, Choice.A);
+                    applyState(alpha, variant2, Choice.B);
+                    applyState(alpha, variant3, Choice.C);
+                    applyState(alpha, variant4, Choice.D);
                 }
             };
             a.setDuration(450);
             root.startAnimation(a);
 
         }, 500);
+    }
+
+    private void applyState(float alpha, View view, Choice a) {
+        VariantButtonBackgroundDrawable background = (VariantButtonBackgroundDrawable) view.getBackground();
+        VariantButtonBackgroundDrawable.ButtonState buttonState = answer.answer == a
+                ? VariantButtonBackgroundDrawable.ButtonState.SELECTED
+                : VariantButtonBackgroundDrawable.ButtonState.DISABLED;
+        background.setState(buttonState, alpha);
     }
 
     private void applyAnimation(View variantView, float alpha) {

@@ -65,7 +65,7 @@
 
     <FrameLayout
         android:id="@+id/variant1"
-        style="@style/WhiteButton"
+        style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_above="@+id/variant2"
@@ -93,7 +93,7 @@
 
     <FrameLayout
         android:id="@+id/variant2"
-        style="@style/WhiteButton"
+        style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_above="@+id/variant3"
@@ -122,7 +122,7 @@
 
     <FrameLayout
         android:id="@+id/variant3"
-        style="@style/WhiteButton"
+        style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_above="@+id/variant4"
@@ -151,7 +151,7 @@
 
     <FrameLayout
         android:id="@+id/variant4"
-        style="@style/WhiteButton"
+        style="@style/VariantButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
