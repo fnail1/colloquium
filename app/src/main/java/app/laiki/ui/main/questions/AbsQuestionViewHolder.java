@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import app.laiki.R;
+import app.laiki.ui.views.VariantButtonBackgroundDrawable;
 import butterknife.BindView;
 
 public class AbsQuestionViewHolder extends AbsPageViewHolder {
@@ -45,6 +46,10 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
     public AbsQuestionViewHolder(View root) {
         super(root);
         animationOffsetY = root.getResources().getDimensionPixelOffset(R.dimen.question_screen_item_reveal_offset);
+        variant1.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
+        variant3.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
+        variant2.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
+        variant4.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
     }
 
 
