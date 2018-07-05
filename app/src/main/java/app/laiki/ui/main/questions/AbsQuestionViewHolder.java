@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import app.laiki.R;
 import app.laiki.ui.views.VariantButtonBackgroundDrawable;
@@ -81,8 +80,8 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
             scheduledAnimatedRevealing = true;
             return;
         }
-        int delay = 200;
-        int step = 100;
+        int delay = 150;
+        int step = 50;
 
         animateLayer(icon, animationOffsetY, delay);
         delay += step;

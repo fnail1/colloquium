@@ -104,13 +104,49 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
 
             if (background.getButtonState() != buttonState) {
                 Animation a = new Animation() {
+                    private boolean stateAnimationComplete;
+                    private float maxScaleAmplitude = (float) (screenMetrics().screen.width - view.getWidth()) / view.getWidth();
+
                     @Override
                     protected void applyTransformation(float alpha, Transformation t) {
                         super.applyTransformation(alpha, t);
-                        background.setState(buttonState, alpha);
+                        float alphaButtonState = (alpha - .0f) / .5f;
+                        float scale = 1 - (float) (maxScaleAmplitude * Math.sin(alpha * 4 * Math.PI));
+
+//                        trace("A=%.3f, state=%.3f, scale=%.3f", alpha, alphaButtonState, scale);
+
+                        if (.0 < alpha && alpha <= .5) {
+                            background.setState(buttonState, alphaButtonState);
+                        } else if (!stateAnimationComplete && alpha > .5) {
+                            background.setState(buttonState, 1);
+                            stateAnimationComplete = true;
+                        }
+                        if (buttonState == VariantButtonBackgroundDrawable.ButtonState.SELECTED) {
+                            view.setScaleX(scale);
+                            view.setScaleY(scale);
+                        }
                     }
                 };
-                a.setDuration(450);
+                if (buttonState == VariantButtonBackgroundDrawable.ButtonState.SELECTED) {
+                    a.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            view.setScaleX(1);
+                            view.setScaleY(1);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                }
+                a.setDuration(2000);
                 view.startAnimation(a);
             }
         }
