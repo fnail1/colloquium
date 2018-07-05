@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/indent"
-            android:text="Твой пол?"
+            android:text="@string/title_gender"
             android:textAppearance="@style/TitleTextAppearance"
             />
 

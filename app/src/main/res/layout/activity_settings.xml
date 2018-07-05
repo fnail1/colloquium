@@ -35,7 +35,7 @@
                 android:layout_height="48dp"
                 android:layout_marginRight="48dp"
                 android:gravity="center"
-                android:text="Настройки"
+                android:text="@string/settings"
                 android:textAppearance="@style/SubtitleTextAppearance"
                 android:textStyle="bold"
                 />
@@ -55,7 +55,7 @@
             android:foreground="@drawable/ripple_rect_view_light"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
-            android:text="Уведомления"
+            android:text="@string/notifications"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
             tools:ignore="RtlHardcoded"/>
@@ -72,7 +72,7 @@
             android:gravity="center_vertical"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
-            android:text="Выход"
+            android:text="@string/exit"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
             tools:ignore="RtlHardcoded"/>
@@ -84,9 +84,9 @@
             android:gravity="center_vertical"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
-            android:text="Версия: 1.1 (1)"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
+            tools:text="Версия: 1.1 (1)"
             tools:ignore="RtlHardcoded"/>
 
         <View
@@ -111,7 +111,7 @@
             android:gravity="center_vertical"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
-            android:text="Импорт БД"
+            android:text="@string/importDb"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
             tools:ignore="RtlHardcoded"/>
@@ -126,7 +126,7 @@
             android:gravity="center_vertical"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
-            android:text="Скопировать FCM-токен"
+            android:text="@string/copy_fcm"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
             tools:ignore="RtlHardcoded"/>
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
-                android:text="Количество вопросов за один подход"/>
+                android:text="@string/title_number_of_questions"/>
 
             <EditText
                 android:id="@+id/questions_frame_size"
@@ -172,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
-                android:text="Пауза между подходами"/>
+                android:text="@string/title_stopscreen_duation"/>
 
             <EditText
                 android:id="@+id/questions_dead_time"
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
-                android:text="Показать вопрос-инвайт после вопроса"/>
+                android:text="@string/title_invite_trigger"/>
 
             <EditText
                 android:id="@+id/invite_threshold"
@@ -223,7 +223,7 @@
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
             android:paddingTop="@dimen/indent"
-            android:text="Имитировать медленную сеть"
+            android:text="@string/title_emulate_slow_connection"
             android:background="@drawable/ripple_rect_view_light"/>
     </LinearLayout>
 </ScrollView>

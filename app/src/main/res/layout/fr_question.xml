@@ -31,10 +31,10 @@
         android:layout_height="@dimen/question_icon_size"
         android:layout_marginBottom="@dimen/indent"
         android:scaleType="fitXY"
+        android:src="@drawable/ic_stopscreen"
         app:layout_constraintBottom_toTopOf="@id/anchor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_stopscreen"
         />
 
 
@@ -47,14 +47,14 @@
         android:layout_marginTop="7dp"
         android:gravity="center_horizontal"
         android:textAppearance="@style/TitleTextAppearance"
+        android:textColor="#ffff00ff"
+        android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/anchor"
-        android:textStyle="bold"
-        android:text="С кем хотел бы отправиться в путешествие?"
-        android:visibility="invisible"
-        android:textColor="#ffff00ff"
-        tools:visibility="visible\"
+        tools:text="С кем хотел бы отправиться в путешествие?"
+        tools:visibility="visible"
         />
 
     <FrameLayout
@@ -74,11 +74,11 @@
 
         <TextView
             android:id="@+id/variant1text"
+            style="@style/VariantButtonTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:singleLine="true"
-            style="@style/VariantButtonTextAppearance"
             android:textColor="#000000"
             tools:text="Имя Фамилия"
             />
@@ -102,11 +102,11 @@
 
         <TextView
             android:id="@+id/variant2text"
+            style="@style/VariantButtonTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:singleLine="true"
-            style="@style/VariantButtonTextAppearance"
             android:textColor="#000000"
             tools:text="Иннокентий Изольдович Кац"
 
@@ -131,11 +131,11 @@
 
         <TextView
             android:id="@+id/variant3text"
+            style="@style/VariantButtonTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:singleLine="true"
-            style="@style/VariantButtonTextAppearance"
             android:textColor="#000000"
             tools:text="Ухтыждлинноеимякакое Ухтыждлиннаяфамилия"
 
@@ -160,11 +160,11 @@
 
         <TextView
             android:id="@+id/variant4text"
+            style="@style/VariantButtonTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:singleLine="true"
-            style="@style/VariantButtonTextAppearance"
             android:textColor="#000000"
             tools:text="Ян"
 
@@ -189,7 +189,7 @@
         android:drawableStart="@drawable/ic_fast_forward"
         android:gravity="center_horizontal"
         android:padding="@dimen/indent"
-        android:text="Пропустить"
+        android:text="@string/skip"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="@color/mw_fade_white_70"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -208,7 +208,7 @@
         android:gravity="center_horizontal"
 
         android:padding="@dimen/indent"
-        android:text="Нажми для продолжения"
+        android:text="@string/button_continue"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="@color/textColorPrimary"
         android:visibility="invisible"

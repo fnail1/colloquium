@@ -281,8 +281,8 @@ public class Logger {
         }
     }
 
-    public static void logFcm(String mesage, Object... args) {
-        logV(LOG_FCM, TAG_FCM, mesage, args);
+    public static void logFcm(String message, Object... args) {
+        logV(LOG_FCM, TAG_FCM, message, args);
     }
 
     public static void logStat(String message, String event, Map<String,String> params) {

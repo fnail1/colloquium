@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/subtitle2"
         android:layout_centerHorizontal="true"
-        android:text="Узнай, кому ты нравишься"
+        android:text="@string/title_welcome"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textStyle="bold"
         />
@@ -49,7 +49,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="@dimen/indent"
         android:gravity="center_horizontal"
-        android:text="Отвечай анонимно на вопросы про друзей. Они узнают, что ты думаешь о них, но не будут знать, кто это!"
+        android:text="@string/subtitle_welcome"
         android:textAppearance="@style/SubtitleTextAppearance"
         />
 
@@ -62,7 +62,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="72dp"
         android:gravity="center"
-        android:text="Поехали!"
+        android:text="@string/go_on"
         android:textColor="#000000"
         />
 
@@ -77,7 +77,7 @@
         android:layout_marginStart="24dp"
         android:alpha=".7"
         android:gravity="center_horizontal"
-        android:text="Продолжая, вы соглашаетсясь с политикой конфиденциальности"
+        android:text="@string/message_privacy"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColorLink="#ffffff"
         android:textSize="12sp"/>

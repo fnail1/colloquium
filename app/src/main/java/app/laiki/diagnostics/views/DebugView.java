@@ -664,7 +664,9 @@ public class DebugView extends View {
         return super.isShown();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     protected boolean fitSystemWindows(Rect insets) {
         trace();
         return super.fitSystemWindows(insets);
@@ -712,7 +714,9 @@ public class DebugView extends View {
         return super.getFitsSystemWindows();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     public void requestFitSystemWindows() {
         trace();
         super.requestFitSystemWindows();
@@ -2471,7 +2475,9 @@ public class DebugView extends View {
         super.setBackground(background);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     public void setBackgroundDrawable(Drawable background) {
         trace();
         super.setBackgroundDrawable(background);

@@ -1,6 +1,5 @@
 package app.laiki.ui.login;
 
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -62,7 +61,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
         codeEdit.setOnEditorActionListener(this);
         codeEdit.addTextChangedListener(new MyTextWatcher());
         String textPhone = PhoneNumberUtils.formatPhone(phone);
-        codeExplanation.setText(codeExplanation.getResources().getString(R.string.enter_sms_code_explanation, textPhone));
+        codeExplanation.setText(codeExplanation.getResources().getString(R.string.enter_auth_code_explanation, textPhone));
     }
 
 
@@ -116,7 +115,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
                 onConfirmCode();
                 break;
             case R.id.code_repeat:
-                onRepeateCode();
+                onRepeatCode();
                 break;
             case R.id.back:
                 activity.onBack();
@@ -124,7 +123,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
         }
     }
 
-    private void onRepeateCode() {
+    private void onRepeatCode() {
         setViewMode(ViewMode.CHECK_CODE);
 
         api().login(phone).enqueue(new Callback<GsonResponse>() {
@@ -181,7 +180,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
                 if (profileBody == null) {
                     throw new ServerException(200, "profileBody is null");
                 }
-                onSuccsess(authBody, profileBody);
+                onSuccess(authBody, profileBody);
                 return;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -226,13 +225,13 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
         });
     }
 
-    private void onSuccsess(GsonAuth authBbody, GsonProfileResponse.GsonUser profileBody) {
+    private void onSuccess(GsonAuth authBody, GsonProfileResponse.GsonUser profileBody) {
         LoginActivity activity = (LoginActivity) Utils.getActivity(root);
         if (activity == null)
             return;
 
         activity.runOnUiThread(() -> {
-            activity.onSmsCode(authBbody.token, profileBody);
+            activity.onSmsCode(authBody.token, profileBody);
             setViewMode(ViewMode.WAIT_CODE_2);
         });
 

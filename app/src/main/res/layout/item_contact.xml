@@ -44,7 +44,7 @@
         android:layout_marginStart="@dimen/indent"
         android:layout_weight="0"
         android:fontFamily="sans-serif-medium"
-        android:text="Позвать"
+        android:text="@string/invite"
         android:textAppearance="@style/SubtitleTextAppearance"
         />
 

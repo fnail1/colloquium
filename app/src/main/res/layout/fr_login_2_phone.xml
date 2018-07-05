@@ -16,7 +16,7 @@
         android:foreground="@drawable/ripple_none_view_dark"
         android:gravity="center_horizontal"
         android:padding="@dimen/indent"
-        android:text="Войти"
+        android:text="@string/login"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:visibility="invisible"
         tools:ignore="RtlHardcoded"
@@ -33,7 +33,8 @@
         android:layout_marginTop="@dimen/padding"
         android:theme="@style/AppThemeDark"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        tools:ignore="RtlHardcoded"/>
 
     <TextView
         android:id="@+id/title"
@@ -96,8 +97,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
         android:gravity="center_horizontal"
-        android:text="Мы вышлем тебе бесплатную смс с кодом, чтобы зарегистрировать
-в приложении"
+        android:text="@string/message_enter_phone_number"
         android:textAppearance="@style/SubtitleTextAppearance"
         />
 

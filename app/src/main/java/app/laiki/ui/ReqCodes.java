@@ -4,7 +4,7 @@ public enum ReqCodes {
     BROKEN_VALUE,
     CONTACTS_PERMISSIONS,
     STORAGE_PERMISSION,
-    STOP_SCTREEN_OUT;
+    STOP_SCREEN_OUT;
 
     public static final int BASE = 2200;
     public static final ReqCodes[] VALUES = values();

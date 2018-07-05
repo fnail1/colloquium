@@ -35,7 +35,7 @@
             android:layout_marginStart="24dp"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:text="Пол: "
+            android:text="@string/field_gender"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#9ab3c0"
             tools:drawableEnd="@drawable/ic_male"
@@ -65,7 +65,7 @@
             android:layout_marginEnd="@dimen/indent"
             android:layout_marginStart="24dp"
             android:layout_weight="1"
-            android:text="Собрано лайков"
+            android:text="@string/field_likes"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
             />
@@ -79,9 +79,9 @@
             android:drawablePadding="@dimen/indent"
             android:drawableStart="@drawable/ic_female_heart"
             android:gravity="center_vertical"
-            android:text="33"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
+            tools:text="33"
             />
     </LinearLayout>
 
@@ -112,7 +112,7 @@
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:text="Написать разработчику"
+        android:text="@string/field_support"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#546d79"
         />
@@ -125,7 +125,7 @@
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:text="Группа в ВК"
+        android:text="@string/field_vk"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#546d79"
         />
@@ -138,7 +138,7 @@
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:text="Настройки"
+        android:text="@string/settings"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#546d79"
         />
@@ -151,7 +151,7 @@
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:text="Удалить ответы"
+        android:text="@string/field_clear_answers"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#546d79"
         />

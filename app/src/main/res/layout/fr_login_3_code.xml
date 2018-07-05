@@ -16,7 +16,7 @@
         android:foreground="@drawable/ripple_none_view_dark"
         android:gravity="center_horizontal"
         android:padding="@dimen/indent"
-        android:text="Войти"
+        android:text="@string/login"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:visibility="invisible"
         tools:ignore="RtlHardcoded"
@@ -43,7 +43,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
         android:gravity="center_horizontal"
-        android:text="Введи код из смс"
+        android:text="@string/title_sms_code"
         android:textAppearance="@style/TitleTextAppearance"
         />
 
@@ -69,7 +69,7 @@
         android:textColor="#000000"
         android:windowSoftInputMode="stateVisible"
         tools:text="1234"
-        />
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/code_explanation"
@@ -79,7 +79,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:gravity="center_horizontal"
-        android:text="@string/enter_sms_code_explanation"
+        android:text="@string/enter_auth_code_explanation"
         android:textAppearance="@style/SubtitleTextAppearance"
         />
 
@@ -91,7 +91,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:gravity="center_horizontal"
-        android:text="Упс!... Код неверный!"
+        android:text="@string/message_wrong_auth_code"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:visibility="gone"
         tools:visibility="visible"/>
@@ -106,7 +106,7 @@
         android:background="@drawable/ripple_none_view_dark"
         android:fontFamily="sans-serif-medium"
         android:gravity="center_horizontal"
-        android:text="Отправить еще раз?"
+        android:text="@string/button_repeat_auth_code"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#afffffff"
         android:visibility="gone"
@@ -123,7 +123,7 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center_horizontal"
         android:paddingTop="32dp"
-        android:text="Ошиблись номером?"
+        android:text="@string/button_edit_phone"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#afffffff"
 

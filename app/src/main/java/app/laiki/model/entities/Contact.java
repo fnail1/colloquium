@@ -165,6 +165,7 @@ public class Contact extends BaseRow {
             return true;
         if (middleName != null ? !middleName.equals(abData.middleName) : abData.middleName != null)
             return true;
+        //noinspection RedundantIfStatement
         if (abPhoneId != abData.abPhoneId || !TextUtils.equals(phone, abData.phone))
             return true;
 

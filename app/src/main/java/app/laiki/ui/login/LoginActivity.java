@@ -224,9 +224,9 @@ public class LoginActivity extends BaseActivity {
         onContinue();
     }
 
-    public void onAgeStage1(AgeStrage1 strage) {
+    public void onAgeStage1(AgeStage1 stage) {
         LoginPageViewHolder pageViewHolder;
-        switch (strage) {
+        switch (stage) {
             case SECONDARY:
                 pageViewHolder = inflatePage(background, 5, R.layout.fr_login_6_secondary);
                 break;
@@ -234,7 +234,7 @@ public class LoginActivity extends BaseActivity {
                 pageViewHolder = inflatePage(background, 5, R.layout.fr_login_6_high);
                 break;
             default:
-                throw new IllegalArgumentException("" + strage);
+                throw new IllegalArgumentException("" + stage);
         }
         animateTransition(pageViewHolder, -foreground.getWidth(), background.getWidth());
     }
@@ -244,7 +244,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    public enum AgeStrage1 {
+    public enum AgeStage1 {
         SECONDARY, HIGH
     }
 }

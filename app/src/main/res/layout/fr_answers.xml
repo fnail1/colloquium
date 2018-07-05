@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <app.laiki.ui.views.MyFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -48,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/indent"
                 android:gravity="center_horizontal"
-                android:text="Здесь будут лайки от твоих друзей. Хочешь лайки? Зови друзей!"
+                android:text="@string/message_empty_answers"
                 android:textAppearance="@style/SubtitleTextAppearance"
                 android:textColor="#546d79"
 
@@ -62,6 +61,7 @@
             android:layout_width="276dp"
             android:layout_height="58dp"
             android:layout_gravity="center_horizontal|bottom"
+            android:gravity="center"
             android:layout_marginBottom="32dp"
             android:fontFamily="sans-serif"
             android:text="@string/contacts"

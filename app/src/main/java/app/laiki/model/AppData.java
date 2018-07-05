@@ -97,7 +97,7 @@ public class AppData {
 
 
     @SuppressWarnings("UnusedReturnValue")
-    public boolean copyFromAnonimous(Context context) {
+    public boolean copyFromAnonymous(Context context) {
         try {
             db.execSQL("attach \'" + context.getDatabasePath(ANONYMOUS).getAbsolutePath() + "\' as src");
             try {

@@ -32,7 +32,7 @@
             android:layout_marginStart="80dp"
             android:layout_marginTop="68dp"
             android:gravity="center_horizontal"
-            android:text="На каком курсе ты учишься?"
+            android:text="@string/title_age_high"
             android:textAppearance="@style/SubtitleTextAppearance"/>
 
         <TextView

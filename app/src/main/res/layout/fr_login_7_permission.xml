@@ -23,8 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="36dp"
             android:gravity="center_horizontal"
-            android:text="Отлично!
-Осталось чуть-чуть.."
+            android:text="@string/title_permission"
             android:textAppearance="@style/TitleTextAppearance"
             />
 
@@ -34,8 +33,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/indent"
             android:gravity="center_horizontal"
-            android:text="Чтобы найти твоих друзей нужен
-доступ к адресной книге."
+            android:text="@string/subtitle_permission"
             android:textAppearance="@style/SubtitleTextAppearance"
             />
 
@@ -49,7 +47,7 @@
             android:drawablePadding="@dimen/indent"
             android:drawableStart="@drawable/ic_address_book"
             android:elevation="16dp"
-            android:text="Включить контакты"
+            android:text="@string/button_permission"
             />
 
 

@@ -3,10 +3,7 @@ package app.laiki.ui.login;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import app.laiki.R;
@@ -37,10 +34,10 @@ public class LoginPage5EducationViewHolder implements LoginActivity.LoginPageVie
                 activity.onBack();
                 break;
             case R.id.secondary:
-                activity.onAgeStage1(LoginActivity.AgeStrage1.SECONDARY);
+                activity.onAgeStage1(LoginActivity.AgeStage1.SECONDARY);
                 break;
             case R.id.high:
-                activity.onAgeStage1(LoginActivity.AgeStrage1.HIGH);
+                activity.onAgeStage1(LoginActivity.AgeStage1.HIGH);
                 break;
         }
     }

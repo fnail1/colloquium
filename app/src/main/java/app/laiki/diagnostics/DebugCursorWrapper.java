@@ -183,13 +183,17 @@ public class DebugCursorWrapper implements Cursor {
         return cursor.isNull(i);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     public void deactivate() {
         trace();
         cursor.deactivate();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     public boolean requery() {
         trace();
         return cursor.requery();

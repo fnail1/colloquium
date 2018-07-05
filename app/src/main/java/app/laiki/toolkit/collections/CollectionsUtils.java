@@ -7,7 +7,7 @@ public class CollectionsUtils {
      * Merges source collection into destination by calling
      * - {@link MergeVisitor#insert(Object, int)} - source collection contains item not existing in destination one;
      * - {@link MergeVisitor#delete(Object)} - destination collection contains item not existing in source;
-     * - {@link IntegerMergeVisitor#update(int, int)} - item occers in both collections;
+     * - {@link IntegerMergeVisitor#update(int, int)} - item occurs in both collections;
      *
      * @param src     - source collection
      * @param dst     - destination collection
@@ -21,7 +21,7 @@ public class CollectionsUtils {
      * Merges source collection into destination by calling
      * - {@link MergeVisitor#insert(Object, int)} - source collection contains item not existing in destination one;
      * - {@link MergeVisitor#delete(Object)} - destination collection contains item not existing in source;
-     * - {@link IntegerMergeVisitor#update(int, int)} - item occers in both collections;
+     * - {@link IntegerMergeVisitor#update(int, int)} - item occurs in both collections;
      *
      * @param src        - source collection
      * @param dst        - destination collection

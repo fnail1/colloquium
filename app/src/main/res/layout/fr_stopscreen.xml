@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/indent"
             android:gravity="center_horizontal"
-            android:text="Воу!"
+            android:text="@string/title_stopscreen"
             android:textAppearance="@style/TitleTextAppearance"
             android:textStyle="bold"
             />
@@ -42,7 +42,7 @@
             android:layout_marginStart="80dp"
             android:layout_marginTop="@dimen/indent"
             android:gravity="center_horizontal"
-            android:text="Новые вопросы будут доступны через:"
+            android:text="@string/message_stopscreen"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textStyle="bold"
             />
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/indent"
             android:layout_marginTop="40dp"
-            android:text="Хочешь быстрее?"
+            android:text="@string/message_skip_stopscreen"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textStyle="bold"
             />
@@ -77,7 +77,7 @@
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_invite"
             android:gravity="start|center_vertical"
-            android:text="Пригласить друга"
+            android:text="@string/button_invite"
             />
     </LinearLayout>
 </FrameLayout>
