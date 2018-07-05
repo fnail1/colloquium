@@ -127,6 +127,7 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
 
     public void setMessage(String message) {
         this.message = message;
+        shadowTextView.setText(message);
         layoutMessage();
     }
 
@@ -197,12 +198,22 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
         tv.setText(chars, start, end - start);
 
         layout.addView(tv);
-        cset.clone(layout);
 
-        if (textLines.isEmpty())
-            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM, (int) dpToPx(root.getContext(), 7));
-        else
-            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM);
+        if (textLines.isEmpty()) {
+        int margin = (int) dpToPx(root.getContext(), 7);
+            cset.clone(layout);
+            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM, margin);
+        } else {
+            View space = new View(inflater.getContext());
+            space.setId(View.generateViewId());
+            layout.addView(space);
+            cset.clone(layout);
+            int margin = (int) dpToPx(root.getContext(), 2);
+//            cset.constrainWidth(space.getId(), 1);
+            cset.constrainHeight(space.getId(), margin);
+            cset.connect(space.getId(), ConstraintSet.BOTTOM, anchor, ConstraintSet.BOTTOM, margin);
+            cset.connect(tv.getId(), ConstraintSet.TOP, space.getId(), ConstraintSet.TOP);
+        }
         cset.connect(tv.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
         cset.connect(tv.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
 
