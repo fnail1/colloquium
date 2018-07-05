@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:app="http://schemas.android.com/apk/res-auto"
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       tools:showIn="@layout/fr_question">
+
+
+    <FrameLayout
+        android:id="@+id/variant1"
+        style="@style/VariantButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/variant_button_height"
+        android:layout_marginBottom="@dimen/variant_button_intent"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/variant2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="@drawable/bg_white_button"
+        >
+
+        <TextView
+            android:id="@+id/variant1text"
+            style="@style/VariantButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#000000"
+            tools:text="Имя Фамилия"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/variant2"
+        style="@style/VariantButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/variant_button_height"
+        android:layout_marginBottom="@dimen/variant_button_intent"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/variant3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="@drawable/bg_white_button"
+        >
+
+        <TextView
+            android:id="@+id/variant2text"
+            style="@style/VariantButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#000000"
+            tools:text="Иннокентий Изольдович Кац"
+
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/variant3"
+        style="@style/VariantButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/variant_button_height"
+        android:layout_marginBottom="@dimen/variant_button_intent"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/variant4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="@drawable/bg_white_button"
+        >
+
+        <TextView
+            android:id="@+id/variant3text"
+            style="@style/VariantButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#000000"
+            tools:text="Ухтыждлинноеимякакое Ухтыждлиннаяфамилия"
+
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/variant4"
+        style="@style/VariantButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/variant_button_height"
+        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="@drawable/bg_white_button"
+        >
+
+        <TextView
+            android:id="@+id/variant4text"
+            style="@style/VariantButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#000000"
+            tools:text="Ян"
+
+            />
+
+    </FrameLayout>
+</merge>

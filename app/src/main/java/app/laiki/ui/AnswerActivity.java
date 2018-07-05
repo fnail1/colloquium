@@ -33,7 +33,7 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.message) TextView message;
     @BindView(R.id.author) TextView author;
-    @BindView(R.id.root) RelativeLayout root;
+    @BindView(R.id.root) View root;
     @BindView(R.id.back) ImageView back;
     @BindView(R.id.variant1) View variant1;
     @BindView(R.id.variant2) View variant2;
