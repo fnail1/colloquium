@@ -82,14 +82,14 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
             if (paint.measureText(message, lastLine, i) > w) {
                 if (lastWord <= lastLine)
-                    lastWord = i;
+                    lastWord = i + 1;
 
                 TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
                 anchor = tv.getId();
 
                 lastLine = lastWord;
             } else {
-                lastWord = i;
+                lastWord = i + 1;
             }
 
         }

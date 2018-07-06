@@ -2,13 +2,12 @@ package app.laiki.ui.main.questions;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,7 +25,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
 
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.message) TextView shadowTextView;
-    protected final List<TextView> textLines = new ArrayList<>();
+    @BindView(R.id.header) ViewGroup header;
     @BindView(R.id.variant1) View variant1;
     @BindView(R.id.variant1text) TextView variant1Text;
     @BindView(R.id.variant2) View variant2;
@@ -48,6 +47,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
     protected float animationOffsetY;
     protected String message;
     private boolean scheduledAnimatedRevealing;
+    protected final List<TextView> textLines = new ArrayList<>();
 
 
     public AbsQuestionViewHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -62,7 +62,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
         variant2.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
         variant4.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
         shadowTextView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            if (left == oldLeft && top == oldTop && right == oldRight && bottom == oldBottom)
+            if (left == oldLeft && right == oldRight)
                 return;
             layoutMessage();
             if (scheduledAnimatedRevealing) {
@@ -91,6 +91,9 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
             delay += step;
         }
 
+//        animateLayer(shadowTextView, animationOffsetY, delay);
+//        delay += step;
+
         for (TextView textLine : textLines) {
             animateLayer(textLine, animationOffsetY, delay);
             delay += step;
@@ -108,20 +111,20 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
         animateLayer(variant4, animationOffsetY, delay);
         delay += step;
 
-        if (next != null)
-            animateLayer(next, animationOffsetY, delay);
+        if (skip != null)
+            animateLayer(skip, animationOffsetY, delay);
     }
 
     protected void animateLayer(@NonNull View view, float offset, int delay) {
         view.setTranslationY(offset);
-        float alpha = view.getAlpha();
+        float targetAlpha = view.getAlpha();
         view.setAlpha(0);
 
         view.animate()
                 .setStartDelay(delay)
                 .setDuration(300)
                 .translationY(0)
-                .alpha(alpha);
+                .alpha(targetAlpha);
 
     }
 
@@ -131,5 +134,71 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
         layoutMessage();
     }
 
-    protected abstract void layoutMessage();
+    protected void layoutMessage() {
+        int w = shadowTextView.getWidth();
+        if (w == 0)
+            return;
+
+        for (TextView textLine : textLines) {
+            header.removeView(textLine);
+        }
+
+        textLines.clear();
+
+        if (message == null)
+            return;
+
+        char[] chars = message.toCharArray();
+        int lastWord = 0;
+        int lastLine = 0;
+        TextPaint paint = shadowTextView.getPaint();
+        LayoutInflater inflater = LayoutInflater.from(shadowTextView.getContext());
+        int anchor = R.id.icon;
+
+
+        for (int i = 0, charsLength = chars.length; i < charsLength; i++) {
+            char c = chars[i];
+            if (!Character.isWhitespace(c))
+                continue;
+
+            if (paint.measureText(message, lastLine, i) > w) {
+                if (lastWord <= lastLine)
+                    lastWord = i + 1;
+
+                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
+                anchor = tv.getId();
+
+                lastLine = lastWord;
+            } else {
+                lastWord = i + 1;
+            }
+
+        }
+
+        if (lastLine < message.length()) {
+            if (lastWord > lastLine && paint.measureText(message, lastLine, message.length()) > w) {
+                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
+                lastLine = lastWord;
+                anchor = tv.getId();
+            }
+            TextView tv = inflateTextView(inflater, anchor, chars, lastLine, message.length());
+        }
+
+    }
+
+    @NonNull
+    protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
+        TextView tv = (TextView) inflater.inflate(R.layout.item_question_text, header, false);
+        tv.setId(View.generateViewId());
+        tv.setText(chars, start, end - start);
+
+        header.addView(tv);
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tv.getLayoutParams();
+        lp.topMargin = textLines.isEmpty() ? (int) dpToPx(root.getContext(), 8) : -(int) dpToPx(root.getContext(), 2);
+        tv.setLayoutParams(lp);
+
+        textLines.add(tv);
+        return tv;
+    }
 }

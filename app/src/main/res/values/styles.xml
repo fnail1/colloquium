@@ -95,7 +95,7 @@
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#ff546d79</item>
+        <item name="tabIndicatorColor">@android:color/transparent</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">16dp</item>
         <item name="tabPaddingEnd">16dp</item>
@@ -195,7 +195,7 @@
     </style>
 
     <style name="QuestionTextAppearance">
-        <item name="android:textColor">#000000</item>
+        <item name="android:textColor">#ffffff</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">sans-serif</item>

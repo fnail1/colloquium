@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
                 }
 
                 tabs.setTabTextColors(colorSubtitle, colorTitle);
-                tabs.setSelectedTabIndicatorColor(colorTitle);
+//                tabs.setSelectedTabIndicatorColor(colorTitle);
             }
 
             @Override

@@ -11,19 +11,37 @@
     android:theme="@style/AppThemeDark"
     tools:background="#7030a0">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="@dimen/indent"
-        android:layout_marginTop="128dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_stopscreen"
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="100dp"
+        android:paddingTop="100dp"
+        app:layout_constraintBottom_toTopOf="@id/variants_anchor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="4dp"
+
+            android:contentDescription="@string/icon"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_stopscreen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/message"
@@ -31,13 +49,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="42dp"
         android:layout_marginStart="42dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
         android:textAppearance="@style/QuestionTextAppearance"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon"
         tools:text="С кем хотел бы отправиться в путешествие?"
         tools:visibility="visible"
         />

@@ -32,7 +32,8 @@
         app:tabPadding="0dp"
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
-        app:tabTextAppearance="@style/MainActivityTabTextAppearance"/>
+        app:tabTextAppearance="@style/MainActivityTabTextAppearance"
+        />
 
 
 </android.support.design.widget.CoordinatorLayout>
