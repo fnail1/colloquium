@@ -153,7 +153,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
         int lastLine = 0;
         TextPaint paint = shadowTextView.getPaint();
         LayoutInflater inflater = LayoutInflater.from(shadowTextView.getContext());
-        int anchor = R.id.icon;
+        int anchor = getAnchorViewId();
 
 
         for (int i = 0, charsLength = chars.length; i < charsLength; i++) {
@@ -186,9 +186,17 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
 
     }
 
+    protected int getAnchorViewId() {
+        return R.id.icon;
+    }
+
+    protected int getQuestionTextItemLayoutId() {
+        return R.layout.item_question_text;
+    }
+
     @NonNull
     protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
-        TextView tv = (TextView) inflater.inflate(R.layout.item_question_text, header, false);
+        TextView tv = (TextView) inflater.inflate(getQuestionTextItemLayoutId(), header, false);
         tv.setId(View.generateViewId());
         tv.setText(chars, start, end - start);
 

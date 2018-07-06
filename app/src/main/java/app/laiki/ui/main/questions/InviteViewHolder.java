@@ -53,82 +53,13 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
     }
 
     @Override
-    protected void layoutMessage() {
-        int w = shadowTextView.getWidth();
-        if (w == 0)
-            return;
-
-        for (TextView textLine : textLines) {
-            ((ConstraintLayout) root).removeView(textLine);
-        }
-
-        textLines.clear();
-
-        if (message == null)
-            return;
-
-        char[] chars = message.toCharArray();
-        int lastWord = 0;
-        int lastLine = 0;
-        TextPaint paint = shadowTextView.getPaint();
-        LayoutInflater inflater = LayoutInflater.from(shadowTextView.getContext());
-        int anchor = R.id.title;
-
-
-        for (int i = 0, charsLength = chars.length; i < charsLength; i++) {
-            char c = chars[i];
-            if (!Character.isWhitespace(c))
-                continue;
-
-            if (paint.measureText(message, lastLine, i) > w) {
-                if (lastWord <= lastLine)
-                    lastWord = i + 1;
-
-                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
-                anchor = tv.getId();
-
-                lastLine = lastWord;
-            } else {
-                lastWord = i + 1;
-            }
-
-        }
-
-        if (lastLine < message.length()) {
-            if (lastWord > lastLine && paint.measureText(message, lastLine, message.length()) > w) {
-                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
-                lastLine = lastWord;
-                anchor = tv.getId();
-            }
-            TextView tv = inflateTextView(inflater, anchor, chars, lastLine, message.length());
-        }
-
+    protected int getAnchorViewId() {
+        return R.id.title;
     }
 
-    @NonNull
-    protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
-        ConstraintLayout layout = (ConstraintLayout) this.root;
-
-        ConstraintSet cset = new ConstraintSet();
-
-        TextView tv = (TextView) inflater.inflate(R.layout.item_invite_text, (ViewGroup) root, false);
-        tv.setId(View.generateViewId());
-        tv.setText(chars, start, end - start);
-
-        layout.addView(tv);
-        cset.clone(layout);
-
-        if (textLines.isEmpty())
-            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM, (int) dpToPx(root.getContext(), 7));
-        else
-            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM);
-        cset.connect(tv.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        cset.connect(tv.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-
-        cset.applyTo(layout);
-
-        textLines.add(tv);
-        return tv;
+    @Override
+    protected int getQuestionTextItemLayoutId() {
+        return R.layout.item_invite_text;
     }
 
     @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})

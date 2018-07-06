@@ -190,12 +190,12 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
 
 
         if (answersCounter == 0)
-            return "Мои";
+            return "Ответы";
 
         if (answersCounter > 99)
-            text = "Мои (99+)";
+            text = "Ответы (99+)";
         else
-            text = "Мои (" + answersCounter + ")";
+            text = "Ответы (" + answersCounter + ")";
         SpannableStringBuilder ssb = new SpannableStringBuilder(text);
         ssb.setSpan(new AnswersCounterSpan(), 4, text.length(), SpannableStringBuilder.SPAN_INCLUSIVE_EXCLUSIVE);
         return ssb;
