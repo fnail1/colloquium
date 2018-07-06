@@ -296,18 +296,12 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
             Response<GsonResponse> response = api().answer(question.serverId, question.answer, name,
                     contact1.serverId, contact2.serverId, contact3.serverId, contact4.serverId).execute();
 
-            switch (response.code()) {
-                case HttpURLConnection.HTTP_OK:
-                    break;
-                case HttpURLConnection.HTTP_INTERNAL_ERROR:
-                    throw new ServerException(response);
-                default:
-                    safeThrow(new ServerException(response));
-                    break;
-            }
+            if (response.code() != HttpURLConnection.HTTP_OK)
+                throw new ServerException(response);
 
             question.flags.set(Question.FLAG_SENT, true);
             appData.questions.save(question);
+
         }
     }
 

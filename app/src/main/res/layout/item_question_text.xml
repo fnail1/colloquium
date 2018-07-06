@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:layout_width="match_parent"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="12dp"
-          android:layout_marginStart="12dp"
+          android:layout_marginEnd="42dp"
+          android:layout_marginStart="42dp"
+          android:gravity="center_horizontal"
           android:singleLine="true"
           android:textAppearance="@style/QuestionTextAppearance"
+          tools:layout_width="match_parent"
           tools:text="The one that always stays cool under stress"/>

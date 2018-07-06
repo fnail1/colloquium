@@ -21,7 +21,7 @@ import butterknife.BindView;
 
 import static app.laiki.utils.Utils.dpToPx;
 
-public class AbsQuestionViewHolder extends AbsPageViewHolder {
+public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
 
 
     @BindView(R.id.icon) ImageView icon;
@@ -46,7 +46,7 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
     @BindView(R.id.title)
     TextView title;
     protected float animationOffsetY;
-    private String message;
+    protected String message;
     private boolean scheduledAnimatedRevealing;
 
 
@@ -131,95 +131,5 @@ public class AbsQuestionViewHolder extends AbsPageViewHolder {
         layoutMessage();
     }
 
-    private void layoutMessage() {
-        int w = shadowTextView.getWidth();
-        if (w == 0)
-            return;
-
-        for (TextView textLine : textLines) {
-            ((ConstraintLayout) root).removeView(textLine);
-        }
-
-        textLines.clear();
-
-        if (message == null)
-            return;
-
-        char[] chars = message.toCharArray();
-        int lastWord = 0;
-        int lastLine = 0;
-        TextPaint paint = shadowTextView.getPaint();
-        LayoutInflater inflater = LayoutInflater.from(shadowTextView.getContext());
-        int anchor = getAnchor();
-
-
-        for (int i = 0, charsLength = chars.length; i < charsLength; i++) {
-            char c = chars[i];
-            if (!Character.isWhitespace(c))
-                continue;
-
-            if (paint.measureText(message, lastLine, i) > w) {
-                if (lastWord <= lastLine)
-                    lastWord = i;
-
-                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
-                anchor = tv.getId();
-
-                lastLine = lastWord;
-            } else {
-                lastWord = i;
-            }
-
-        }
-
-        if (lastLine < message.length()) {
-            if (lastWord > lastLine && paint.measureText(message, lastLine, message.length()) > w) {
-                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
-                lastLine = lastWord;
-                anchor = tv.getId();
-            }
-            TextView tv = inflateTextView(inflater, anchor, chars, lastLine, message.length());
-        }
-
-    }
-
-    protected int getAnchor() {
-        return R.id.anchor;
-    }
-
-    @NonNull
-    protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
-        ConstraintLayout layout = (ConstraintLayout) this.root;
-
-        ConstraintSet cset = new ConstraintSet();
-
-        TextView tv = (TextView) inflater.inflate(R.layout.item_question_text, (ViewGroup) root, false);
-        tv.setId(View.generateViewId());
-        tv.setText(chars, start, end - start);
-
-        layout.addView(tv);
-
-        if (textLines.isEmpty()) {
-        int margin = (int) dpToPx(root.getContext(), 7);
-            cset.clone(layout);
-            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM, margin);
-        } else {
-            View space = new View(inflater.getContext());
-            space.setId(View.generateViewId());
-            layout.addView(space);
-            cset.clone(layout);
-            int margin = (int) dpToPx(root.getContext(), 2);
-//            cset.constrainWidth(space.getId(), 1);
-            cset.constrainHeight(space.getId(), margin);
-            cset.connect(space.getId(), ConstraintSet.BOTTOM, anchor, ConstraintSet.BOTTOM, margin);
-            cset.connect(tv.getId(), ConstraintSet.TOP, space.getId(), ConstraintSet.TOP);
-        }
-        cset.connect(tv.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        cset.connect(tv.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-
-        cset.applyTo(layout);
-
-        textLines.add(tv);
-        return tv;
-    }
+    protected abstract void layoutMessage();
 }

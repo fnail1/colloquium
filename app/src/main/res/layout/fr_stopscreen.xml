@@ -76,6 +76,7 @@
             android:layout_margin="@dimen/indent"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_invite"
+            android:layout_gravity="center_horizontal"
             android:gravity="start|center_vertical"
             android:text="@string/button_invite"
             />

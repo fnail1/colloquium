@@ -151,7 +151,12 @@ public class QuestionsFragment extends BaseFragment
 
         if (q == null || (q.variant1 == 0 && appService().getLastContactsSync() <= 0)) {
             if (question == null)
-                showEmpty(q);
+                showEmpty();
+
+            if (q == null && !requestSent) {
+                requestSent = true;
+                appService().requestNextQuestion();
+            }
             return;
         }
 
@@ -256,7 +261,7 @@ public class QuestionsFragment extends BaseFragment
         }
     }
 
-    private void showEmpty(Question q) {
+    private void showEmpty() {
         cleanupPage(page1);
         cleanupPage(page2);
         cleanupPage(activePage);
@@ -267,10 +272,7 @@ public class QuestionsFragment extends BaseFragment
         else
             errorMessage = "Ждем следующий вопрос";
         setupPlaceholders(true, errorMessage);
-        if (q == null && !requestSent) {
-            requestSent = true;
-            appService().requestNextQuestion();
-        }
+
     }
 
     private boolean showRateUs(FragmentActivity activity, ServiceState serviceState) {

@@ -3,6 +3,7 @@ package app.laiki.ui.main.questions;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,12 +53,59 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
     }
 
     @Override
-    protected int getAnchor() {
-        return R.id.title;
+    protected void layoutMessage() {
+        int w = shadowTextView.getWidth();
+        if (w == 0)
+            return;
+
+        for (TextView textLine : textLines) {
+            ((ConstraintLayout) root).removeView(textLine);
+        }
+
+        textLines.clear();
+
+        if (message == null)
+            return;
+
+        char[] chars = message.toCharArray();
+        int lastWord = 0;
+        int lastLine = 0;
+        TextPaint paint = shadowTextView.getPaint();
+        LayoutInflater inflater = LayoutInflater.from(shadowTextView.getContext());
+        int anchor = R.id.title;
+
+
+        for (int i = 0, charsLength = chars.length; i < charsLength; i++) {
+            char c = chars[i];
+            if (!Character.isWhitespace(c))
+                continue;
+
+            if (paint.measureText(message, lastLine, i) > w) {
+                if (lastWord <= lastLine)
+                    lastWord = i;
+
+                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
+                anchor = tv.getId();
+
+                lastLine = lastWord;
+            } else {
+                lastWord = i;
+            }
+
+        }
+
+        if (lastLine < message.length()) {
+            if (lastWord > lastLine && paint.measureText(message, lastLine, message.length()) > w) {
+                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
+                lastLine = lastWord;
+                anchor = tv.getId();
+            }
+            TextView tv = inflateTextView(inflater, anchor, chars, lastLine, message.length());
+        }
+
     }
 
     @NonNull
-    @Override
     protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
         ConstraintLayout layout = (ConstraintLayout) this.root;
 

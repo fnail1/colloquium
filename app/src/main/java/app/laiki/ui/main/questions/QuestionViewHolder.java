@@ -1,7 +1,14 @@
 package app.laiki.ui.main.questions;
 
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.text.TextPaint;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.widget.TextView;
 
@@ -14,6 +21,7 @@ import butterknife.OnClick;
 
 import static app.laiki.App.photos;
 import static app.laiki.App.screenMetrics;
+import static app.laiki.utils.Utils.dpToPx;
 
 @SuppressWarnings("ConstantConditions")
 public class QuestionViewHolder extends AbsQuestionViewHolder {
@@ -110,14 +118,15 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
                     @Override
                     protected void applyTransformation(float alpha, Transformation t) {
                         super.applyTransformation(alpha, t);
-                        float alphaButtonState = (alpha - .0f) / .5f;
-                        float scale = 1 - (float) (maxScaleAmplitude * Math.sin(alpha * 4 * Math.PI));
+                        float alphaButtonState = (alpha - .0f) / .3f;
+                        float amplitude = maxScaleAmplitude * (1 - alpha) * (1 - alpha);
+                        float scale = 1 - (float) (amplitude * Math.sin(alpha * 8 * Math.PI));
 
 //                        trace("A=%.3f, state=%.3f, scale=%.3f", alpha, alphaButtonState, scale);
 
-                        if (.0 < alpha && alpha <= .5) {
+                        if (.0 < alphaButtonState && alphaButtonState <= 1) {
                             background.setState(buttonState, alphaButtonState);
-                        } else if (!stateAnimationComplete && alpha > .5) {
+                        } else if (!stateAnimationComplete && alphaButtonState >= 1) {
                             background.setState(buttonState, 1);
                             stateAnimationComplete = true;
                         }
@@ -146,7 +155,8 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
                         }
                     });
                 }
-                a.setDuration(2000);
+                a.setInterpolator(new LinearInterpolator());
+                a.setDuration(1500);
                 view.startAnimation(a);
             }
         }
@@ -197,6 +207,96 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
                 .setDuration(500)
                 .alpha(1)
                 .translationY(0);
+    }
+
+    @Override
+    protected void layoutMessage() {
+        int w = shadowTextView.getWidth();
+        if (w == 0)
+            return;
+
+        for (TextView textLine : textLines) {
+            ((ConstraintLayout) root).removeView(textLine);
+        }
+
+        textLines.clear();
+
+        if (message == null)
+            return;
+
+        char[] chars = message.toCharArray();
+        int lastWord = 0;
+        int lastLine = 0;
+        TextPaint paint = shadowTextView.getPaint();
+        LayoutInflater inflater = LayoutInflater.from(shadowTextView.getContext());
+        int anchor = R.id.icon;
+
+
+        for (int i = 0, charsLength = chars.length; i < charsLength; i++) {
+            char c = chars[i];
+            if (!Character.isWhitespace(c))
+                continue;
+
+            if (paint.measureText(message, lastLine, i) > w) {
+                if (lastWord <= lastLine)
+                    lastWord = i;
+
+                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
+                anchor = tv.getId();
+
+                lastLine = lastWord;
+            } else {
+                lastWord = i;
+            }
+
+        }
+
+        if (lastLine < message.length()) {
+            if (lastWord > lastLine && paint.measureText(message, lastLine, message.length()) > w) {
+                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, lastWord);
+                lastLine = lastWord;
+                anchor = tv.getId();
+            }
+            TextView tv = inflateTextView(inflater, anchor, chars, lastLine, message.length());
+        }
+
+    }
+
+    @NonNull
+    protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
+        ConstraintLayout layout = (ConstraintLayout) this.root;
+
+        ConstraintSet cset = new ConstraintSet();
+
+        TextView tv = (TextView) inflater.inflate(R.layout.item_question_text, (ViewGroup) root, false);
+        tv.setId(View.generateViewId());
+        tv.setText(chars, start, end - start);
+
+        layout.addView(tv);
+
+        if (textLines.isEmpty()) {
+            int margin = (int) dpToPx(root.getContext(), 7);
+            cset.clone(layout);
+            cset.connect(tv.getId(), ConstraintSet.TOP, anchor, ConstraintSet.BOTTOM, margin);
+        } else {
+            View space = new View(inflater.getContext());
+            space.setId(View.generateViewId());
+            layout.addView(space);
+            cset.clone(layout);
+            int margin = (int) dpToPx(root.getContext(), 2);
+//            cset.constrainWidth(space.getId(), 1);
+            cset.constrainHeight(space.getId(), margin);
+            cset.connect(space.getId(), ConstraintSet.BOTTOM, anchor, ConstraintSet.BOTTOM, margin);
+            cset.connect(tv.getId(), ConstraintSet.TOP, space.getId(), ConstraintSet.TOP);
+        }
+
+        cset.connect(tv.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        cset.connect(tv.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+
+        cset.applyTo(layout);
+
+        textLines.add(tv);
+        return tv;
     }
 
     public interface QuestionAnsweredCallback {
