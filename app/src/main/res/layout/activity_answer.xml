@@ -43,7 +43,6 @@
                 android:layout_height="@dimen/question_icon_size"
                 android:padding="@dimen/question_icon_padding"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/indent"
                 android:scaleType="fitXY"
                 tools:background="#7fff33ff"/>
 
@@ -51,8 +50,10 @@
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/indent"
+                android:layout_marginTop="20dp"
                 android:textAppearance="@style/SubtitleTextAppearance"
+                android:textAllCaps="true"
+                android:textColor="@color/mw_fade_white_70"
                 tools:text="Девушка, 8 класс"
                 />
 
@@ -61,7 +62,9 @@
                 android:id="@+id/message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/indent"
+                android:layout_marginEnd="@dimen/indent"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/QuestionTextAppearance"
                 android:textStyle="bold"
@@ -70,13 +73,12 @@
                 />
 
 
-            <TextView
-                android:id="@+id/copyright"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:textAppearance="@style/SubtitleTextAppearance"
-                tools:text="#ЧСН ❤️ chsn.app"/>
+                android:src="@drawable/hashtag"
+                android:layout_marginTop="28dp"
+                />
         </LinearLayout>
 
 

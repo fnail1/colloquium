@@ -31,7 +31,6 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.author) TextView author;
     @BindView(R.id.root) View root;
     @BindView(R.id.back) ImageView back;
-    @BindView(R.id.copyright) TextView copyright;
     private Answer answer;
 
     @Override
@@ -57,15 +56,12 @@ public class AnswerActivity extends BaseActivity {
         switch (answer.gender) {
             case CAMEL:
                 icon.setImageResource(R.drawable.ic_camel);
-                copyright.setText("#ЧСН ❤️ chsn.app");
                 break;
             case MALE:
                 icon.setImageResource(R.drawable.ic_male);
-                copyright.setText("#ЧСН ❤️ chsn.app");
                 break;
             case FEMALE:
                 icon.setImageResource(R.drawable.ic_female);
-                copyright.setText("#ЧСН \uD83D\uDC99️ chsn.app");
                 break;
         }
 
