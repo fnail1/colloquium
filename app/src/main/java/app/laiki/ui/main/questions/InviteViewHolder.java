@@ -44,7 +44,8 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
         }
         icon.setImageResource(R.drawable.ic_question_invite);
 
-        setMessage("Каких друзей ты бы позвал в ЧСН? Мы отправим им приглашения. Для тебя это бесплатно и анонимно.");
+        setMessage("Party time!\n" +
+                "Кого позовешь в ЧСН?");
 
     }
 

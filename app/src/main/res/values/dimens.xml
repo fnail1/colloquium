@@ -10,7 +10,8 @@
     <dimen name="item_height_large">56dp</dimen>
     <dimen name="notification_image_size">64dp</dimen>
     <dimen name="grid_item_width">168dp</dimen>
-    <dimen name="question_icon_size">92dp</dimen>
+    <dimen name="question_icon_size">72dp</dimen>
+    <dimen name="question_icon_padding">12dp</dimen>
     <dimen name="question_screen_item_reveal_offset">30dp</dimen>
     <dimen name="button_corner_radius">28dp</dimen>
     <dimen name="variant_button_height">52dp</dimen>

@@ -29,9 +29,9 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:padding="12dp"
+            android:layout_width="@dimen/question_icon_size"
+            android:layout_height="@dimen/question_icon_size"
+            android:padding="@dimen/question_icon_padding"
             android:contentDescription="@string/icon"
             android:scaleType="fitXY"
             android:src="@drawable/ic_stopscreen"

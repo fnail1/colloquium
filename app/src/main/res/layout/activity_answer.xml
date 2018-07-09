@@ -39,11 +39,11 @@
 
             <ImageView
                 android:id="@+id/icon"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="@dimen/question_icon_size"
+                android:layout_height="@dimen/question_icon_size"
+                android:padding="@dimen/question_icon_padding"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/indent"
-                android:padding="12dp"
                 android:scaleType="fitXY"
                 tools:background="#7fff33ff"/>
 

@@ -169,6 +169,11 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
                 anchor = tv.getId();
 
                 lastLine = lastWord;
+            } else if (c == '\n') {
+                TextView tv = inflateTextView(inflater, anchor, chars, lastLine, i + 1);
+                anchor = tv.getId();
+                lastWord = i + 1;
+                lastLine = lastWord;
             } else {
                 lastWord = i + 1;
             }
