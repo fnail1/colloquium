@@ -136,8 +136,7 @@
     <string name="message_wrong_auth_code">Упс!… Код неверный!</string>
     <string name="button_edit_phone">Ошиблись номером?</string>
     <string name="button_repeat_auth_code">Отправить еще раз?</string>
-    <string name="title_stopscreen">Воу!</string>
-    <string name="message_stopscreen">Новые вопросы будут доступны через:</string>
+    <string name="message_stopscreen">Новые вопросы\nбудут через:\n%s</string>
     <string name="message_skip_stopscreen">Хочешь быстрее?</string>
     <string name="button_invite">Пригласить друга</string>
     <string name="title_question_invite">Party time!</string>
