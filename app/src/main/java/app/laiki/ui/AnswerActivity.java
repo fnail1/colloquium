@@ -33,7 +33,6 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.back) ImageView back;
     @BindView(R.id.copyright) TextView copyright;
     private Answer answer;
-    private boolean readSent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,17 +41,12 @@ public class AnswerActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         long id = getIntent().getLongExtra(EXTRA_ANSWER_ID, 0);
-
-        ThreadPool.DB.execute(() -> {
-            answer = data().answers.selectById(id);
-            HashMap<String, Contact> contacts = data().contacts.select(answer).toMap(c -> c.serverId);
-            runOnUiThread(() -> bindData(contacts));
-        });
+        answer = data().answers.selectById(id);
+        bindData();
     }
 
-    private void bindData(HashMap<String, Contact> contacts) {
-        if (!readSent) {
-            readSent = true;
+    private void bindData() {
+        if (!answer.flags.get(Answer.FLAG_READ)) {
             statistics().answers().read();
             appService().answerRead(answer);
         }
@@ -83,7 +77,7 @@ public class AnswerActivity extends BaseActivity {
     private String formatAuthor() {
         switch (answer.gender) {
             case CAMEL:
-                switch (answer.age){
+                switch (answer.age) {
                     case GRADE6:
                         return "Некто из 6 класса";
                     case GRADE7:
@@ -113,7 +107,7 @@ public class AnswerActivity extends BaseActivity {
                 }
                 break;
             case MALE:
-                switch (answer.age){
+                switch (answer.age) {
                     case GRADE6:
                         return "От парня из 6 класса";
                     case GRADE7:
@@ -143,7 +137,7 @@ public class AnswerActivity extends BaseActivity {
                 }
                 break;
             case FEMALE:
-                switch (answer.age){
+                switch (answer.age) {
                     case GRADE6:
                         return "От девочки из 6 класса";
                     case GRADE7:
