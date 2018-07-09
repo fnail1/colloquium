@@ -49,7 +49,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
-        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textAppearance="@style/QuestionTextAppearance"
         android:visibility="invisible"
         tools:text="С кем хотел бы отправиться в путешествие?"
         tools:visibility="visible"

@@ -49,16 +49,6 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
     }
 
-    @Override
-    protected int getAnchorViewId() {
-        return R.id.title;
-    }
-
-    @Override
-    protected int getQuestionTextItemLayoutId() {
-        return R.layout.item_invite_text;
-    }
-
     @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})
     public void onViewClicked(View view) {
         switch (view.getId()) {
