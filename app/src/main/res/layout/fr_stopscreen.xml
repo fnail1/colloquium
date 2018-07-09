@@ -32,6 +32,7 @@
             android:gravity="center_horizontal"
             android:text="@string/message_stopscreen"
             android:textAppearance="@style/QuestionTextAppearance"
+            android:lineSpacingExtra="2sp"
             android:textStyle="bold"
             />
 
@@ -61,21 +62,21 @@
             android:paddingEnd="30dp"
             android:paddingStart="30dp"
 
-            tools:background="@drawable/bg_white_button"
+            android:background="@drawable/bg_white_button"
             >
 
             <TextView
-                android:id="@+id/variant1text"
+                android:id="@+id/contactsText"
                 style="@style/VariantButtonText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_invite"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/button_invite"
                 android:textColor="#000000"
-
                 />
 
         </FrameLayout>

@@ -58,16 +58,14 @@
         <TextView
             android:id="@+id/contacts"
             style="@style/AccentButton"
+            android:textAppearance="@style/VariantButtonText"
             android:layout_width="276dp"
             android:layout_height="58dp"
             android:layout_gravity="center_horizontal|bottom"
             android:gravity="center"
             android:layout_marginBottom="32dp"
-            android:fontFamily="sans-serif"
             android:text="@string/contacts"
             android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:textStyle="bold"
             />
     </FrameLayout>
 

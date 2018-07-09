@@ -31,8 +31,6 @@ public class StopScreenViewHolder extends AbsPageViewHolder {
     public StopScreenViewHolder(View root, Callback callback) {
         super(root);
         this.callback = callback;
-        contacts.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
-
     }
 
     @OnClick(R.id.contacts)
