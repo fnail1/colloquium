@@ -14,8 +14,12 @@ import android.support.annotation.Nullable;
 import app.laiki.R;
 import app.laiki.utils.Utils;
 
+import static app.laiki.diagnostics.DebugUtils.safeThrow;
+import static app.laiki.diagnostics.Logger.trace;
+
 public class VariantButtonBackgroundDrawable extends Drawable {
     private ButtonState buttonState = ButtonState.DEFAULT;
+    private ButtonState previouseState = ButtonState.DEFAULT;
     private float alpha;
     private final Paint layer1Paint;
     private final Paint layer2Paint;
@@ -34,29 +38,44 @@ public class VariantButtonBackgroundDrawable extends Drawable {
 
     @Override
     public void draw(@NonNull Canvas canvas) {
+        trace("%d %s -> %s, %.3f", hashCode(), previouseState, buttonState, alpha);
+
         Rect bounds = getBounds();
-
-        switch (buttonState) {
-            case DEFAULT:
-                layer1Paint.setAlpha((int) (255 * (0.5f + alpha / 2)));
-                canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer1Paint);
-            case DISABLED:
-                layer1Paint.setAlpha((int) (255 * ((0.5f + (1 - alpha) / 2))));
-                canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer1Paint);
-                break;
-            case SELECTED:
-                if (alpha < 1) {
+        if (alpha == 1 || previouseState == buttonState) {
+            switch (buttonState) {
+                case DEFAULT:
+                    layer1Paint.setAlpha(255);
                     canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer1Paint);
-                    canvas.save();
-                    canvas.clipRect(bounds.left, bounds.top, bounds.left + bounds.width() * alpha, bounds.bottom);
-                }
-                canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer2Paint);
-                if (alpha < 1) {
-                    canvas.restore();
-                }
-                break;
+                    break;
+                case DISABLED:
+                    layer1Paint.setAlpha(127);
+                    canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer1Paint);
+                    break;
+                case SELECTED:
+                    layer2Paint.setAlpha(255);
+                    canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer2Paint);
+                    break;
+            }
+        } else if ((previouseState == ButtonState.DISABLED && buttonState == ButtonState.DEFAULT) ||
+                (previouseState == ButtonState.DEFAULT && buttonState == ButtonState.DISABLED)) {
+            layer1Paint.setAlpha((int) (255 * (0.5f + alpha / 2)));
+            canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer1Paint);
+        } else if (previouseState == ButtonState.DEFAULT && buttonState == ButtonState.SELECTED) {
+            layer1Paint.setAlpha(255);
+            canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer1Paint);
+            canvas.save();
+            layer2Paint.setAlpha(255);
+            canvas.clipRect(bounds.left, bounds.top, bounds.left + bounds.width() * alpha, bounds.bottom);
+            canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer2Paint);
+            canvas.restore();
+        } else if (previouseState == ButtonState.SELECTED && buttonState == ButtonState.DEFAULT) {
+            layer1Paint.setAlpha(255);
+            canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer1Paint);
+            layer2Paint.setAlpha((int) (255 * (1 - alpha)));
+            canvas.drawRoundRect(bounds.left, bounds.top, bounds.right, bounds.bottom, radius, radius, layer2Paint);
+        } else {
+            safeThrow(new Exception("unsupportetd transitions: " + previouseState + " -> " + buttonState), true);
         }
-
     }
 
     @Override
@@ -75,6 +94,9 @@ public class VariantButtonBackgroundDrawable extends Drawable {
     }
 
     public void setState(ButtonState buttonState, float alpha) {
+        if (buttonState != this.buttonState) {
+            previouseState = this.buttonState;
+        }
         this.buttonState = buttonState;
         this.alpha = alpha;
 

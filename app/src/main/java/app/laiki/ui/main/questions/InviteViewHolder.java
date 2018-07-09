@@ -3,8 +3,9 @@ package app.laiki.ui.main.questions;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.Transformation;
 import android.widget.TextView;
 
 import java.util.List;
@@ -13,25 +14,32 @@ import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.types.Choice;
 import app.laiki.service.AppService;
+import app.laiki.ui.views.VariantButtonBackgroundDrawable;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
+import static app.laiki.App.screenMetrics;
 import static app.laiki.App.statistics;
 import static app.laiki.toolkit.collections.Query.query;
 
 public class InviteViewHolder extends AbsQuestionViewHolder {
-    public static final int ANIMATION_DURATION = 500;
+    public static final int ANIMATION_DURATION = 1500;
 
     private final Callback callback;
 
-    private final TextView[] variants;
+    private final TextView[] variantsTextViews;
+    private final View[] variants;
+    @BindView(R.id.subtitle) TextView subtitle;
     private Contact[] contacts;
+    private SelectedVariantAnimationState selectedVariantAnimationState = SelectedVariantAnimationState.IDLE;
 
     public InviteViewHolder(LayoutInflater inflater, ViewGroup parent, Callback callback) {
         super(inflater.inflate(R.layout.fr_question_invite, parent, false));
         this.callback = callback;
-        variants = new TextView[]{variant1Text, variant2Text, variant3Text, variant4Text};
+        variantsTextViews = new TextView[]{variant1Text, variant2Text, variant3Text, variant4Text};
+        variants = new View[]{variant1, variant2, variant3, variant4};
     }
 
     public void bind(Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
@@ -39,14 +47,58 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
         root.setBackground(colorScheme.background(root.getContext()));
         icon.setBackground(colorScheme.highlight(root.getContext()));
         this.contacts = new Contact[]{contact1, contact2, contact3, contact4};
-        for (int i = 0; i < variants.length; i++) {
-            variants[i].setText(contacts[i].displayName);
+        for (int i = 0; i < variantsTextViews.length; i++) {
+            variantsTextViews[i].setText(contacts[i].displayName);
         }
         icon.setImageResource(R.drawable.ic_question_invite);
 
         setMessage("Party time!\n" +
                 "Кого позовешь в ЧСН?");
 
+    }
+
+    @Override
+    public void animateReveal() {
+        if (shadowTextView.getWidth() == 0) {
+            scheduledAnimatedRevealing = true;
+            return;
+        }
+        int delay = 150;
+        int step = 50;
+
+        animateLayer(icon, animationOffsetY, delay);
+        delay += step;
+
+        if (title != null) {
+            animateLayer(title, animationOffsetY, delay);
+            delay += step;
+        }
+
+//        animateLayer(shadowTextView, animationOffsetY, delay);
+//        delay += step;
+
+        for (TextView textLine : textLines) {
+            animateLayer(textLine, animationOffsetY, delay);
+            delay += step;
+        }
+
+        animateLayer(variant1, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(variant2, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(variant3, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(variant4, animationOffsetY, delay);
+        delay += step;
+
+        animateLayer(subtitle, animationOffsetY, delay);
+        delay += step;
+
+        if (skip != null)
+            animateLayer(skip, animationOffsetY, delay);
     }
 
     @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})
@@ -73,9 +125,10 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
     private void onContactsSelected(Choice choice) {
         statistics().contacts().inviteSent();
         Contact contact = contacts[choice.ordinal()];
-        TextView v = variants[choice.ordinal()];
-        v.setSelected(true);
-        v.setEnabled(false);
+        for (View variant : variants) {
+            variant.setEnabled(false);
+        }
+
         appService().contactUpdated.add(new AppService.ContactUpdatedEventHandler() {
             @Override
             public void onContactUpdated(Contact args) {
@@ -86,6 +139,7 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
             }
         });
         appService().sendInvite(contact);
+        animateSelectedVariant(choice);
     }
 
     private synchronized void onInviteRequested(Contact args, Choice choice) {
@@ -99,8 +153,7 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
             root.post(() -> {
                 contacts[choice.ordinal()] = c;
-                TextView v = variants[choice.ordinal()];
-                bindContactWithAnimation(c, v);
+                bindContactWithAnimation(choice);
 
             });
             break;
@@ -110,10 +163,38 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
             root.post(callback::onNextClick);
     }
 
-    private void bindContactWithAnimation(Contact c, TextView v) {
-        Animation out = new AlphaAnimation(0, 1);
-        out.setDuration(ANIMATION_DURATION);
-        out.setAnimationListener(new Animation.AnimationListener() {
+    private void animateSelectedVariant(Choice choice) {
+        View view = variants[choice.ordinal()];
+
+        selectedVariantAnimationState = SelectedVariantAnimationState.IN;
+        final VariantButtonBackgroundDrawable background = (VariantButtonBackgroundDrawable) view.getBackground();
+
+        Animation a = new Animation() {
+            private boolean stateAnimationComplete;
+            private float maxScaleAmplitude = (float) (screenMetrics().screen.width - view.getWidth()) / view.getWidth();
+            VariantButtonBackgroundDrawable.ButtonState buttonState = VariantButtonBackgroundDrawable.ButtonState.SELECTED;
+
+            @Override
+            protected void applyTransformation(float alpha, Transformation t) {
+                super.applyTransformation(alpha, t);
+                float alphaButtonState = (alpha - .0f) / .3f;
+
+                if (.0 < alphaButtonState && alphaButtonState <= 1) {
+                    background.setState(buttonState, alphaButtonState);
+                } else if (!stateAnimationComplete && alphaButtonState >= 1) {
+                    background.setState(buttonState, 1);
+                    stateAnimationComplete = true;
+                }
+
+                float amplitude = maxScaleAmplitude * (1 - alpha) * (1 - alpha);
+                float scale = 1 - (float) (amplitude * Math.sin(alpha * 8 * Math.PI));
+                view.setScaleX(scale);
+                view.setScaleY(scale);
+
+            }
+        };
+
+        a.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -121,7 +202,10 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                v.setEnabled(true);
+                view.setScaleX(1);
+                view.setScaleY(1);
+                selectedVariantAnimationState = SelectedVariantAnimationState.SELECTED;
+                bindContactWithAnimation(choice);
             }
 
             @Override
@@ -130,9 +214,50 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
             }
         });
 
-        Animation in = new AlphaAnimation(1, 0);
-        in.setDuration(ANIMATION_DURATION);
-        in.setAnimationListener(new Animation.AnimationListener() {
+        a.setInterpolator(new LinearInterpolator());
+        a.setDuration(1500);
+        view.startAnimation(a);
+    }
+
+    private void bindContactWithAnimation(Choice choice) {
+        if (selectedVariantAnimationState != SelectedVariantAnimationState.SELECTED)
+            return;
+        Contact c = contacts[choice.ordinal()];
+
+        if (c.flags.get(Contact.FLAG_INVITE_REQUESTED))
+            return;
+
+        selectedVariantAnimationState = SelectedVariantAnimationState.OUT_STAGE1;
+
+        final VariantButtonBackgroundDrawable background = (VariantButtonBackgroundDrawable) variants[choice.ordinal()].getBackground();
+
+        TextView v = variantsTextViews[choice.ordinal()];
+
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float alpha, Transformation t) {
+                super.applyTransformation(alpha, t);
+                if (alpha < .5f) {
+                    v.setAlpha(1 - 2 * alpha);
+                    background.setState(VariantButtonBackgroundDrawable.ButtonState.DEFAULT, alpha * 2);
+                    return;
+                }
+
+                if (selectedVariantAnimationState == SelectedVariantAnimationState.OUT_STAGE1) {
+                    v.setAlpha(0);
+                    v.setText(c.displayName);
+                    background.setState(VariantButtonBackgroundDrawable.ButtonState.DEFAULT, 1);
+                    selectedVariantAnimationState = SelectedVariantAnimationState.OUT_STAGE2;
+                }
+
+                if (selectedVariantAnimationState == SelectedVariantAnimationState.OUT_STAGE2) {
+                    v.setAlpha(alpha * 2 - 1.0f);
+                }
+            }
+        };
+
+        a.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -140,9 +265,11 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                v.setText(c.displayName);
-                v.setSelected(false);
-                v.startAnimation(out);
+                v.setAlpha(1);
+                for (View variant : variants) {
+                    variant.setEnabled(true);
+                }
+                selectedVariantAnimationState = SelectedVariantAnimationState.IDLE;
             }
 
             @Override
@@ -151,10 +278,24 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
             }
         });
 
-        v.startAnimation(in);
+        a.setDuration(ANIMATION_DURATION);
+        v.startAnimation(a);
+
+//        background.setState(VariantButtonBackgroundDrawable.ButtonState.DEFAULT, 1);
+//        v.setText(c.displayName);
+//        v.setAlpha(1);
+//        for (View variant : variants) {
+//            variant.setEnabled(true);
+//        }
+//        selectedVariantAnimationState = SelectedVariantAnimationState.IDLE;
     }
 
     public interface Callback {
         void onNextClick();
+    }
+
+    private enum SelectedVariantAnimationState {
+        IN, SELECTED, OUT_STAGE1, OUT_STAGE2, IDLE
+
     }
 }

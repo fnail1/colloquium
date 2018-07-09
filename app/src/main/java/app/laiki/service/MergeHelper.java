@@ -60,6 +60,7 @@ public class MergeHelper {
         dst.answerName = src.selected_name;
         dst.createdAt = dateTimeService().parseServerTime(src.created_at);
         dst.flags.set(Answer.FLAG_READ, src.is_viewed);
+        dst.flags.set(Answer.FLAG_SENT, src.is_viewed);
         dst.gender = src.sex;
         dst.age = src.user_education;
 

@@ -114,10 +114,6 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
                     protected void applyTransformation(float alpha, Transformation t) {
                         super.applyTransformation(alpha, t);
                         float alphaButtonState = (alpha - .0f) / .3f;
-                        float amplitude = maxScaleAmplitude * (1 - alpha) * (1 - alpha);
-                        float scale = 1 - (float) (amplitude * Math.sin(alpha * 8 * Math.PI));
-
-//                        trace("A=%.3f, state=%.3f, scale=%.3f", alpha, alphaButtonState, scale);
 
                         if (.0 < alphaButtonState && alphaButtonState <= 1) {
                             background.setState(buttonState, alphaButtonState);
@@ -126,6 +122,8 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
                             stateAnimationComplete = true;
                         }
                         if (buttonState == VariantButtonBackgroundDrawable.ButtonState.SELECTED) {
+                            float amplitude = maxScaleAmplitude * (1 - alpha) * (1 - alpha);
+                            float scale = 1 - (float) (amplitude * Math.sin(alpha * 8 * Math.PI));
                             view.setScaleX(scale);
                             view.setScaleY(scale);
                         }

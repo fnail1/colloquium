@@ -46,7 +46,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
     TextView title;
     protected float animationOffsetY;
     protected String message;
-    private boolean scheduledAnimatedRevealing;
+    protected boolean scheduledAnimatedRevealing;
     protected final List<TextView> textLines = new ArrayList<>();
 
 
