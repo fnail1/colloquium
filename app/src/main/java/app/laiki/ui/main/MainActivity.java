@@ -197,7 +197,7 @@ public class MainActivity extends BaseActivity implements AppService.AnswerUpdat
         else
             text = "Ответы (" + answersCounter + ")";
         SpannableStringBuilder ssb = new SpannableStringBuilder(text);
-        ssb.setSpan(new AnswersCounterSpan(), 4, text.length(), SpannableStringBuilder.SPAN_INCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new AnswersCounterSpan(), 7, text.length(), SpannableStringBuilder.SPAN_INCLUSIVE_EXCLUSIVE);
         return ssb;
     }
 

@@ -203,7 +203,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
         header.addView(tv);
 
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tv.getLayoutParams();
-        lp.topMargin = textLines.isEmpty() ? (int) dpToPx(root.getContext(), 8) : -(int) dpToPx(root.getContext(), 2);
+        lp.topMargin = textLines.isEmpty() ? (int) dpToPx(root.getContext(), 4) : -(int) dpToPx(root.getContext(), 2);
         tv.setLayoutParams(lp);
 
         textLines.add(tv);

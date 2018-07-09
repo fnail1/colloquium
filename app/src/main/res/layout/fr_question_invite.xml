@@ -34,7 +34,6 @@
             android:layout_marginBottom="@dimen/indent"
             android:scaleType="fitXY"
             android:src="@drawable/ic_stopscreen"
-            app:layout_constraintBottom_toTopOf="@id/anchor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             />
@@ -52,7 +51,6 @@
             android:text="@string/title_question_invite"
             android:textAppearance="@style/TitleTextAppearance"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/anchor"
             />
 
     </LinearLayout>

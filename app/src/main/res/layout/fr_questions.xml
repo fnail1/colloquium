@@ -22,8 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="64dp"
         android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="@color/mw_fade_white_70"
         tools:text="11/33"
         />
 

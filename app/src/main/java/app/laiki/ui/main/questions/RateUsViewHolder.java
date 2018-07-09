@@ -31,7 +31,7 @@ public class RateUsViewHolder extends AbsQuestionViewHolder {
         variant2Text.setText("Норм");
         variant3Text.setText("ХЗ");
         variant4Text.setText("Чет не оч");
-        root.setBackground(randomBackground(root.getContext()));
+        root.setBackground(randomColorScheme().background(root.getContext()));
         progress.setVisibility(View.GONE);
     }
 

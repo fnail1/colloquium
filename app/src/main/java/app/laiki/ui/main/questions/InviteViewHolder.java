@@ -1,9 +1,5 @@
 package app.laiki.ui.main.questions;
 
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +13,12 @@ import app.laiki.R;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.types.Choice;
 import app.laiki.service.AppService;
-import butterknife.BindView;
 import butterknife.OnClick;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
 import static app.laiki.App.statistics;
 import static app.laiki.toolkit.collections.Query.query;
-import static app.laiki.utils.Utils.dpToPx;
 
 public class InviteViewHolder extends AbsQuestionViewHolder {
     public static final int ANIMATION_DURATION = 500;
@@ -41,7 +35,9 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
     }
 
     public void bind(Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
-        root.setBackground(randomBackground(root.getContext()));
+        ColorScheme colorScheme = randomColorScheme();
+        root.setBackground(colorScheme.background(root.getContext()));
+        icon.setBackground(colorScheme.highlight(root.getContext()));
         this.contacts = new Contact[]{contact1, contact2, contact3, contact4};
         for (int i = 0; i < variants.length; i++) {
             variants[i].setText(contacts[i].displayName);

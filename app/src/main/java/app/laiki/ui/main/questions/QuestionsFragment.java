@@ -296,7 +296,7 @@ public class QuestionsFragment extends BaseFragment
             int i = prefs().serviceState().questionNumber;
             int n = prefs().config().questionsFrameSize;
             counter.setVisibility(View.VISIBLE);
-            counter.setText("" + ((i % n) + 1) + "/" + n);
+            counter.setText("" + ((i % n) + 1) + " / " + n);
         } else {
             counter.setVisibility(View.GONE);
         }

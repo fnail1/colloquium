@@ -54,7 +54,9 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
         if (question == null)
             return;
 
-        root.setBackground(randomBackground(root.getContext(), question.uniqueId.hashCode()));
+        ColorScheme colorScheme = randomColorScheme(question.uniqueId.hashCode());
+        root.setBackground(colorScheme.background(root.getContext()));
+        icon.setBackground(colorScheme.highlight(root.getContext()));
         photos().attach(icon, question.emojiUrl)
                 .size(
                         icon.getResources().getDimensionPixelOffset(R.dimen.question_icon_size),
