@@ -184,7 +184,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
                 return;
             } catch (IOException e) {
                 e.printStackTrace();
-                onError("Сервер не доступен");
+                onError();
                 return;
             } catch (ServerException e) {
                 if (e.getCode() == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -193,7 +193,7 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
                 }
                 safeThrow(e);
             }
-            onError("Что-то пошло не так, но мне некогда разбираться");
+            onError();
 
         });
     }
@@ -214,13 +214,13 @@ public class LoginPage3CodeViewHolder implements LoginActivity.LoginPageViewHold
 
     }
 
-    private void onError(String message) {
+    private void onError() {
         LoginActivity activity = (LoginActivity) Utils.getActivity(root);
         if (activity == null)
             return;
 
         activity.runOnUiThread(() -> {
-            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.error_common, Toast.LENGTH_SHORT).show();
             setViewMode(ViewMode.WAIT_CODE_2);
         });
     }

@@ -101,7 +101,7 @@ public class LoginPage6EducationViewHolder implements LoginActivity.LoginPageVie
                 e.printStackTrace();
             }
 
-            onError("Что-то пошло не так, но  мне некогда разбираться");
+            onError();
 
         });
     }
@@ -115,13 +115,13 @@ public class LoginPage6EducationViewHolder implements LoginActivity.LoginPageVie
         });
     }
 
-    private void onError(String message) {
+    private void onError() {
         LoginActivity activity = (LoginActivity) Utils.getActivity(root);
         if (activity == null)
             return;
 
         activity.runOnUiThread(() -> {
-            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.error_common, Toast.LENGTH_SHORT).show();
         });
     }
 

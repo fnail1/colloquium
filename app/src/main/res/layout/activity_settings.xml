@@ -73,7 +73,7 @@
             android:gravity="center_vertical"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
-            android:text="@string/exit"
+            android:text="@string/logout"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
             tools:ignore="RtlHardcoded"/>

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,20 +128,20 @@ public class ProfileFragment extends BaseFragment {
                         if (a1 == null)
                             return;
                         a1.runOnUiThread(() -> {
-                            showToast("Ответы удалены");
+                            showToast(R.string.delete_answers_success_message);
                         });
                     });
                 } else {
-                    showToast("Что-то пошло не так");
+                    showToast(R.string.error_common);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<GsonResponse> call, @NonNull Throwable t) {
-                showToast("Что-то пошло не так");
+                showToast(R.string.error_common);
             }
 
-            private void showToast(String s) {
+            private void showToast(@StringRes int s) {
                 FragmentActivity activity = getActivity();
                 if (activity == null)
                     return;

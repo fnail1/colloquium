@@ -1,9 +1,22 @@
 <resources>
     <string name="app_name">ЧСН</string>
+    <string name="yes">Да</string>
+    <string name="login">Войти</string>
+    <string name="logout">Выход</string>
+    <string name="skip">Пропустить</string>
     <string name="share">Поделиться</string>
     <string name="icon">icon</string>
     <string name="male">Парень</string>
     <string name="female">Девушка</string>
+    <string name="search">Найти</string>
+    <string name="hidden">Скрыто</string>
+    <string name="contacts">Позвать друзей</string>
+    <string name="settings">Настройки</string>
+    <string name="notifications">Уведомления</string>
+    <string name="secondary">Школа</string>
+    <string name="high">Универ</string>
+    <string name="invite">Позвать</string>
+    <string name="go_on">Поехали!</string>
 
 
     <string name="enter_phone_title">Твой номер телефона</string>
@@ -12,7 +25,6 @@
     <string name="sms_code_repeat_countdown">Повторная отправка кода через %d сек.</string>
     <string name="enter_sms_code">Введите код из СМС</string>
     <string name="error_wrong_sms_code">Введите корректный код</string>
-    <string name="just_now">Только что</string>
 
     <string name="contacts_permission_explanation">Приложение не может работать без доступа к контактам</string>
     <string name="storage_permission_explanation">Ну очень надо</string>
@@ -97,13 +109,6 @@
     <string name="age_profile_superstar">Не известно</string>
 
     <string name="gender_unknown">Не указан</string>
-    <string name="search">Найти</string>
-    <string name="hidden">Скрыто</string>
-    <string name="contacts">Позвать друзей</string>
-    <string name="yes">Да</string>
-    <string name="settings">Настройки</string>
-    <string name="notifications">Уведомления</string>
-    <string name="exit">Выход</string>
     <string name="importDb">Импорт БД</string>
     <string name="copy_fcm">Скопировать FCM-токен</string>
     <string name="title_number_of_questions">Количество вопросов за один подход</string>
@@ -111,13 +116,10 @@
     <string name="title_invite_trigger">Показать вопрос-инвайт после вопроса</string>
     <string name="title_emulate_slow_connection">Имитировать медленную сеть</string>
     <string name="title_age">Где ты сейчас учишься?</string>
-    <string name="secondary">Школа</string>
-    <string name="high">Универ</string>
-    <string name="login">Войти</string>
     <string name="message_enter_phone_number">Мы вышлем тебе бесплатную смс с кодом, чтобы зарегистрировать в приложении</string>
     <string name="title_age_high">На каком курсе ты учишься?</string>
     <string name="message_empty_answers">Здесь будут лайки от твоих друзей. Хочешь лайки? Зови друзей!</string>
-    <string name="invite">Позвать</string>
+    <string name="message_privacy">Продолжая, вы соглашаетсясь с политикой конфиденциальности</string>
     <string name="title_gender">Твой пол?</string>
     <string name="title_permission">Отлично! Осталось чуть-чуть..</string>
     <string name="subtitle_permission">Чтобы найти твоих друзей нужен доступ к адресной книге.</string>
@@ -130,8 +132,6 @@
     <string name="field_clear_answers">Удалить ответы</string>
     <string name="title_welcome">Узнай, кому ты нравишься</string>
     <string name="subtitle_welcome">Отвечай анонимно на вопросы про друзей. Они узнают, что ты думаешь о них, но не будут знать, кто это!</string>
-    <string name="go_on">Поехали!</string>
-    <string name="message_privacy">Продолжая, вы соглашаетсясь с политикой конфиденциальности</string>
     <string name="title_sms_code">Введи код из смс</string>
     <string name="message_wrong_auth_code">Упс!… Код неверный!</string>
     <string name="button_edit_phone">Ошиблись номером?</string>
@@ -140,9 +140,10 @@
     <string name="message_skip_stopscreen">Хочешь быстрее?</string>
     <string name="button_invite">Пригласить друга</string>
     <string name="title_question_invite">Party time!</string>
-    <string name="skip">Пропустить</string>
     <string name="button_continue">Нажми для продолжения</string>
     <string name="invite_subtitle">Мы отправим им приглашения. Они не узнают, кто их позвал.</string>
+    <string name="error_common">Что-то пошло не так</string>
+    <string name="delete_answers_success_message">Ответы удалены</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>
