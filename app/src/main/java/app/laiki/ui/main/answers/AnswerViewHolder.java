@@ -1,5 +1,6 @@
 package app.laiki.ui.main.answers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -37,6 +38,7 @@ public class AnswerViewHolder extends RecyclerView.ViewHolder implements View.On
         itemView.setOnClickListener(this);
     }
 
+    @SuppressLint("SetTextI18n")
     public void bind(Answer answer) {
         this.answer = answer;
         if (!answer.flags.get(Answer.FLAG_READ)) {

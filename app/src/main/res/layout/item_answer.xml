@@ -34,6 +34,7 @@
         android:layout_marginStart="@dimen/indent"
         android:layout_marginEnd="@dimen/indent"
         android:layout_toEndOf="@id/icon"
+        android:layout_toStartOf="@id/time"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#000000"
         tools:text="Тетка, 2й раз замужем"/>

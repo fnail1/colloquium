@@ -18,6 +18,7 @@
         android:layout_marginStart="@dimen/indent"
         android:layout_weight="0"
         android:scaleType="centerInside"
+        android:contentDescription="@string/icon"
         tools:src="@drawable/ic_address_book"
         />
 

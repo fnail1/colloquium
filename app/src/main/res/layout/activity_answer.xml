@@ -20,7 +20,7 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/indent"
             android:contentDescription="@string/icon"
@@ -40,7 +40,8 @@
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter"
             tools:background="#7fff33ff"
-            tools:src="@drawable/ic_male"/>
+            tools:src="@drawable/ic_male"
+            android:contentDescription="@string/icon"/>
 
         <TextView
             android:id="@+id/author"
@@ -79,7 +80,7 @@
             android:layout_below="@id/message"
             android:layout_centerHorizontal="true"
             android:src="@drawable/hashtag"
-            />
+            android:contentDescription="@string/icon"/>
 
 
     </RelativeLayout>

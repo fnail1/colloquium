@@ -22,7 +22,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/indent"
-            android:src="@drawable/ic_stopscreen"/>
+            android:src="@drawable/ic_stopscreen"
+            android:contentDescription="@string/icon"
+            />
 
         <TextView
             android:id="@+id/title"

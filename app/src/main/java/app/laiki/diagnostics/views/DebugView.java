@@ -1400,6 +1400,7 @@ public class DebugView extends View {
         super.onHoverChanged(hovered);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         trace();

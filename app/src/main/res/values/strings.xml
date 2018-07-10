@@ -142,6 +142,7 @@
     <string name="title_question_invite">Party time!</string>
     <string name="skip">Пропустить</string>
     <string name="button_continue">Нажми для продолжения</string>
+    <string name="invite_subtitle">Мы отправим им приглашения. Они не узнают, кто их позвал.</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>

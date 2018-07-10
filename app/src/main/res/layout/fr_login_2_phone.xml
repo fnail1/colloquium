@@ -33,8 +33,8 @@
         android:layout_marginTop="@dimen/padding"
         android:theme="@style/AppThemeDark"
         android:visibility="gone"
-        tools:visibility="visible"
-        tools:ignore="RtlHardcoded"/>
+        tools:ignore="RtlHardcoded"
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/title"
@@ -67,13 +67,14 @@
         android:layout_marginTop="@dimen/padding"
         android:background="#ffffff"
         android:digits="0123456789- "
+        android:hint="(999) 123-45-67"
         android:imeOptions="actionNext"
         android:inputType="phone"
         android:padding="@dimen/indent"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="#000000"
-        tools:text="(999) 123-45-67"
-        />
+        tools:ignore="HardcodedText"
+        tools:text="(999) 123-45-67"/>
 
     <TextView
         android:id="@+id/phone_error"

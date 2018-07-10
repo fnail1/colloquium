@@ -10,7 +10,7 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/padding"
         android:foreground="@drawable/ripple_none_view_dark"
@@ -19,7 +19,6 @@
         android:text="@string/login"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:visibility="invisible"
-        tools:ignore="RtlHardcoded"
         tools:visibility="visible"/>
 
 
@@ -28,9 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/padding"
-        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp"
         android:theme="@style/AppThemeDark"
         android:visibility="gone"
         tools:visibility="visible"/>

@@ -12,7 +12,7 @@
     <TextView
         android:id="@+id/phone"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -54,7 +54,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         >
@@ -94,7 +94,7 @@
     <TextView
         android:id="@+id/contacts"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:background="@drawable/ripple_rect_view_light"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
@@ -107,7 +107,7 @@
     <TextView
         android:id="@+id/support"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:background="@drawable/ripple_rect_view_light"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
@@ -120,7 +120,7 @@
     <TextView
         android:id="@+id/vk"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:background="@drawable/ripple_rect_view_light"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
@@ -133,7 +133,7 @@
     <TextView
         android:id="@+id/settings"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:background="@drawable/ripple_rect_view_light"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"
@@ -146,7 +146,7 @@
     <TextView
         android:id="@+id/reset"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/item_height_small"
         android:background="@drawable/ripple_rect_view_light"
         android:gravity="center_vertical"
         android:paddingEnd="24dp"

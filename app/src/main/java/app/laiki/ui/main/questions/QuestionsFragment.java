@@ -1,5 +1,6 @@
 package app.laiki.ui.main.questions;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -291,6 +292,7 @@ public class QuestionsFragment extends BaseFragment
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void updateCounter(boolean visible) {
         if (visible) {
             int i = prefs().serviceState().questionNumber;
