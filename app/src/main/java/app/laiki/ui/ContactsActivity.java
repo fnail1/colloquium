@@ -25,7 +25,6 @@ public class ContactsActivity extends BaseActivity implements AppService.Contact
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.list) RecyclerView list;
-    private SearchView searchView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class ContactsActivity extends BaseActivity implements AppService.Contact
         getMenuInflater().inflate(R.menu.menu_contacts, menu);
 
         MenuItem item = menu.findItem(R.id.search);
-        searchView = (SearchView) item.getActionView();
+        SearchView searchView = (SearchView) item.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

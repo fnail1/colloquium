@@ -26,7 +26,7 @@ import app.laiki.Configuration;
 import app.laiki.R;
 import app.laiki.api.ApiSet;
 import app.laiki.diagnostics.DebugUtils;
-import app.laiki.service.fcm.FcmRegistrationService;
+import app.laiki.service.fcm.FcmMessagingService;
 import app.laiki.toolkit.phonenumbers.PhoneNumberUtils;
 import app.laiki.ui.base.BaseActivity;
 import butterknife.BindView;
@@ -213,7 +213,7 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
                 } else {
                     clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 }
-                ClipData data = ClipData.newPlainText("Colloquium FCM token", FcmRegistrationService.getFcmToken());
+                ClipData data = ClipData.newPlainText("Colloquium FCM token", FcmMessagingService.getFcmToken());
                 clipboardManager.setPrimaryClip(data);
                 break;
         }

@@ -29,7 +29,6 @@ import static app.laiki.diagnostics.Logger.traceUi;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private boolean requestPermission;
     private boolean requestSettings;
     private int explanationStrResId;
     private boolean resumed;
@@ -107,7 +106,7 @@ public class BaseActivity extends AppCompatActivity {
     public boolean requestPermissions(ReqCodes reqCode, @StringRes int explanationStrResId, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.explanationStrResId = explanationStrResId;
-            requestPermission = false;
+            boolean requestPermission = false;
             requestSettings = false;
             for (String permission : permissions) {
                 if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, permission)) {

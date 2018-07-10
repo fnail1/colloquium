@@ -7,7 +7,6 @@ import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LongSparseArray;
 import android.text.TextUtils;
@@ -19,8 +18,6 @@ import java.util.Collections;
 import java.util.List;
 
 import app.laiki.BuildConfig;
-import retrofit2.Call;
-import retrofit2.Response;
 import app.laiki.api.model.GsonAnswers;
 import app.laiki.api.model.GsonQuestionResponse;
 import app.laiki.api.model.GsonResponse;
@@ -28,12 +25,13 @@ import app.laiki.model.AppData;
 import app.laiki.model.entities.Answer;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
-import app.laiki.model.types.Choice;
 import app.laiki.service.ab.AddressBookSyncHelper;
-import app.laiki.service.fcm.FcmRegistrationService;
+import app.laiki.service.fcm.FcmMessagingService;
 import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.toolkit.events.ObservableEvent;
 import app.laiki.toolkit.http.ServerException;
+import retrofit2.Call;
+import retrofit2.Response;
 
 import static app.laiki.App.api;
 import static app.laiki.App.app;
@@ -41,7 +39,7 @@ import static app.laiki.App.data;
 import static app.laiki.App.dateTimeService;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
-import static app.laiki.diagnostics.Logger.logV;
+import static app.laiki.diagnostics.Logger.logFcm;
 import static app.laiki.diagnostics.Logger.trace;
 
 @SuppressWarnings("WeakerAccess")
@@ -379,7 +377,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
         if (!prefs().hasAccount())
             return;
 
-        String token = FcmRegistrationService.getFcmToken();
+        String token = FcmMessagingService.getFcmToken();
         if (TextUtils.isEmpty(token))
             return;
 

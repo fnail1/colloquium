@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.UUID;
 
 import app.laiki.R;
@@ -142,7 +143,7 @@ public final class Utils {
         // Thanks http://www.pocketmagic.net/?p=1662!
         // Try not to use DISPLAY, HOST or ID - these items could change.
         // If there are collisions, there will be overlapping data
-        String m_szDevIDShort = "35" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10) + (Build.CPU_ABI.length() % 10) + (Build.DEVICE.length() % 10) + (Build.MANUFACTURER.length() % 10) + (Build.MODEL.length() % 10) + (Build.PRODUCT.length() % 10);
+        String m_szDevIDShort = "35" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10) + (Arrays.hashCode(Build.SUPPORTED_ABIS) % 10) + (Build.DEVICE.length() % 10) + (Build.MANUFACTURER.length() % 10) + (Build.MODEL.length() % 10) + (Build.PRODUCT.length() % 10);
 
         // Thanks to @Roman SL!
         // http://stackoverflow.com/a/4789483/950427

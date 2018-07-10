@@ -55,15 +55,6 @@
             android:theme="@style/AppTheme"
             />
 
-
-        <service
-            android:name=".service.fcm.FcmRegistrationService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
-
         <service
             android:name=".service.fcm.FcmMessagingService"
             android:enabled="true"
@@ -73,6 +64,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
         <service
             android:name=".service.notifications.NotificationJobService"
             android:exported="false">

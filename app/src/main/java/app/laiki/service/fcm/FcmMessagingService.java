@@ -14,8 +14,10 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import app.laiki.Configuration;
 import app.laiki.service.notifications.NotificationJobService;
 
+import static app.laiki.App.appService;
 import static app.laiki.App.dispatcher;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
@@ -23,6 +25,21 @@ import static app.laiki.diagnostics.Logger.logFcm;
 
 public class FcmMessagingService extends FirebaseMessagingService {
 
+    @Override
+    public void onNewToken(String s) {
+        logFcm(s);
+        super.onNewToken(s);
+        appService().syncFcm();
+        Configuration config = prefs().config();
+        config.fcmToken = s;
+        prefs().save(config);
+    }
+
+    public static String getFcmToken() {
+        String fcmToken = prefs().config().fcmToken;
+        logFcm(fcmToken);
+        return fcmToken;
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage message) {
