@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import app.laiki.R;
 import app.laiki.ui.ContactsActivity;
-import app.laiki.ui.views.VariantButtonBackgroundDrawable;
 import app.laiki.utils.Utils;
 import butterknife.BindView;
 import butterknife.OnClick;

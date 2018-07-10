@@ -4,14 +4,11 @@ import android.os.Build;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.HttpURLConnection;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 
 import javax.net.ssl.SSLHandshakeException;
 
-import retrofit2.Call;
-import retrofit2.Response;
 import app.laiki.BuildConfig;
 import app.laiki.model.AppData;
 import app.laiki.toolkit.concurrent.ThreadPool;

@@ -14,8 +14,6 @@ import android.text.TextUtils;
 
 import app.laiki.model.entities.Contact;
 
-import static app.laiki.diagnostics.Logger.trace;
-
 public class AvatarBuilder {
 
     private static final int FONT_SIZE_MIN = 48;

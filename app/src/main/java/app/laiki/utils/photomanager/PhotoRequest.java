@@ -3,7 +3,6 @@ package app.laiki.utils.photomanager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -15,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextUtils;
-import android.util.Xml;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,11 +24,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -52,9 +47,7 @@ import app.laiki.utils.photomanager.adapters.DebugDrawable;
 
 import static app.laiki.App.app;
 import static app.laiki.App.appService;
-import static app.laiki.App.data;
 import static app.laiki.App.networkObserver;
-import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
 import static app.laiki.diagnostics.Logger.logV;
 

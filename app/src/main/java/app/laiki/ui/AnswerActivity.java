@@ -6,12 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.HashMap;
-
 import app.laiki.R;
 import app.laiki.model.entities.Answer;
-import app.laiki.model.entities.Contact;
-import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.questions.AbsPageViewHolder;
 import app.laiki.ui.main.questions.QuestionViewHolder;

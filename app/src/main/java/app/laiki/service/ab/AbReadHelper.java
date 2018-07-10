@@ -3,6 +3,7 @@ package app.laiki.service.ab;
 import android.database.Cursor;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 
 import java.util.Iterator;
 
@@ -14,6 +15,7 @@ public class AbReadHelper implements Iterable<SyncDataUnit> {
         this.abCursor = abCursor;
     }
 
+    @NonNull
     @Override
     public Iterator<SyncDataUnit> iterator() {
         return new Iterator<SyncDataUnit>() {
@@ -27,7 +29,7 @@ public class AbReadHelper implements Iterable<SyncDataUnit> {
             int columnDisplayName = abCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
             int columnNumber = abCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             int columnNormalizedNumber = abCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER);
-            int columnLastUpdatedTimestamp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 ? abCursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP) : -1;
+            int columnLastUpdatedTimestamp = abCursor.getColumnIndex(ContactsContract.Contacts.CONTACT_LAST_UPDATED_TIMESTAMP);
             int columnPhotoUri = abCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI);
             int columnPhotoThumbUri = abCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI);
             int columnEventDate = abCursor.getColumnIndex(ContactsContract.CommonDataKinds.Event.START_DATE);

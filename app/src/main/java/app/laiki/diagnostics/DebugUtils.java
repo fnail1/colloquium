@@ -4,11 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
-
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;

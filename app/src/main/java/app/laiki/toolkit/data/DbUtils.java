@@ -603,11 +603,11 @@ public class DbUtils {
     }
 
     public static void leftJoin(StringBuilder sb, String fktable, final String fkalias, String fkcolumn, final String pktable, String pkcolumn) {
-        sb.append("left join ").append(fktable).append(" " + fkalias + " on " + fkalias + ".").append(fkcolumn).append("=" + pktable + ".").append(pkcolumn).append("\n");
+        sb.append("left join ").append(fktable).append(" ").append(fkalias).append(" on ").append(fkalias).append(".").append(fkcolumn).append("=").append(pktable).append(".").append(pkcolumn).append("\n");
     }
 
     public static void join(StringBuilder sb, String fktable, final String fkalias, String fkcolumn, final String pktable, String pkcolumn) {
-        sb.append("join ").append(fktable).append(" " + fkalias + " on " + fkalias + ".").append(fkcolumn).append("=" + pktable + ".").append(pkcolumn).append("\n");
+        sb.append("join ").append(fktable).append(" ").append(fkalias).append(" on ").append(fkalias).append(".").append(fkcolumn).append("=").append(pktable).append(".").append(pkcolumn).append("\n");
     }
 
     private static boolean checkTransient(Field field) {

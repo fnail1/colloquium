@@ -5,12 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import app.laiki.R;
-import app.laiki.diagnostics.statistics.Statistics;
 import app.laiki.ui.ReqCodes;
 import app.laiki.utils.Utils;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static app.laiki.App.statistics;
 

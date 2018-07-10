@@ -3,11 +3,9 @@ package app.laiki.model.queries;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.List;
 import java.util.Random;
 
 import app.laiki.BuildConfig;
-import app.laiki.api.ApiSet;
 import app.laiki.model.entities.Answer;
 import app.laiki.model.entities.Contact;
 import app.laiki.toolkit.data.CursorWrapper;

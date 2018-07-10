@@ -46,7 +46,7 @@ public class AnswersFragment extends BaseFragment implements AppService.AnswerUp
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MyAdapter adapter = new MyAdapter();
         list.setAdapter(adapter);

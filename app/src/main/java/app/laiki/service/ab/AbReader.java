@@ -2,7 +2,6 @@ package app.laiki.service.ab;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 

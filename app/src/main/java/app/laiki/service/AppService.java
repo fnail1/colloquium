@@ -39,7 +39,6 @@ import static app.laiki.App.data;
 import static app.laiki.App.dateTimeService;
 import static app.laiki.App.prefs;
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
-import static app.laiki.diagnostics.Logger.logFcm;
 import static app.laiki.diagnostics.Logger.trace;
 
 @SuppressWarnings("WeakerAccess")

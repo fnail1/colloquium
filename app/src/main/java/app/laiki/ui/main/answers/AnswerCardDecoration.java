@@ -6,8 +6,6 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import app.laiki.ui.ScreenMetrics;
-
 import static app.laiki.App.screenMetrics;
 
 

@@ -41,7 +41,7 @@ public class BaseFragment extends Fragment implements FragmentInterface {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         traceUi(this);
     }

@@ -17,8 +17,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -31,7 +29,6 @@ import java.util.UUID;
 import app.laiki.R;
 
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
-import static app.laiki.diagnostics.Logger.trace;
 
 
 public final class Utils {
@@ -150,7 +147,7 @@ public final class Utils {
         // Only devices with API >= 9 have android.os.Build.SERIAL
         // http://developer.android.com/reference/android/os/Build.html#SERIAL
         // If a user upgrades software or roots their device, there will be a duplicate entry
-        String serial = null;
+        String serial;
         try {
             serial = Build.class.getField("SERIAL").get(null).toString();
         } catch (Exception exception) {

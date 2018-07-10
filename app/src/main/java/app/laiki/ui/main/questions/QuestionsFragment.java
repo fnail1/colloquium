@@ -36,7 +36,6 @@ import static app.laiki.App.dateTimeService;
 import static app.laiki.App.networkObserver;
 import static app.laiki.App.notifications;
 import static app.laiki.App.prefs;
-import static app.laiki.App.screenMetrics;
 import static app.laiki.App.statistics;
 
 public class QuestionsFragment extends BaseFragment
@@ -79,7 +78,7 @@ public class QuestionsFragment extends BaseFragment
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         foreground = new QuestionViewHolder(page1, this);
@@ -267,7 +266,7 @@ public class QuestionsFragment extends BaseFragment
         cleanupPage(page2);
         cleanupPage(activePage);
         updateCounter(false);
-        String errorMessage = null;
+        String errorMessage;
         if (!networkObserver().isNetworkAvailable())
             errorMessage = "Проверьте подключение к интернету";
         else

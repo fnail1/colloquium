@@ -9,27 +9,23 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.net.HttpURLConnection;
-import java.util.Objects;
 
+import app.laiki.R;
+import app.laiki.api.model.GsonResponse;
+import app.laiki.utils.PhoneEditListener;
+import app.laiki.utils.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import app.laiki.R;
-import app.laiki.api.model.GsonResponse;
-import app.laiki.toolkit.phonenumbers.PhoneNumberUtils;
-import app.laiki.utils.PhoneEditListener;
-import app.laiki.utils.Utils;
 
 import static app.laiki.App.api;
 import static app.laiki.App.statistics;
-import static app.laiki.toolkit.collections.Query.query;
 import static app.laiki.toolkit.phonenumbers.PhoneNumberUtils.digitsOnly;
 
 public class LoginPage2PhoneViewHolder implements LoginActivity.LoginPageViewHolder, TextView.OnEditorActionListener {

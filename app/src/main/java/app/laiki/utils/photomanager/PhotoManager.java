@@ -2,7 +2,6 @@ package app.laiki.utils.photomanager;
 
 import android.content.Context;
 import android.support.annotation.UiThread;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,7 +11,6 @@ import app.laiki.BuildConfig;
 import app.laiki.service.AppStateObserver;
 import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.toolkit.io.FileOpException;
-
 
 import static app.laiki.diagnostics.DebugUtils.safeThrow;
 

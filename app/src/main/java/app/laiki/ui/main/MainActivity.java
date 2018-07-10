@@ -18,8 +18,6 @@ import android.view.View;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import app.laiki.R;
 import app.laiki.model.entities.Answer;
 import app.laiki.service.AppService;
@@ -31,7 +29,8 @@ import app.laiki.ui.main.answers.AnswersFragment;
 import app.laiki.ui.main.contacts.ContactsFragment;
 import app.laiki.ui.main.profile.ProfileFragment;
 import app.laiki.ui.main.questions.QuestionsFragment;
-import app.laiki.utils.Utils;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;

@@ -1,29 +1,15 @@
 package app.laiki.service;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import app.laiki.BuildConfig;
-import retrofit2.Response;
 import app.laiki.App;
 import app.laiki.Preferences;
 import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.toolkit.events.ObservableEvent;
 
-import static app.laiki.App.app;
 import static app.laiki.App.prefs;
-import static app.laiki.diagnostics.DebugUtils.safeThrow;
 import static app.laiki.diagnostics.Logger.trace;
 
 

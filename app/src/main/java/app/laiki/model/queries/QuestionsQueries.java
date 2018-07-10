@@ -3,8 +3,6 @@ package app.laiki.model.queries;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 
-import java.security.PublicKey;
-
 import app.laiki.api.model.GsonAnswers;
 import app.laiki.model.entities.Question;
 import app.laiki.toolkit.data.CursorWrapper;
