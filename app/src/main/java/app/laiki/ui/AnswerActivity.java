@@ -3,14 +3,18 @@ package app.laiki.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.laiki.R;
 import app.laiki.model.entities.Answer;
+import app.laiki.model.entities.Contact;
+import app.laiki.model.types.Choice;
 import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.questions.AbsPageViewHolder;
 import app.laiki.ui.main.questions.QuestionViewHolder;
+import app.laiki.ui.views.VariantButtonBackgroundDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,7 +31,10 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.author) TextView author;
     @BindView(R.id.root) View root;
     @BindView(R.id.back) ImageView back;
+    @BindView(R.id.variant1text) TextView variant1text;
+    @BindView(R.id.variant1) FrameLayout variant1;
     private Answer answer;
+    private boolean initialized;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +45,26 @@ public class AnswerActivity extends BaseActivity {
         long id = getIntent().getLongExtra(EXTRA_ANSWER_ID, 0);
         answer = data().answers.selectById(id);
         bindData();
+        initialized = savedInstanceState != null;
+        if (!initialized) {
+            variant1.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    variant1.removeOnLayoutChangeListener(this);
+                    if (!initialized) {
+                        initialized = true;
+                        Contact contact = new Contact();
+                        contact.displayName = answer.answerName;
+                        QuestionViewHolder.bindVariant(null, Choice.A, variant1, variant1text, contact);
+                        variant1.setEnabled(false);
+                        variant1.postDelayed(() -> {
+                            QuestionViewHolder.bindVariant(Choice.A, Choice.A, variant1, variant1text, contact);
+                        }, 500);
+                    }
+
+                }
+            });
+        }
     }
 
     private void bindData() {
@@ -64,7 +91,10 @@ public class AnswerActivity extends BaseActivity {
         author.setText(formatAuthor());
 
         message.setText(answer.questionText);
+
+        variant1.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
     }
+
 
     private String formatAuthor() {
         switch (answer.gender) {

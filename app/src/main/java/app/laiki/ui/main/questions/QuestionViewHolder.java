@@ -88,7 +88,7 @@ public class QuestionViewHolder extends AbsQuestionViewHolder {
         bindVariant(question.answer, Choice.D, variant4, variant4Text, contact4);
     }
 
-    private void bindVariant(Choice answer, Choice expected, View view, TextView textView, Contact contact) {
+    public static void bindVariant(Choice answer, Choice expected, View view, TextView textView, Contact contact) {
         final VariantButtonBackgroundDrawable background = (VariantButtonBackgroundDrawable) view.getBackground();
         if (answer == null) {
             background.setState(VariantButtonBackgroundDrawable.ButtonState.DEFAULT, 1);
