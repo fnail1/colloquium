@@ -148,6 +148,7 @@ public class App extends Application {
         }
 
         appService.syncFcm();
+        appService.onAppStateChanged(false);
     }
 
     public void logout() {
