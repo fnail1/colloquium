@@ -178,6 +178,9 @@ public interface ApiService {
     @GET("answer/reset")
     Call<GsonResponse> resetAnswers();
 
+    @GET("stat/open")
+    Call<GsonResponse> statOpen();
+
     class Creator {
 
         public static ApiService newService(ApiSet apiSet, Context context) {

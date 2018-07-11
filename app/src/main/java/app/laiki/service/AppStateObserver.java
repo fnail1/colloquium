@@ -15,10 +15,10 @@ import static app.laiki.diagnostics.Logger.trace;
 
 public class AppStateObserver {
 
-    public final ObservableEvent<AppStateEventHandler, AppStateObserver, Void> stateEvent = new ObservableEvent<AppStateEventHandler, AppStateObserver, Void>(this) {
+    public final ObservableEvent<AppStateEventHandler, AppStateObserver, Boolean> stateEvent = new ObservableEvent<AppStateEventHandler, AppStateObserver, Boolean>(this) {
         @Override
-        protected void notifyHandler(AppStateEventHandler handler, AppStateObserver sender, Void args) {
-            handler.onAppStateChanged();
+        protected void notifyHandler(AppStateEventHandler handler, AppStateObserver sender, Boolean args) {
+            handler.onAppStateChanged(args);
         }
     };
 
@@ -52,8 +52,9 @@ public class AppStateObserver {
         }
 
         if (this.topActivity != topActivity) {
+            boolean foreground = this.topActivity != null;
             this.topActivity = topActivity;
-            onStateChanged();
+            onStateChanged(foreground);
         }
     }
 
@@ -77,7 +78,7 @@ public class AppStateObserver {
             serviceState.sessionNumber++;
             numberOfAnswers = 0;
             prefs().save(serviceState);
-            onStateChanged();
+            onStateChanged(true);
         }
     }
 
@@ -85,8 +86,8 @@ public class AppStateObserver {
         return topActivity != null;
     }
 
-    public void onStateChanged() {
-        stateEvent.fire(null);
+    public void onStateChanged(boolean oldState) {
+        stateEvent.fire(oldState);
     }
 
     public void onLowMemory() {
@@ -96,7 +97,7 @@ public class AppStateObserver {
 
 
     public interface AppStateEventHandler {
-        void onAppStateChanged();
+        void onAppStateChanged(Boolean fromForeground);
     }
 
     public interface LowMemoryEventHandler {

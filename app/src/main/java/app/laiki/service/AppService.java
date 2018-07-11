@@ -97,7 +97,7 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
                 super.onChange(selfChange, uri);
                 if (lastContactsSync > 0)
                     lastContactsSync = 1;
-                onAppStateChanged();
+                onAppStateChanged(appStateObserver.isForeground());
             }
         };
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
@@ -115,17 +115,36 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
     }
 
     @Override
-    public void onAppStateChanged() {
+    public void onAppStateChanged(Boolean fromForeground) {
         if (!prefs().hasAccount())
             return;
 
         if (!appStateObserver.isForeground())
             return;
 
+        if (!fromForeground) {
+            ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(new SimpleRequestTask<GsonResponse>("stat-open") {
+
+                @Override
+                protected Call<GsonResponse> getRequest() {
+                    return api().statOpen();
+                }
+
+                @Override
+                protected void processResponse(AppData appData, GsonResponse body) {
+
+                }
+
+                @Override
+                protected void onFinish() {
+
+                }
+            });
+        }
+
         if (dateTimeService().getServerTime() - lastContactsSync <= MAX_SYNCHRONIZATION_LAG)
             return;
 
-        AppData appData = data();
         ThreadPool.EXECUTORS.getExecutor(ThreadPool.Priority.LOW).execute(() -> {
             try {
                 AddressBookSyncHelper.doSync(app());
