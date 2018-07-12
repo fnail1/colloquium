@@ -11,6 +11,7 @@ import app.laiki.R;
 import app.laiki.model.entities.Answer;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.types.Choice;
+import app.laiki.ui.base.AnswerButtonHelper;
 import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.questions.AbsPageViewHolder;
 import app.laiki.ui.main.questions.QuestionViewHolder;
@@ -55,10 +56,10 @@ public class AnswerActivity extends BaseActivity {
                         initialized = true;
                         Contact contact = new Contact();
                         contact.displayName = answer.answerName;
-                        QuestionViewHolder.bindVariant(null, Choice.A, variant1, variant1text, contact);
+                        AnswerButtonHelper.bindVariant(null, Choice.A, variant1, variant1text, contact, null);
                         variant1.setEnabled(false);
                         variant1.postDelayed(() -> {
-                            QuestionViewHolder.bindVariant(Choice.A, Choice.A, variant1, variant1text, contact);
+                            AnswerButtonHelper.bindVariant(Choice.A, Choice.A, variant1, variant1text, contact, null);
                         }, 500);
                     }
 

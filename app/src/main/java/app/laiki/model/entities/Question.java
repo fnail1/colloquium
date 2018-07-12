@@ -5,10 +5,13 @@ import java.util.Objects;
 import app.laiki.model.AppData;
 import app.laiki.model.types.Choice;
 import app.laiki.toolkit.Flags32;
+import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.toolkit.data.BaseRow;
 import app.laiki.toolkit.data.DbColumn;
 import app.laiki.toolkit.data.DbForeignKey;
 import app.laiki.toolkit.data.DbTable;
+
+import static app.laiki.App.data;
 
 @DbTable(name = AppData.TABLE_QUESTIONS)
 public class Question extends BaseRow {
@@ -38,6 +41,7 @@ public class Question extends BaseRow {
     public long variant4;
 
     public Choice answer;
+    public int shuffles;
 
     @Override
     public boolean equals(Object o) {
@@ -63,5 +67,16 @@ public class Question extends BaseRow {
                 ", answer='" + answer + '\'' +
                 ", flags='" + flags.get() + '\'' +
                 '}';
+    }
+
+    public void bindVariants(Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
+        variant1 = contact1._id;
+        variant2 = contact2._id;
+        variant3 = contact3._id;
+        variant4 = contact4._id;
+        if (ThreadPool.isUiThread())
+            ThreadPool.DB.execute(() -> data().questions.save(this));
+        else
+            data().questions.save(this);
     }
 }

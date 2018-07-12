@@ -209,7 +209,8 @@ public class QuestionsFragment extends BaseFragment
         Contact contact3 = contacts.get(2 % contacts.size());
         Contact contact4 = contacts.get(3 % contacts.size());
 
-        bindVariants(q, contact1, contact2, contact3, contact4);
+        if (q.variant1 == 0)
+            q.bindVariants(contact1, contact2, contact3, contact4);
 
         requestSent = false;
 
@@ -231,18 +232,8 @@ public class QuestionsFragment extends BaseFragment
         questionBindComplete = true;
         updateCounter(true);
         swapPages();
-        foreground.bind(question, contact1, contact2, contact3, contact4);
+        foreground.bind(question, contacts);
         showPage(foreground);
-    }
-
-    private void bindVariants(Question q, Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
-        if (q.variant1 == 0) {
-            q.variant1 = contact1._id;
-            q.variant2 = contact2._id;
-            q.variant3 = contact3._id;
-            q.variant4 = contact4._id;
-            ThreadPool.DB.execute(() -> data().questions.save(q));
-        }
     }
 
     private void showNoContacts() {

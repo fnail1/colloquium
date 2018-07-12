@@ -34,18 +34,18 @@ public class ContactsQueries extends SQLiteCommands<Contact> {
         int a = random.nextInt() & m;
         int k = random.nextInt() & m;
         String orderBy;
-        if (BuildConfig.DEBUG) {
-            switch (prefs().getApiSet()) {
-                case PROD:
-                    orderBy = "(phone like '" + prefs().profile().phone + "') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
-                    break;
-                default:
-                    orderBy = "(phone like '7999111223%') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
-                    break;
-            }
-        } else {
+//        if (BuildConfig.DEBUG) {
+//            switch (prefs().getApiSet()) {
+//                case PROD:
+//                    orderBy = "(phone like '" + prefs().profile().phone + "') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
+//                    break;
+//                default:
+//                    orderBy = "(phone like '7999111223%') desc, ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
+//                    break;
+//            }
+//        } else {
             orderBy = " ((" + a + " + _id * " + k + ") & " + m + ")  asc\n";
-        }
+//        }
         String sql = selectAll + "\n" +
                 "order by " + orderBy + "" +
                 "limit " + count + " offset 0";

@@ -29,17 +29,14 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 
     private final Callback callback;
 
-    private final TextView[] variantsTextViews;
-    private final View[] variants;
     @BindView(R.id.subtitle) TextView subtitle;
     private Contact[] contacts;
     private SelectedVariantAnimationState selectedVariantAnimationState = SelectedVariantAnimationState.IDLE;
 
     public InviteViewHolder(LayoutInflater inflater, ViewGroup parent, Callback callback) {
         super(inflater.inflate(R.layout.fr_question_invite, parent, false));
+        shuffle.setVisibility(View.GONE);
         this.callback = callback;
-        variantsTextViews = new TextView[]{variant1Text, variant2Text, variant3Text, variant4Text};
-        variants = new View[]{variant1, variant2, variant3, variant4};
     }
 
     public void bind(Contact contact1, Contact contact2, Contact contact3, Contact contact4) {

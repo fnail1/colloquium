@@ -44,10 +44,14 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
     @Nullable
     @BindView(R.id.title)
     TextView title;
+    @BindView(R.id.shuffle) ImageView shuffle;
+
     protected float animationOffsetY;
     protected String message;
     protected boolean scheduledAnimatedRevealing;
     protected final List<TextView> textLines = new ArrayList<>();
+    protected final View[] variants;
+    protected final TextView[] variantsTextViews;
 
 
     public AbsQuestionViewHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -57,10 +61,12 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
     public AbsQuestionViewHolder(View root) {
         super(root);
         animationOffsetY = root.getResources().getDimensionPixelOffset(R.dimen.question_screen_item_reveal_offset);
-        variant1.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
-        variant3.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
-        variant2.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
-        variant4.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
+        variants = new View[]{variant1, variant2, variant3, variant4};
+        variantsTextViews = new TextView[]{variant1Text, variant2Text, variant3Text, variant4Text};
+        for (View variant : variants) {
+            variant.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
+        }
+
         shadowTextView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if (left == oldLeft && right == oldRight)
                 return;
@@ -99,17 +105,10 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
             delay += step;
         }
 
-        animateLayer(variant1, animationOffsetY, delay);
-        delay += step;
-
-        animateLayer(variant2, animationOffsetY, delay);
-        delay += step;
-
-        animateLayer(variant3, animationOffsetY, delay);
-        delay += step;
-
-        animateLayer(variant4, animationOffsetY, delay);
-        delay += step;
+        for (View variant : variants) {
+            animateLayer(variant, animationOffsetY, delay);
+            delay += step;
+        }
 
         if (skip != null)
             animateLayer(skip, animationOffsetY, delay);
@@ -200,7 +199,8 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
     }
 
     @NonNull
-    protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars, int start, int end) {
+    protected TextView inflateTextView(LayoutInflater inflater, int anchor, char[] chars,
+                                       int start, int end) {
         TextView tv = (TextView) inflater.inflate(getQuestionTextItemLayoutId(), header, false);
         tv.setId(View.generateViewId());
         tv.setText(chars, start, end - start);

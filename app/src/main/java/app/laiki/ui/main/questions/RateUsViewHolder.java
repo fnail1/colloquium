@@ -22,6 +22,7 @@ public class RateUsViewHolder extends AbsQuestionViewHolder {
     public RateUsViewHolder(LayoutInflater inflater, ViewGroup parent, Callback callback) {
         super(inflater, parent);
         this.callback = callback;
+        shuffle.setVisibility(View.GONE);
     }
 
     public void bind() {
