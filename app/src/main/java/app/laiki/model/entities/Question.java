@@ -74,9 +74,11 @@ public class Question extends BaseRow {
         variant2 = contact2._id;
         variant3 = contact3._id;
         variant4 = contact4._id;
-        if (ThreadPool.isUiThread())
-            ThreadPool.DB.execute(() -> data().questions.save(this));
-        else
-            data().questions.save(this);
+        if (_id > 0) {
+            if (ThreadPool.isUiThread())
+                ThreadPool.DB.execute(() -> data().questions.save(this));
+            else
+                data().questions.save(this);
+        }
     }
 }

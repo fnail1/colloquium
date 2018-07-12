@@ -61,28 +61,27 @@ public class AnswerButtonHelper {
                         }
                     }
                 };
-                if (buttonState == VariantButtonBackgroundDrawable.ButtonState.SELECTED) {
-                    a.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
+                a.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        view.setScaleX(1);
+                        view.setScaleY(1);
+                        if (callback != null) {
+                            callback.onAnimationEnd(view);
                         }
+                    }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            view.setScaleX(1);
-                            view.setScaleY(1);
-                            if (callback != null) {
-                                callback.onAnimationEnd(view);
-                            }
-                        }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
+                    }
+                });
 
-                        }
-                    });
-                }
                 a.setInterpolator(new LinearInterpolator());
                 a.setDuration(1500);
                 view.startAnimation(a);
@@ -90,8 +89,9 @@ public class AnswerButtonHelper {
         }
     }
 
-    public interface Callback{
+    public interface Callback {
         void onAnimationStart(View button);
+
         void onAnimationEnd(View button);
     }
 }

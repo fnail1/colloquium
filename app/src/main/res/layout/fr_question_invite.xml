@@ -99,4 +99,16 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:ignore="RtlHardcoded"/>
 
+    <ImageView
+        android:id="@+id/shuffle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="12dp"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_shuffle"
+        android:contentDescription="Перемешать"
+        android:foreground="@drawable/ripple_circle_icon_dark"/>
+
 </android.support.constraint.ConstraintLayout>

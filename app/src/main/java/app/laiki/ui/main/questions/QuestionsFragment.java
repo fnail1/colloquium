@@ -40,11 +40,10 @@ import static app.laiki.App.statistics;
 
 public class QuestionsFragment extends BaseFragment
         implements AppService.NewQuestionEventHandler,
-        QuestionViewHolder.QuestionAnsweredCallback,
         AppService.AnswerSentEventHandler,
         AppService.ContactsSynchronizationEventHandler,
         RateUsViewHolder.Callback,
-        InviteViewHolder.Callback,
+        QuestionOfContactsViewHolder.Callback,
         StopScreenViewHolder.Callback {
     public static final String STATE_QUESTION_ID = "question_id";
     private static final Question RATE_US = new Question();
@@ -194,7 +193,7 @@ public class QuestionsFragment extends BaseFragment
         question = INVITE;
         InviteViewHolder inviteViewHolder = new InviteViewHolder(LayoutInflater.from(activity), root, this);
 
-        inviteViewHolder.bind(contacts.get(0), contacts.get(1), contacts.get(2), contacts.get(3));
+        inviteViewHolder.bind(new Question(), contacts);
         statistics().questions().invite();
         showPage(inviteViewHolder);
         return true;

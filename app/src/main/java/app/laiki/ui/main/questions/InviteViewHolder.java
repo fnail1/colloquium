@@ -12,6 +12,7 @@ import java.util.List;
 
 import app.laiki.R;
 import app.laiki.model.entities.Contact;
+import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
 import app.laiki.service.AppService;
 import app.laiki.ui.views.VariantButtonBackgroundDrawable;
@@ -24,29 +25,24 @@ import static app.laiki.App.screenMetrics;
 import static app.laiki.App.statistics;
 import static app.laiki.toolkit.collections.Query.query;
 
-public class InviteViewHolder extends AbsQuestionViewHolder {
+public class InviteViewHolder extends QuestionOfContactsViewHolder {
     public static final int ANIMATION_DURATION = 1500;
 
-    private final Callback callback;
-
     @BindView(R.id.subtitle) TextView subtitle;
-    private Contact[] contacts;
     private SelectedVariantAnimationState selectedVariantAnimationState = SelectedVariantAnimationState.IDLE;
 
     public InviteViewHolder(LayoutInflater inflater, ViewGroup parent, Callback callback) {
-        super(inflater.inflate(R.layout.fr_question_invite, parent, false));
+        super(inflater.inflate(R.layout.fr_question_invite, parent, false), callback);
         shuffle.setVisibility(View.GONE);
-        this.callback = callback;
     }
 
-    public void bind(Contact contact1, Contact contact2, Contact contact3, Contact contact4) {
+    @Override
+    public void bind(Question question, List<Contact> contacts) {
+        super.bind(question, contacts);
+
         ColorScheme colorScheme = randomColorScheme();
         root.setBackground(colorScheme.background(root.getContext()));
         icon.setBackground(colorScheme.highlight(root.getContext()));
-        this.contacts = new Contact[]{contact1, contact2, contact3, contact4};
-        for (int i = 0; i < variantsTextViews.length; i++) {
-            variantsTextViews[i].setText(contacts[i].displayName);
-        }
         icon.setImageResource(R.drawable.ic_question_invite);
 
         setMessage("Party time!\n" +
@@ -98,7 +94,7 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
             animateLayer(skip, animationOffsetY, delay);
     }
 
-    @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip})
+    @OnClick({R.id.variant1, R.id.variant2, R.id.variant3, R.id.variant4, R.id.skip, R.id.shuffle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.variant1:
@@ -115,6 +111,9 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
                 break;
             case R.id.skip:
                 callback.onNextClick();
+                break;
+            case R.id.shuffle:
+                onShuffleClick();
                 break;
         }
     }
@@ -285,10 +284,6 @@ public class InviteViewHolder extends AbsQuestionViewHolder {
 //            variant.setEnabled(true);
 //        }
 //        selectedVariantAnimationState = SelectedVariantAnimationState.IDLE;
-    }
-
-    public interface Callback {
-        void onNextClick();
     }
 
     private enum SelectedVariantAnimationState {
