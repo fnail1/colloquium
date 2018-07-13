@@ -2,9 +2,11 @@ package app.laiki.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import app.laiki.R;
@@ -34,6 +36,7 @@ public class AnswerActivity extends BaseActivity {
     @BindView(R.id.back) ImageView back;
     @BindView(R.id.variant1text) TextView variant1text;
     @BindView(R.id.variant1) FrameLayout variant1;
+    @BindView(R.id.logo) ImageView logo;
     private Answer answer;
     private boolean initialized;
 
@@ -46,26 +49,41 @@ public class AnswerActivity extends BaseActivity {
         long id = getIntent().getLongExtra(EXTRA_ANSWER_ID, 0);
         answer = data().answers.selectById(id);
         bindData();
-        initialized = savedInstanceState != null;
-        if (!initialized) {
-            variant1.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    variant1.removeOnLayoutChangeListener(this);
-                    if (!initialized) {
-                        initialized = true;
-                        Contact contact = new Contact();
-                        contact.displayName = answer.answerName;
-                        AnswerButtonHelper.bindVariant(null, Choice.A, variant1, variant1text, contact, null);
-                        variant1.setEnabled(false);
-                        variant1.postDelayed(() -> {
-                            AnswerButtonHelper.bindVariant(Choice.A, Choice.A, variant1, variant1text, contact, null);
-                        }, 500);
-                    }
+        bindAnswerName(savedInstanceState);
+    }
 
-                }
-            });
+    private void bindAnswerName(@Nullable Bundle savedInstanceState) {
+        initialized = savedInstanceState != null;
+        if (initialized)
+            return;
+
+        if (TextUtils.isEmpty(answer.answerName)) {
+            variant1.setVisibility(View.GONE);
+            initialized = true;
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) logo.getLayoutParams();
+            lp.removeRule(RelativeLayout.BELOW);
+            lp.addRule(RelativeLayout.BELOW, R.id.message);
+            logo.setLayoutParams(lp);
+            return;
         }
+
+        variant1.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                variant1.removeOnLayoutChangeListener(this);
+                if (!initialized) {
+                    initialized = true;
+                    Contact contact = new Contact();
+                    contact.displayName = answer.answerName;
+                    AnswerButtonHelper.bindVariant(null, Choice.A, variant1, variant1text, contact, null);
+                    variant1.setEnabled(false);
+                    variant1.postDelayed(() -> {
+                        AnswerButtonHelper.bindVariant(Choice.A, Choice.A, variant1, variant1text, contact, null);
+                    }, 500);
+                }
+
+            }
+        });
     }
 
     private void bindData() {

@@ -25,8 +25,6 @@ import static app.laiki.App.screenMetrics;
 @SuppressWarnings("ConstantConditions")
 public class QuestionViewHolder extends QuestionOfContactsViewHolder {
 
-
-
     /**
      * @param callback
      * @param root     R.layout.fr_question
@@ -140,72 +138,3 @@ public class QuestionViewHolder extends QuestionOfContactsViewHolder {
 
 
 }
-
-
-
-/*
-
-In 0 start T:10
-In 1 start T:225
-In 2 start T:427
-In 0 end T:525
-Out 0 start T:544
-In 3 start T:625
-In 1 end T:726
-In 2 end T:925
-Out 1 start T:945
-Out 0 end T:1043
-In 3 end T:1125
-Out 2 start T:1345
-Out 1 end T:1444
-Out 3 start T:1747
-Out 2 end T:1842
-Out 3 end T:2242
-
-0000 v
-0050 v
-0100 v
-0150 v
-0200 vv
-0250 vv
-0300 vv
-0350 vv
-0400 vvv
-0450 vvv
-0500 Xvv
-0550 ^vv
-0600 ^vvv
-0650 ^vvv
-0700 ^vvv
-0750 ^ vv
-0800 ^ vv
-0850 ^ vv
-0900 ^^vv
-0950 ^^ v
-1000 ^^ v
-1050  ^ v
-1100  ^ v
-1150  ^
-1200  ^
-1250  ^
-1300  ^^
-1350  ^^
-1400  ^^
-1450   ^
-1500   ^
-1550   ^
-1600   ^
-1650   ^
-1700   ^^
-1750   ^^
-1800   ^^
-1850    ^
-1900    ^
-1950
-
-
-
-
-
-
-*/

@@ -1,7 +1,6 @@
 package app.laiki.ui.main.questions;
 
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -94,10 +93,8 @@ public class QuestionOfContactsViewHolder extends AbsQuestionViewHolder implemen
             return;
         shuffleStartTime = SystemClock.elapsedRealtime();
 
-        onAnimationStart(variant1);
-        onAnimationStart(variant2);
-        onAnimationStart(variant3);
-        onAnimationStart(variant4);
+        for (View variant : variants)
+            onAnimationStart(variant);
 
         ShuffleAnimationState animationState = new ShuffleAnimationState();
 

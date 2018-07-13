@@ -67,25 +67,15 @@ public class InviteViewHolder extends QuestionOfContactsViewHolder {
             delay += step;
         }
 
-//        animateLayer(shadowTextView, animationOffsetY, delay);
-//        delay += step;
-
         for (TextView textLine : textLines) {
             animateLayer(textLine, animationOffsetY, delay);
             delay += step;
         }
 
-        animateLayer(variant1, animationOffsetY, delay);
-        delay += step;
-
-        animateLayer(variant2, animationOffsetY, delay);
-        delay += step;
-
-        animateLayer(variant3, animationOffsetY, delay);
-        delay += step;
-
-        animateLayer(variant4, animationOffsetY, delay);
-        delay += step;
+        for (View variant : variants) {
+            animateLayer(variant, animationOffsetY, delay);
+            delay += step;
+        }
 
         animateLayer(subtitle, animationOffsetY, delay);
         delay += step;
