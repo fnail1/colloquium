@@ -23,6 +23,8 @@ import static app.laiki.utils.Utils.dpToPx;
 public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
 
 
+    public static final int VIEW_REVEAL_ANIMATION_DURATION = 300;
+    static final int VIEW_REVEAL_ANIMATION_STEP = 50;
     @BindView(R.id.icon) ImageView icon;
     @BindView(R.id.message) TextView shadowTextView;
     @BindView(R.id.header) ViewGroup header;
@@ -34,7 +36,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
     @BindView(R.id.variant3text) TextView variant3Text;
     @BindView(R.id.variant4) View variant4;
     @BindView(R.id.variant4text) TextView variant4Text;
-    @BindView(R.id.skip) TextView skip;
+    @BindView(R.id.skip) View skip;
     @Nullable
     @BindView(R.id.next)
     TextView next;
@@ -44,7 +46,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
     @Nullable
     @BindView(R.id.title)
     TextView title;
-    @BindView(R.id.shuffle) ImageView shuffle;
+    @BindView(R.id.shuffle) View shuffle;
 
     protected float animationOffsetY;
     protected String message;
@@ -87,27 +89,24 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
             return;
         }
         int delay = 150;
-        int step = 50;
 
         animateLayer(icon, animationOffsetY, delay);
-        delay += step;
+        delay += VIEW_REVEAL_ANIMATION_STEP;
 
         if (title != null) {
             animateLayer(title, animationOffsetY, delay);
-            delay += step;
+            delay += VIEW_REVEAL_ANIMATION_STEP;
         }
 
-//        animateLayer(shadowTextView, animationOffsetY, delay);
-//        delay += step;
 
         for (TextView textLine : textLines) {
             animateLayer(textLine, animationOffsetY, delay);
-            delay += step;
+            delay += VIEW_REVEAL_ANIMATION_STEP;
         }
 
         for (View variant : variants) {
             animateLayer(variant, animationOffsetY, delay);
-            delay += step;
+            delay += VIEW_REVEAL_ANIMATION_STEP;
         }
 
         if (skip != null)
@@ -121,7 +120,7 @@ public abstract class AbsQuestionViewHolder extends AbsPageViewHolder {
 
         view.animate()
                 .setStartDelay(delay)
-                .setDuration(300)
+                .setDuration(VIEW_REVEAL_ANIMATION_DURATION)
                 .translationY(0)
                 .alpha(targetAlpha);
 

@@ -1,24 +1,16 @@
 package app.laiki.ui.main.questions;
 
-import android.os.SystemClock;
 import android.view.View;
-import android.widget.TextView;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import app.laiki.R;
-import app.laiki.diagnostics.Logger;
 import app.laiki.model.entities.Contact;
 import app.laiki.model.entities.Question;
 import app.laiki.model.types.Choice;
-import app.laiki.toolkit.concurrent.ThreadPool;
 import app.laiki.ui.base.AnswerButtonHelper;
 import butterknife.OnClick;
 
-import static app.laiki.App.data;
 import static app.laiki.App.photos;
 import static app.laiki.App.screenMetrics;
 

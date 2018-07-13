@@ -112,6 +112,9 @@ public class Statistics {
             logEvent("Question.Invite");
         }
 
+        public void shuffle() {
+            logEvent("Question.Shuffle");
+        }
     }
 
     public class AnswersStatistics {

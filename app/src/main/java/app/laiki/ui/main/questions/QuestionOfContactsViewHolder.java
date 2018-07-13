@@ -19,8 +19,6 @@ import app.laiki.ui.base.AnswerButtonHelper;
 import static app.laiki.App.data;
 
 public class QuestionOfContactsViewHolder extends AbsQuestionViewHolder implements AnswerButtonHelper.Callback {
-    private static final int SHUFFLE_ANIMATION_STEP = 150;
-    public static final int SHUFFLE_ANIMATION_DURATION = 350;
     private static final int MAX_SHUFFLES = 5;
 
     protected final Callback callback;
@@ -116,10 +114,8 @@ public class QuestionOfContactsViewHolder extends AbsQuestionViewHolder implemen
 
     private void startAnimationIn(ShuffleAnimationState animationState, int index) {
         variants[index].animate()
-                .setStartDelay(SHUFFLE_ANIMATION_STEP * index)
-                .setDuration(SHUFFLE_ANIMATION_DURATION)
-                .scaleX(0)
-                .scaleY(0)
+                .setStartDelay(0)
+                .setDuration(VIEW_REVEAL_ANIMATION_DURATION)
                 .alpha(0)
                 .withStartAction(() -> {
                     Logger.logV("SHUFFLE", "startAnimationIn " + index + " start T:" + (SystemClock.elapsedRealtime() - shuffleStartTime));
@@ -136,11 +132,11 @@ public class QuestionOfContactsViewHolder extends AbsQuestionViewHolder implemen
         View button = variants[index];
         TextView text = variantsTextViews[index];
         Contact contact = contacts[index];
+        button.setTranslationY(animationOffsetY);
         button.animate()
-                .setStartDelay(0)
-                .setDuration(SHUFFLE_ANIMATION_DURATION)
-                .scaleX(1)
-                .scaleY(1)
+                .setStartDelay(VIEW_REVEAL_ANIMATION_STEP * index)
+                .setDuration(VIEW_REVEAL_ANIMATION_DURATION)
+                .translationY(0)
                 .alpha(1)
                 .withStartAction(() -> {
                     text.setText(contact.displayName);

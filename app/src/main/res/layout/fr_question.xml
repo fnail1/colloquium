@@ -31,8 +31,8 @@
             android:id="@+id/icon"
             android:layout_width="@dimen/question_icon_size"
             android:layout_height="@dimen/question_icon_size"
-            android:padding="@dimen/question_icon_padding"
             android:contentDescription="@string/icon"
+            android:padding="@dimen/question_icon_padding"
             android:scaleType="fitXY"
             android:src="@drawable/ic_stopscreen"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,20 +69,19 @@
     <TextView
         android:id="@+id/skip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginRight="@dimen/indent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="@dimen/padding"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         android:background="@drawable/ripple_none_view_dark"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_fast_forward"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/indent"
+        android:gravity="center"
         android:text="@string/skip"
         android:textAppearance="@style/SubtitleTextAppearance"
         android:textColor="@color/mw_fade_white_70"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="RtlHardcoded"/>
+        />
 
     <TextView
         android:id="@+id/next"
@@ -118,15 +117,19 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <ImageView
+    <TextView
         android:id="@+id/shuffle"
-        android:layout_width="48dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="@dimen/padding"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:foreground="@drawable/ripple_circle_icon_dark"
+        android:gravity="center"
+        android:text="Перемешать"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="@color/mw_fade_white_70"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:padding="12dp"
-        android:layout_margin="4dp"
-        android:src="@drawable/ic_shuffle"
-        android:contentDescription="Перемешать"
-        android:foreground="@drawable/ripple_circle_icon_dark"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>
