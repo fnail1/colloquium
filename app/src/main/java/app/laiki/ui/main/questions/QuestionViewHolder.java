@@ -35,9 +35,12 @@ public class QuestionViewHolder extends QuestionOfContactsViewHolder {
         rebind();
     }
 
+    @Override
     public void rebind() {
         if (question == null)
             return;
+
+        super.rebind();
 
         ColorScheme colorScheme = randomColorScheme(question.uniqueId.hashCode());
         root.setBackground(colorScheme.background(root.getContext()));

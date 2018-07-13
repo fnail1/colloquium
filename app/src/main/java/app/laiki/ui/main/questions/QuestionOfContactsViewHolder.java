@@ -42,7 +42,11 @@ public class QuestionOfContactsViewHolder extends AbsQuestionViewHolder implemen
             variantsTextViews[i].setText(contact.displayName);
         }
 
-        shuffle.setVisibility(question.shuffles < MAX_SHUFFLES ? View.VISIBLE : View.GONE);
+        rebind();
+    }
+
+    public void rebind() {
+        shuffle.setVisibility(question.shuffles < MAX_SHUFFLES && question.answer == null ? View.VISIBLE : View.GONE);
     }
 
 
