@@ -34,6 +34,20 @@ public class InviteViewHolder extends QuestionOfContactsViewHolder {
     public InviteViewHolder(LayoutInflater inflater, ViewGroup parent, Callback callback) {
         super(inflater.inflate(R.layout.fr_question_invite, parent, false), callback);
         shuffle.setVisibility(View.GONE);
+        root.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            public boolean subtitleVisibilitySet;
+
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (right == 0 || bottom == 0)
+                    return;
+                if (subtitleVisibilitySet && left == oldLeft && right == oldRight && top == oldTop && bottom == oldBottom)
+                    return;
+                boolean room = subtitle.getY() + subtitle.getHeight() < skip.getY() + subtitle.getResources().getDimensionPixelOffset(R.dimen.padding);
+                subtitle.setVisibility(room ? View.VISIBLE : View.INVISIBLE);
+                subtitleVisibilitySet = true;
+            }
+        });
     }
 
     @Override
