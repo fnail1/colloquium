@@ -98,8 +98,8 @@ public class AnswerActivity extends BaseActivity {
         if (!answer.flags.get(Answer.FLAG_READ)) {
             statistics().answers().read();
             appService().answerRead(answer);
-            root.postDelayed(this::showBoastMessage, 1500);
         }
+        root.postDelayed(this::showBoastMessage, 1500);
 
         AbsPageViewHolder.ColorScheme colorScheme = QuestionViewHolder.randomColorScheme();
         root.setBackground(colorScheme.background(this));
