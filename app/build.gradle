@@ -17,8 +17,8 @@ android {
         applicationId "app.laiki"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 17
-        versionName "1.0.17"
+        versionCode 19
+        versionName "1.0.19"
     }
 
     signingConfigs {
