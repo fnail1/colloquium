@@ -2,7 +2,12 @@ package app.laiki.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,9 +23,12 @@ import app.laiki.ui.base.BaseActivity;
 import app.laiki.ui.main.questions.AbsPageViewHolder;
 import app.laiki.ui.main.questions.QuestionViewHolder;
 import app.laiki.ui.views.VariantButtonBackgroundDrawable;
+import app.laiki.utils.TextFormatUtils;
+import app.laiki.utils.Utils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.internal.Util;
 
 import static app.laiki.App.appService;
 import static app.laiki.App.data;
@@ -91,6 +99,7 @@ public class AnswerActivity extends BaseActivity {
             statistics().answers().read();
             appService().answerRead(answer);
         }
+        root.postDelayed(this::showBoastMessage, 1500);
 
         AbsPageViewHolder.ColorScheme colorScheme = QuestionViewHolder.randomColorScheme();
         root.setBackground(colorScheme.background(this));
@@ -112,6 +121,15 @@ public class AnswerActivity extends BaseActivity {
         message.setText(answer.questionText);
 
         variant1.setBackground(new VariantButtonBackgroundDrawable(root.getContext()));
+    }
+
+    private void showBoastMessage() {
+        String text = "Хвастайся скрином в инсте и вк с тегом #чсн";
+        int color = Utils.getColor(this, R.color.buttonColorSelected);
+        SpannableStringBuilder ssb = new SpannableStringBuilder(text);
+        ssb.setSpan(new ForegroundColorSpan(color), text.length() - 4, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+//        CharSequence msg = TextFormatUtils.convertHtml("Хвастайся скрином в инсте и вк с тегом <font color='blue'>#чсн</font>");
+        Snackbar.make(root, ssb, 3000).show();
     }
 
 

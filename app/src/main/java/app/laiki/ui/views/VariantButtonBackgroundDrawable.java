@@ -98,7 +98,15 @@ public class VariantButtonBackgroundDrawable extends Drawable {
             previouseState = this.buttonState;
         }
         this.buttonState = buttonState;
+
+
         this.alpha = alpha;
+
+        if (alpha != 1 && previouseState != buttonState &&
+                previouseState != ButtonState.DEFAULT &&
+                buttonState != ButtonState.DEFAULT) {
+            safeThrow(new Exception("unsupportetd transitions: " + previouseState + " -> " + buttonState), true);
+        }
 
         invalidateSelf();
     }
