@@ -37,7 +37,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
 
     public static String getFcmToken() {
         String fcmToken = prefs().config().fcmToken;
-        logFcm(fcmToken);
+        logFcm("%S", fcmToken);
         return fcmToken;
     }
 

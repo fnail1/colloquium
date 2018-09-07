@@ -11,6 +11,17 @@ import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import app.laiki.BuildConfig;
+import app.laiki.api.model.GsonAnswers;
+import app.laiki.api.model.GsonAuth;
+import app.laiki.api.model.GsonProfileResponse;
+import app.laiki.api.model.GsonQuestionResponse;
+import app.laiki.api.model.GsonResponse;
+import app.laiki.diagnostics.Logger;
+import app.laiki.model.types.Choice;
+import app.laiki.toolkit.http.HttpHeaders;
+import app.laiki.toolkit.http.LoginRequiredException;
+import app.laiki.utils.Utils;
 import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -27,17 +38,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import app.laiki.BuildConfig;
-import app.laiki.api.model.GsonAnswers;
-import app.laiki.api.model.GsonAuth;
-import app.laiki.api.model.GsonProfileResponse;
-import app.laiki.api.model.GsonQuestionResponse;
-import app.laiki.api.model.GsonResponse;
-import app.laiki.diagnostics.Logger;
-import app.laiki.model.types.Choice;
-import app.laiki.toolkit.http.HttpHeaders;
-import app.laiki.toolkit.http.LoginRequiredException;
-import app.laiki.utils.Utils;
+import retrofit2.http.Query;
 
 import static app.laiki.App.app;
 import static app.laiki.App.prefs;
@@ -173,7 +174,7 @@ public interface ApiService {
     Call<GsonProfileResponse.GsonUser> getProfile();
 
     @GET("/api/invite/{phone}")
-    Call<GsonResponse> invite(@Path("phone") String phone);
+    Call<GsonResponse> invite(@Path("phone") String phone, @Query("name") String name, @Query("sex") String gender, @Query("age") String age);
 
     @GET("answer/reset")
     Call<GsonResponse> resetAnswers();

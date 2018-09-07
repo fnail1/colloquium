@@ -59,6 +59,8 @@
 -keepnames class app.laiki.toolkit.data.** {*;}
 -keepnames class app.laiki.model.entities.** {*;}
 -keepnames class app.laiki.model.types.** {*;}
+-keepnames class app.laiki.Configuration {*;}
+-keepnames class app.laiki.service.ServiceState {*;}
 
 
 -dontwarn com.android.installreferrer

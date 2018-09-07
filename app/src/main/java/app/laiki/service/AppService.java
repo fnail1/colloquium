@@ -9,7 +9,10 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LongSparseArray;
+import android.text.Annotation;
 import android.text.TextUtils;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -436,15 +439,16 @@ public class AppService implements AppStateObserver.AppStateEventHandler {
 
     private void sendInviteSync(AppData appData, Contact contact) {
         try {
-            if (BuildConfig.DEBUG) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
-            Response<GsonResponse> response = api().invite(contact.phone).execute();
+//            if (BuildConfig.DEBUG) {
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                return;
+//            }
+
+            Response<GsonResponse> response = api().invite(contact.phone, contact.displayName, prefs().profile().gender.serverName, prefs().profile().age.serverName).execute();
             if (response.code() != HttpURLConnection.HTTP_OK)
                 safeThrow(new ServerException(response));
 
