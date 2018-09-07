@@ -6,6 +6,7 @@ public class Configuration implements Serializable {
     public final Notifications notifications = new Notifications();
     public int questionsFrameSize = BuildConfig.DEBUG ? 5 : 12;
     public int deadTime = BuildConfig.DEBUG ? 30 * 1000 : 60 * 60 * 1000;
+    public int retentionAlertTime = BuildConfig.DEBUG ? 5 * 60 * 1000 : 24 * 60 * 60 * 1000;
     public int inviteTrigger = BuildConfig.DEBUG ? 3 : 8;
     public boolean emulateSlowConnection = false;
     public String fcmToken;

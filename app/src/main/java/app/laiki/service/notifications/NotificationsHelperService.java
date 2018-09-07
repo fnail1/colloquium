@@ -11,6 +11,7 @@ import static app.laiki.diagnostics.Logger.trace;
 public class NotificationsHelperService extends IntentService {
 
     public static final String ACTION_STOP_SCREEN_OUT = "stop_screen_out";
+    public static final String ACTION_RETENTION_ALERT = "show_retention_alert";
 
     public NotificationsHelperService() {
         super("NotificationsHelperService");
@@ -35,6 +36,8 @@ public class NotificationsHelperService extends IntentService {
         switch (action) {
             case ACTION_STOP_SCREEN_OUT:
                 notifications().onStopScreenOut();
+            case ACTION_RETENTION_ALERT:
+                notifications().onRetentionAlert();
         }
     }
 }

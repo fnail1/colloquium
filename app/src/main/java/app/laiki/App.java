@@ -115,7 +115,7 @@ public class App extends Application {
         dateTimeService = new DateTimeService(this, preferences);
         photoManager = new PhotoManager(this, appStateObserver);
         jobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        notificationsHelper = new NotificationsHelper(appService);
+        notificationsHelper = new NotificationsHelper(appService, appStateObserver);
 
         instance = this;
 
@@ -141,7 +141,7 @@ public class App extends Application {
         ThreadPool.UI.postDelayed(old::close, 10 * 1000);
         appService.shutdown();
         appService = new AppService(this, appStateObserver);
-        notificationsHelper = new NotificationsHelper(appService);
+        notificationsHelper = new NotificationsHelper(appService, appStateObserver);
 
         if (this.data.questions.selectCurrent() == null) {
             appService.requestNextQuestion();
