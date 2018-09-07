@@ -118,6 +118,20 @@
         />
 
     <TextView
+        android:id="@+id/contest"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_small"
+        android:background="@drawable/ripple_rect_view_light"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:text="@string/contest"
+        android:textAppearance="@style/SubtitleTextAppearance"
+        android:textColor="@color/colorAccent"
+        />
+
+
+    <TextView
         android:id="@+id/vk"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height_small"

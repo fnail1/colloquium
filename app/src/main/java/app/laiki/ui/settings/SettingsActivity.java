@@ -39,7 +39,8 @@ import static app.laiki.diagnostics.DebugUtils.safeThrow;
 import static app.laiki.toolkit.collections.Query.query;
 
 public class SettingsActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
-    @BindView(R.id.notifications) Switch notifications;
+    @BindView(R.id.notifications_answers) Switch notificationsAnswers;
+    @BindView(R.id.notifications_alerts) Switch notificationsAlerts;
     @BindView(R.id.line1) View line1;
     @BindView(R.id.import_db) TextView importDb;
     @BindView(R.id.copy_fcm) TextView copyFcm;
@@ -58,8 +59,11 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        notifications.setOnCheckedChangeListener(this);
-        notifications.setChecked(prefs().config().notifications.answer);
+        notificationsAnswers.setOnCheckedChangeListener(this);
+        notificationsAnswers.setChecked(prefs().config().notifications.answers);
+
+        notificationsAlerts.setOnCheckedChangeListener(this);
+        notificationsAlerts.setChecked(prefs().config().notifications.alerts);
 
         if (!BuildConfig.DEBUG) {
             line1.setVisibility(View.GONE);
@@ -221,8 +225,14 @@ public class SettingsActivity extends BaseActivity implements CompoundButton.OnC
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Configuration config = prefs().config();
-        config.notifications.answer = isChecked;
-        prefs().save(config);
+        if (buttonView == notificationsAnswers) {
+            Configuration config = prefs().config();
+            config.notifications.answers = isChecked;
+            prefs().save(config);
+        } else if (buttonView == notificationsAlerts) {
+            Configuration config = prefs().config();
+            config.notifications.alerts = isChecked;
+            prefs().save(config);
+        }
     }
 }

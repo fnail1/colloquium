@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,6 @@ import android.widget.Toast;
 
 import java.net.HttpURLConnection;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import app.laiki.BuildConfig;
 import app.laiki.R;
 import app.laiki.api.model.GsonResponse;
@@ -35,6 +29,13 @@ import app.laiki.ui.ContactsActivity;
 import app.laiki.ui.base.BaseFragment;
 import app.laiki.ui.settings.SettingsActivity;
 import app.laiki.utils.GraphicUtils;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static app.laiki.App.api;
 import static app.laiki.App.data;
@@ -51,6 +52,7 @@ public class ProfileFragment extends BaseFragment {
     @BindView(R.id.reset) TextView reset;
     @BindView(R.id.phone) TextView phone;
     @BindView(R.id.likes) TextView likes;
+    @BindView(R.id.contest) TextView contest;
 
     @Nullable
     @Override
@@ -78,6 +80,8 @@ public class ProfileFragment extends BaseFragment {
         if (!BuildConfig.DEBUG) {
             reset.setVisibility(View.GONE);
         }
+
+        contest.setVisibility(TextUtils.isEmpty(prefs().config().contestLink) ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -86,7 +90,7 @@ public class ProfileFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.reset, R.id.settings, R.id.contacts, R.id.support, R.id.vk})
+    @OnClick({R.id.reset, R.id.settings, R.id.contacts, R.id.support, R.id.vk, R.id.contest})
     public void onViewClicked(View view) {
         FragmentActivity activity = getActivity();
         if (activity == null)
@@ -113,6 +117,10 @@ public class ProfileFragment extends BaseFragment {
             case R.id.vk:
                 statistics().profile().vk();
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://vk.com/public167808448")));
+                break;
+            case R.id.contest:
+                statistics().profile().contest();
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(prefs().config().contestLink)));
                 break;
         }
     }

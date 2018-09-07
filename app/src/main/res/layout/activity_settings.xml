@@ -47,16 +47,38 @@
             android:layout_height="1px"
             android:background="#9ab3c0"/>
 
-        <Switch
-            android:id="@+id/notifications"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/item_height_small"
-            android:drawableStart="@drawable/ic_cellphone"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:drawablePadding="24dp"
-            android:foreground="@drawable/ripple_rect_view_light"
+            android:drawableStart="@drawable/ic_cellphone"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
             android:text="@string/notifications"
+            android:textAppearance="@style/TitleTextAppearance"
+            android:textColor="#546d79"
+            />
+
+        <Switch
+            android:id="@+id/notifications_answers"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height_small"
+            android:foreground="@drawable/ripple_rect_view_light"
+            android:paddingEnd="24dp"
+            android:paddingStart="62dp"
+            android:text="@string/notifications_answers"
+            android:textAppearance="@style/SubtitleTextAppearance"
+            android:textColor="#546d79"
+            tools:ignore="RtlHardcoded"/>
+
+        <Switch
+            android:id="@+id/notifications_alerts"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height_small"
+            android:foreground="@drawable/ripple_rect_view_light"
+            android:paddingEnd="24dp"
+            android:paddingStart="62dp"
+            android:text="@string/notifications_alerts"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
             tools:ignore="RtlHardcoded"/>
@@ -67,8 +89,8 @@
             android:layout_height="@dimen/item_height_small"
             android:background="@drawable/ripple_rect_view_light"
             android:clickable="true"
-            android:drawableStart="@drawable/ic_exit"
             android:drawablePadding="14dp"
+            android:drawableStart="@drawable/ic_exit"
             android:focusable="true"
             android:gravity="center_vertical"
             android:paddingEnd="24dp"
@@ -87,8 +109,8 @@
             android:paddingStart="24dp"
             android:textAppearance="@style/SubtitleTextAppearance"
             android:textColor="#546d79"
-            tools:text="Версия: 1.1 (1)"
-            tools:ignore="RtlHardcoded"/>
+            tools:ignore="RtlHardcoded"
+            tools:text="Версия: 1.1 (1)"/>
 
         <View
             android:id="@+id/line1"
@@ -154,8 +176,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
-                android:inputType="numberDecimal"
                 android:hint="1-100"
+                android:inputType="numberDecimal"
                 tools:ignore="HardcodedText"/>
 
         </LinearLayout>
@@ -218,14 +240,14 @@
             android:id="@+id/emulate_slow_connection"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height_small"
-            android:gravity="center_vertical"
+            android:background="@drawable/ripple_rect_view_light"
             android:checkMark="@drawable/ic_check"
             android:checked="false"
+            android:gravity="center_vertical"
             android:paddingBottom="@dimen/indent"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
             android:paddingTop="@dimen/indent"
-            android:text="@string/title_emulate_slow_connection"
-            android:background="@drawable/ripple_rect_view_light"/>
+            android:text="@string/title_emulate_slow_connection"/>
     </LinearLayout>
 </ScrollView>

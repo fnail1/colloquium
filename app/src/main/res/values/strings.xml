@@ -29,6 +29,9 @@
     <string name="contacts_permission_explanation">Приложение не может работать без доступа к контактам</string>
     <string name="storage_permission_explanation">Ну очень надо</string>
 
+    <string name="notifications_answers">Новые лайки</string>
+    <string name="notifications_alerts">События</string>
+
     <string name="now">сейчас</string>
     <string name="now_past">только что</string>
     <!--two days ago-->
@@ -144,6 +147,7 @@
     <string name="invite_subtitle">Мы отправим им приглашения. Они не узнают, кто их позвал.</string>
     <string name="error_common">Что-то пошло не так</string>
     <string name="delete_answers_success_message">Ответы удалены</string>
+    <string name="contest">Конкурс!</string>
 
     <plurals name="days">
         <item quantity="one">%d\u00A0день</item>

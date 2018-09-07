@@ -152,6 +152,10 @@ public class Statistics {
         public void vk() {
             logEvent("Profile.Vk");
         }
+
+        public void contest() {
+            logEvent("Profile.Contest");
+        }
     }
 
     public class RateUsStatistics {

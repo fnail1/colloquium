@@ -55,6 +55,9 @@ public class AppStateObserver {
             boolean foreground = this.topActivity != null;
             this.topActivity = topActivity;
             onStateChanged(foreground);
+            if (!foreground) {
+                prefs().config().requestRemoteConfig();
+            }
         }
     }
 

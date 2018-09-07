@@ -58,6 +58,8 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
     }
 
     public void showNotificationSingleLike(Answer answer) {
+        if (!prefs().config().notifications.answers)
+            return;
         NotificationManager nm = getNotificationManager();
         Bitmap bitmap = GraphicUtils.getResourceBitmap(app(), answer.gender.heartIconResId);
 
@@ -157,6 +159,9 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
     public void onStopScreenOut() {
         trace();
 
+        if (!prefs().config().notifications.alerts)
+            return;
+
         Activity topActivity = appState().getTopActivity();
         if (topActivity instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) topActivity;
@@ -213,6 +218,9 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
 
     public void onRetentionAlert() {
         trace();
+        if (!prefs().config().notifications.alerts)
+            return;
+
         if (appState().isForeground())
             return;
 
