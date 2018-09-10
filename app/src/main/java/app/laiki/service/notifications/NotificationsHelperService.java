@@ -36,8 +36,10 @@ public class NotificationsHelperService extends IntentService {
         switch (action) {
             case ACTION_STOP_SCREEN_OUT:
                 notifications().onStopScreenOut();
+                break;
             case ACTION_RETENTION_ALERT:
                 notifications().onRetentionAlert();
+                break;
         }
     }
 }

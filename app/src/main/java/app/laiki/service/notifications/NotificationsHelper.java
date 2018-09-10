@@ -199,7 +199,7 @@ public class NotificationsHelper implements AppService.AnswerUpdatedEventHandler
 
     @Override
     public void onAppStateChanged(Boolean fromForeground) {
-        if (!fromForeground.equals(Boolean.FALSE))
+        if (!Boolean.FALSE.equals(fromForeground))
             return;
 
         App context = app();
